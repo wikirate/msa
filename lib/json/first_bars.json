@@ -14,11 +14,27 @@
       ]
     },
     {
+      "name": "subgroups",
+      "values": [
+        { "key": "(direct employees)" },
+        { "key": "(supply chain workers)" },
+        { "key": "" }
+      ],
+      "transform": [
+        {
+          "type": "window",
+          "ops": ["row_number"],
+          "as": ["seq"]
+        }
+      ]
+    },
+    {
       "name": "groups",
       "values": [
         { "title": "Hotline, Email, Contact Form",  "term": "Hotline" },
         { "title": "Focal Point",  "term": "Focal Point" },
-        { "title": "Whistleblower protection",  "term": "Whistleblower protection" }
+        { "title": "Whistleblower protection",  "term": "Whistleblower protection" },
+        { "title": "None of the Above", "term": "No" }
       ],
       "transform": [
         {
@@ -35,8 +51,12 @@
         { "type": "flatten", "fields": ["value_array"], "as": ["value"] },
         { "type": "aggregate", "ops": ["count"], "groupby": ["value"] },
         { "type": "formula", "as": "group_key", "expr": "replace(datum.value, / \\(.*/, '')"},
+        { "type": "filter", "expr": "datum.group_key != 'In Development'" },
         { "type": "formula", "as": "parens", "expr": "replace(datum.value, /^[^\\(]*/, '')"},
-        { "type": "lookup", "from": "groups", "key": "term", "fields": ["group_key"], "as": ["obj"] }
+        { "type": "lookup", "from": "groups", "key": "term", "fields": ["group_key"], "values":["title", "seq"], "as": ["group_title", "group_seq"] },
+        { "type": "lookup", "from": "subgroups", "key": "key", "fields": ["parens"], "values":["seq"], "as": ["subgroup_seq"] },
+        { "type": "collect", "sort": { "field": ["group_seq", "subgroup_seq"]}}
+
       ]
     }
   ],
