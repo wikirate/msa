@@ -1,0 +1,125 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 700,
+  "height": 180,
+  "padding": 10,
+  "config": {
+    "axis": {"labelColor": "#888", "titleColor": "#666"},
+    "legend": {"labelColor": "#888", "titleColor": "#666"}
+  },
+  "signals": [
+    {
+      "name": "grouptip",
+      "value": {},
+      "on": [
+        {"events": "arc:mouseover", "update": "datum"},
+        {"events": "arc:mouseout", "update": "{}"}
+      ]
+    },
+    {
+      "name": "padAngle",
+      "value": 0.02,
+      "bind": {"input": "range", "min": 0, "max": 0.1}
+    },
+    {
+      "name": "innerRadius",
+      "value": 3,
+      "bind": {"input": "range", "min": 0, "max": 90, "step": 1}
+    },
+    {
+      "name": "cornerRadius",
+      "value": 3,
+      "bind": {"input": "range", "min": 0, "max": 10, "step": 0.5}
+    },
+    {"name": "sort", "value": false, "bind": {"input": "checkbox"}}
+  ],
+  "data": [
+    {
+      "name": "groups",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0"
+    },
+    {
+      "name": "counts",
+      "source": "groups",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["subgroup"],
+          "ops": ["sum"],
+          "fields": ["count"],
+          "as": ["count"]
+        },
+        {"type": "pie", "field": "count", "sort": {"signal": "sort"}},
+        {
+          "type": "formula",
+          "as": "filter",
+          "expr": "{ verification: datum.group }"
+        },
+        {
+          "type": "lookup",
+          "from": "groups",
+          "key": "id",
+          "fields": ["subgroup"],
+          "as": ["group", "group_title"],
+          "values": ["value", "value"]
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "type": "arc",
+      "from": {"data": "counts"},
+      "encode": {
+        "enter": {
+          "fill": {"scale": "color", "field": "group_title"},
+          "x": {"value": 100},
+          "y": {"value": 100},
+          "tooltip": {"field": "count"}
+        },
+        "update": {
+          "startAngle": {"field": "startAngle"},
+          "endAngle": {"field": "endAngle"},
+          "padAngle": {"signal": "padAngle"},
+          "innerRadius": {"signal": "innerRadius"},
+          "outerRadius": {"value": 100},
+          "cornerRadius": {"signal": "cornerRadius"},
+          "opacity": {"value": 1}
+        },
+        "hover": {"opacity": {"value": 0.8}}
+      }
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "type": "symbol",
+      "encode": {
+        "labels": {
+          "update": {
+            "fontWeight": [
+              {"test": "grouptip.group_title == datum.label", "value": 900},
+              {"value": 400}
+            ]
+          }
+        },
+        "symbols": {
+          "update": {
+            "fillOpacity": [
+              {"test": "grouptip.group_title == datum.label", "value": 0.8},
+              {"value": 1}
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": {"scheme": "rainbow"},
+      "domain": {"data": "groups", "field": "title"}
+    }
+  ]
+}
