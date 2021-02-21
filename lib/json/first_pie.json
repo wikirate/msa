@@ -26,12 +26,20 @@
         },
         {"type": "pie", "field": "count", "sort": false},
         {"type": "formula", "as": "filter", "expr": "{ value: datum.value }"},
-        {"type": "window", "ops": ["sum"], "fields": ["count"], "frame": [
-          null,
-          null
-        ]},
-        {"type": "formula", "as": "percentage", "expr": "format(datum.count / datum.sum_count, '.1%')"
-
+        {
+          "type": "window",
+          "ops": ["sum"],
+          "fields": ["count"],
+          "frame": [null, null]
+        },
+        {
+          "type": "formula",
+          "as": "percentage",
+          "expr": "format(datum.count / datum.sum_count, '.0%')"
+        },
+        {
+          "type": "collect",
+          "sort": { "field": "value" }
         }
       ]
     }
@@ -66,7 +74,7 @@
         "enter": {
           "x": {"field": {"group": "width"}, "mult": 0.5},
           "y": {"field": {"group": "height"}, "mult": 0.5},
-          "radius": {"value": 60 },
+          "radius": {"value": 50},
           "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
           "fill": {"value": "white"},
           "align": {"value": "center"},
@@ -90,7 +98,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "range": {"scheme": "rainbow"},
+      "range": ["#020028", "#F69400"],
       "domain": {"data": "counts", "field": "value"}
     }
   ]
