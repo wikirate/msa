@@ -1,0 +1,45 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A nested bar chart example, with bars grouped by category.",
+  "width": 300,
+  "padding": 5,
+  "autosize": "pad",
+  "signals": [],
+  "data": [
+    {
+      "name": "answers",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_whistleblowing_mechanism_binary+answer/answer_list.json?limit=0",
+      "transform": [
+        {"type":"formula", "expr": "split(datum.value, ', ')", "as": "value_array"}
+      ]
+    },
+    {
+      "name": "groups",
+      "values": [
+        { "title": "Hotline, Email, Contact Form",  "term": "Hotline" },
+        { "title": "Focal Point",  "term": "Focal Point" },
+        { "title": "Whistleblower protection",  "term": "Whistleblower protection" }
+      ],
+      "transform": [
+        {
+          "type": "window",
+          "ops": ["row_number"],
+          "as": ["seq"]
+        }
+      ]
+    },
+    {
+      "name": "counts",
+      "source": "answers",
+      "transform": [
+        { "type": "flatten", "fields": ["value_array"], "as": ["value"] },
+        { "type": "aggregate", "ops": ["count"], "groupby": ["value"] },
+        { "type": "formula", "as": "group_key", "expr": "replace(datum.value, / \\(.*/, '')"},
+        { "type": "formula", "as": "parens", "expr": "replace(datum.value, /^[^\\(]*/, '')"},
+        { "type": "lookup", "from": "groups", "key": "term", "fields": ["group_key"], "as": ["obj"] }
+      ]
+    }
+  ],
+  "scales": [],
+  "axes": []
+}
