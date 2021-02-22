@@ -2,18 +2,12 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A nested bar chart example, with bars grouped by category.",
   "width": 300,
-  "height": 200,
+  "height": 300,
   "padding": 5,
   "autosize": "pad",
   "signals": [
-    {
-      "name": "totalAnswers",
-      "update": "data('answers').length"
-    },
-    {
-      "name": "barHeight",
-      "value": "15"
-    }
+    {"name": "totalAnswers", "update": "data('answers').length"},
+    {"name": "barHeight", "value": "15"}
   ],
   "data": [
     {
@@ -57,10 +51,10 @@
         {"type": "aggregate", "ops": ["count"], "groupby": ["value"]},
         {
           "type": "formula",
-          "as": "group_key",
+          "as": "term",
           "expr": "replace(datum.value, / \\(.*/, '')"
         },
-        {"type": "filter", "expr": "datum.group_key != 'In Development'"},
+        {"type": "filter", "expr": "datum.term != 'In Development'"},
         {
           "type": "formula",
           "as": "parens",
@@ -70,7 +64,7 @@
           "type": "lookup",
           "from": "groups",
           "key": "term",
-          "fields": ["group_key"],
+          "fields": ["term"],
           "values": ["title", "seq"],
           "as": ["group_title", "group_seq"]
         },
@@ -89,18 +83,18 @@
   "scales": [
     {
       "name": "xscale",
-      "domain": [0, { "signal": "totalAnswers" }],
+      "domain": [0, {"signal": "totalAnswers"}],
       "nice": true,
       "zero": true,
       "type": "linear",
       "range": "width"
     },
     {
-      "name": "yscale",
+      "name": "ygroupscale",
       "range": "height",
-      "domain": {"data": "counts", "field": "value"},
+      "domain": {"data": "counts", "field": "term"},
       "type": "band",
-      "padding": 0.1
+      "padding": 0.2
     },
     {
       "name": "color",
@@ -111,30 +105,58 @@
   ],
   "marks": [
     {
-      "type": "rect",
-      "from": {"data": "counts"},
+      "type": "group",
+      "from": {
+        "facet": {"name": "faceted_counts", "groupby": "term", "data": "counts"}
+      },
       "encode": {
-        "update": {
-          "x": { "value": 0},
-          "x2": { "scale":"xscale", "signal": "totalAnswers" },
-          "y": {"scale": "yscale", "field": "value"},
-          "height": { "signal": "barHeight" },
-          "fill": {"value":"#020028"}
+        "enter": {
+          "fill": {"value": "grey"},
+          "y": {"scale": "ygroupscale", "field": "term"}
         }
-      }
-    },
-    {
-      "type": "rect",
-      "from": {"data": "counts"},
-      "encode": {
-        "update": {
-          "x": { "value": 0},
-          "x2": {"scale": "xscale", "field": "count"},
-          "y": {"scale": "yscale", "field": "value"},
-          "height": { "signal": "barHeight" },
-          "fill": {"scale": "color", "field": "subgroup_seq"}
+      },
+      "scales": [
+        {
+          "name": "yscale",
+          "type": "band",
+          "range": "height",
+          "domain": {"data": "faceted_counts", "field": "value"},
+          "padding": 0.1
+
         }
-      }
+      ],
+      "signals": [
+        {"name": "height", "update": "bandwidth('ygroupscale')"}
+      ],
+      "marks": [
+        {
+          "type": "rect",
+          "from": {"data": "faceted_counts"},
+
+          "encode": {
+            "update": {
+              "x": {"value": 0},
+              "x2": {"scale": "xscale", "signal": "totalAnswers"},
+              "y": {"scale": "yscale", "field": "value"},
+              "height": { "signal": "barHeight"},
+              "fill": {"value": "#020028"}
+            }
+          }
+        },
+        {
+          "type": "rect",
+          "from": {"data": "faceted_counts"},
+          "encode": {
+            "update": {
+              "x": { "value": 0},
+              "x2": {"scale": "xscale", "field": "count"},
+              "y": {"scale": "yscale", "field": "value"},
+              "height": { "signal": "barHeight" },
+              "fill": {"scale": "color", "field": "subgroup_seq"}
+            }
+          }
+        }
+      ]
     }
   ]
 }
