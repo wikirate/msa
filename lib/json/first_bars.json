@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A nested bar chart example, with bars grouped by category.",
   "width": 300,
-  "height": 300,
+  "height": 290,
   "padding": 5,
   "autosize": "pad",
   "signals": [
@@ -169,10 +169,11 @@
           "encode": {
             "update": {
               "x": { "scale": "xscale", "signal": "totalAnswers", "offset": 4 },
-              "y": {"scale": "yscale", "field": "value", "offset": 10 },
+              "y": {"scale": "yscale", "field": "value", "offset": 2 },
+              "baseline": { "value": "top" },
               "fill": {"value": "#020028"},
-              "text": { "field": "count_label" }
-
+              "text": { "field": "count_label" },
+              "fontWeight": {"value": "bold"}
             }
           }
         }
@@ -184,7 +185,7 @@
       "encode": {
         "update": {
           "x": {"value": 0},
-          "y": {"scale": "ygroupscale", "field": "term"},
+          "y": {"scale": "ygroupscale", "field": "term", "offset": -2},
           "text": {"field": "title"},
           "fill": {"value": "black"},
           "baseline": {"value": "bottom"},
