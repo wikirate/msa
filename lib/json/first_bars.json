@@ -7,7 +7,8 @@
   "autosize": "pad",
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
-    {"name": "barHeight", "value": "15"}
+    {"name": "barHeight", "value": "15"},
+    {"name": "navyOpacity", "bind": { "input": "range", "min": 0, "max": 1}, "value": 1}
   ],
   "data": [
     {
@@ -18,6 +19,10 @@
           "type": "formula",
           "expr": "split(datum.value, ', ')",
           "as": "value_array"
+        },
+        {
+          "type": "filter",
+          "expr": "datum.value != 'Unknown'"
         }
       ]
     },
@@ -64,8 +69,8 @@
           "from": "groups",
           "key": "term",
           "fields": ["term"],
-          "values": ["title", "seq"],
-          "as": ["group_title", "group_seq"]
+          "values": ["seq"],
+          "as": ["group_seq"]
         },
         {"type": "filter", "expr": "isValid(datum.group_seq)"},
         {
@@ -76,7 +81,8 @@
           "values": ["seq"],
           "as": ["subgroup_seq"]
         },
-        {"type": "collect", "sort": {"field": ["group_seq", "subgroup_seq"]}}
+        {"type": "collect", "sort": {"field": ["group_seq", "subgroup_seq"]}},
+        {"type": "formula", "expr": "datum.count + '/' + totalAnswers", "as": "count_label"}
       ]
     }
   ],
@@ -139,7 +145,8 @@
               "x2": {"scale": "xscale", "signal": "totalAnswers"},
               "y": {"scale": "yscale", "field": "value"},
               "height": { "signal": "barHeight"},
-              "fill": {"value": "#020028"}
+              "fill": {"value": "#020028"},
+              "opacity": { "signal": "navyOpacity" }
             }
           }
         },
@@ -153,6 +160,19 @@
               "y": {"scale": "yscale", "field": "value"},
               "height": { "signal": "barHeight" },
               "fill": {"scale": "color", "field": "subgroup_seq"}
+            }
+          }
+        },
+        {
+          "type": "text",
+          "from": {"data": "faceted_counts"},
+          "encode": {
+            "update": {
+              "x": { "scale": "xscale", "signal": "totalAnswers", "offset": 4 },
+              "y": {"scale": "yscale", "field": "value", "offset": 10 },
+              "fill": {"value": "#020028"},
+              "text": { "field": "count_label" }
+
             }
           }
         }
