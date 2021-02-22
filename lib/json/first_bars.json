@@ -5,7 +5,16 @@
   "height": 200,
   "padding": 5,
   "autosize": "pad",
-  "signals": [],
+  "signals": [
+    {
+      "name": "totalAnswers",
+      "update": "data('answers').length"
+    },
+    {
+      "name": "barHeight",
+      "value": "15"
+    }
+  ],
   "data": [
     {
       "name": "answers",
@@ -80,7 +89,7 @@
   "scales": [
     {
       "name": "xscale",
-      "domain": {"data": "counts", "field": "count"},
+      "domain": [0, { "signal": "totalAnswers" }],
       "nice": true,
       "zero": true,
       "type": "linear",
@@ -97,7 +106,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "counts", "field": "subgroup_seq"},
-      "range": ["#F69400"]
+      "range": ["#F69400", "#F9DC01", "#F41C01"]
     }
   ],
   "marks": [
@@ -107,11 +116,22 @@
       "encode": {
         "update": {
           "x": { "value": 0},
+          "x2": { "scale":"xscale", "signal": "totalAnswers" },
+          "y": {"scale": "yscale", "field": "value"},
+          "height": { "signal": "barHeight" },
+          "fill": {"value":"#020028"}
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": { "value": 0},
           "x2": {"scale": "xscale", "field": "count"},
           "y": {"scale": "yscale", "field": "value"},
-          "height": {
-            "value":10
-          },
+          "height": { "signal": "barHeight" },
           "fill": {"scale": "color", "field": "subgroup_seq"}
         }
       }
