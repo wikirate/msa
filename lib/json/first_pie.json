@@ -1,105 +1,120 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "width": 220,
-  "height": 180,
-  "padding": 10,
-  "config": {
-    "axis": {"labelColor": "#888", "titleColor": "#666"},
-    "legend": {"labelColor": "#888", "titleColor": "#666"}
-  },
+  "description": "A nested bar chart example, with bars grouped by category.",
+  "width": 300,
+  "height": 200,
+  "padding": 5,
+  "autosize": "pad",
   "signals": [],
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0"
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_whistleblowing_mechanism_binary+answer/answer_list.json?limit=0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "split(datum.value, ', ')",
+          "as": "value_array"
+        }
+      ]
+    },
+    {
+      "name": "subgroups",
+      "values": [
+        {"key": "(direct employees)"},
+        {"key": "(supply chain workers)"},
+        {"key": ""}
+      ],
+      "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
+    },
+    {
+      "name": "groups",
+      "values": [
+        {"title": "Hotline, Email, Contact Form", "term": "Hotline"},
+        {"title": "Focal Point", "term": "Focal Point"},
+        {
+          "title": "Whistleblower protection",
+          "term": "Whistleblower protection"
+        },
+        {"title": "None of the Above", "term": "No"}
+      ],
+      "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
     },
     {
       "name": "counts",
       "source": "answers",
       "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["value"],
-          "ops": ["count"],
-          "fields": ["count"],
-          "as": ["count"]
-        },
-        {"type": "pie", "field": "count", "sort": false},
-        {"type": "formula", "as": "filter", "expr": "{ value: datum.value }"},
-        {
-          "type": "window",
-          "ops": ["sum"],
-          "fields": ["count"],
-          "frame": [null, null]
-        },
+        {"type": "flatten", "fields": ["value_array"], "as": ["value"]},
+        {"type": "aggregate", "ops": ["count"], "groupby": ["value"]},
         {
           "type": "formula",
-          "as": "percentage",
-          "expr": "format(datum.count / datum.sum_count, '.0%')"
+          "as": "group_key",
+          "expr": "replace(datum.value, / \\(.*/, '')"
+        },
+        {"type": "filter", "expr": "datum.group_key != 'In Development'"},
+        {
+          "type": "formula",
+          "as": "parens",
+          "expr": "replace(datum.value, /^[^\\(]*/, '')"
         },
         {
-          "type": "collect",
-          "sort": { "field": "value" }
-        }
+          "type": "lookup",
+          "from": "groups",
+          "key": "term",
+          "fields": ["group_key"],
+          "values": ["title", "seq"],
+          "as": ["group_title", "group_seq"]
+        },
+        {
+          "type": "lookup",
+          "from": "subgroups",
+          "key": "key",
+          "fields": ["parens"],
+          "values": ["seq"],
+          "as": ["subgroup_seq"]
+        },
+        {"type": "collect", "sort": {"field": ["group_seq", "subgroup_seq"]}}
       ]
-    }
-  ],
-  "marks": [
-    {
-      "type": "arc",
-      "from": {"data": "counts"},
-      "encode": {
-        "enter": {
-          "fill": {"scale": "color", "field": "value"},
-          "x": {"value": 100},
-          "y": {"value": 100},
-          "tooltip": {"field": "count"}
-        },
-        "update": {
-          "startAngle": {"field": "startAngle"},
-          "endAngle": {"field": "endAngle"},
-          "padAngle": {"value": 0},
-          "innerRadius": {"value": 0},
-          "outerRadius": {"value": 100},
-          "cornerRadius": {"value": 0},
-          "opacity": {"value": 1}
-        },
-        "hover": {"opacity": {"value": 0.8}}
-      }
-    },
-    {
-      "type": "text",
-      "from": {"data": "counts"},
-      "encode": {
-        "enter": {
-          "x": {"field": {"group": "width"}, "mult": 0.5},
-          "y": {"field": {"group": "height"}, "mult": 0.5},
-          "radius": {"value": 50},
-          "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
-          "fill": {"value": "white"},
-          "align": {"value": "center"},
-          "baseline": {"value": "middle"},
-          "text": {"field": "percentage"}
-        }
-      }
-    }
-  ],
-  "legends": [
-    {
-      "fill": "color",
-      "type": "symbol",
-      "encode": {
-        "labels": {"update": {"fontWeight": [{"value": 400}]}},
-        "symbols": {"update": {"fillOpacity": [{"value": 1}]}}
-      }
     }
   ],
   "scales": [
     {
+      "name": "xscale",
+      "domain": {"data": "counts", "field": "count"},
+      "nice": true,
+      "zero": true,
+      "type": "linear",
+      "range": "width"
+    },
+    {
+      "name": "yscale",
+      "range": "height",
+      "domain": {"data": "counts", "field": "value"},
+      "type": "band",
+      "padding": 0.1
+    },
+    {
       "name": "color",
       "type": "ordinal",
-      "range": ["#020028", "#F69400"],
-      "domain": {"data": "counts", "field": "value"}
+      "domain": {"data": "counts", "field": "subgroup_seq"},
+      "range": ["#F69400"]
+    }
+  ],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": { "value": 0},
+          "x2": {"scale": "xscale", "field": "count"},
+          "y": {"scale": "yscale", "field": "value"},
+          "height": {
+            "value":10
+          },
+          "fill": {"scale": "color", "field": "subgroup_seq"}
+        }
+      }
     }
   ]
 }

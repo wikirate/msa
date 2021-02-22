@@ -60,6 +60,46 @@
       ]
     }
   ],
-  "scales": [],
-  "axes": []
+  "scales": [
+    {
+      "name": "xscale",
+      "domain": {"data": "counts", "field": "count"},
+      "nice": true,
+      "zero": true,
+      "round": true,
+      "range": "width"
+    },
+    {
+      "name":"yscale",
+      "range":"height",
+      "domain":{
+        "data":"counts",
+        "field": "value"
+      },
+      "type":"band",
+      "padding":0.15
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": "category",
+      "domain": {"data": "counts", "field": "subgroup_seq"}
+    }
+  ],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data": "counts"},
+      "encode": {
+        "enter": {
+          "x": {"value": 0},
+          "x2": {"scale": "xscale", "field": "count"},
+          "y": {"scale": "yscale", "field": "value" },
+          "height": { "value": 10 },
+          "fill": {"scale": "color", "field": "subgroup_seq"},
+          "strokeWidth": {"value": 2}
+        }
+      }
+    }
+  ]
 }
