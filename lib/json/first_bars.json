@@ -54,7 +54,6 @@
           "as": "term",
           "expr": "replace(datum.value, / \\(.*/, '')"
         },
-        {"type": "filter", "expr": "datum.term != 'In Development'"},
         {
           "type": "formula",
           "as": "parens",
@@ -68,6 +67,7 @@
           "values": ["title", "seq"],
           "as": ["group_title", "group_seq"]
         },
+        {"type": "filter", "expr": "isValid(datum.group_seq)"},
         {
           "type": "lookup",
           "from": "subgroups",
@@ -94,7 +94,7 @@
       "range": "height",
       "domain": {"data": "counts", "field": "term"},
       "type": "band",
-      "padding": 0.2
+      "padding": 0.4
     },
     {
       "name": "color",
@@ -157,6 +157,20 @@
           }
         }
       ]
+    },
+    {
+      "type": "text",
+      "from": {"data": "groups"},
+      "encode": {
+        "update": {
+          "x": {"value": 0},
+          "y": {"scale": "ygroupscale", "field": "term"},
+          "text": {"field": "title"},
+          "fill": {"value": "black"},
+          "baseline": {"value": "bottom"},
+          "fontWeight": {"value": "bold"}
+        }
+      }
     }
   ]
 }
