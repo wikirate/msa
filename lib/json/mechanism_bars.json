@@ -8,21 +8,21 @@
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
     {"name": "barHeight", "value": "15"},
-    {"name": "navyOpacity", "bind": { "input": "range", "min": 0, "max": 1}, "value": 1}
+    {
+      "name": "navyOpacity",
+      "blind": {"input": "range", "min": 0, "max": 1},
+      "value": 1
+    }
   ],
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_whistleblowing_mechanism_binary+answer/answer_list.json?limit=0",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_whistleblowing_mechanism_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA+Asset+Managers",
       "transform": [
         {
           "type": "formula",
           "expr": "split(datum.value, ', ')",
           "as": "value_array"
-        },
-        {
-          "type": "filter",
-          "expr": "datum.value != 'Unknown'"
         }
       ]
     },
@@ -65,6 +65,13 @@
           "expr": "replace(datum.value, /^[^\\(]*/, '')"
         },
         {
+          "type": "impute",
+          "groupby": ["term"],
+          "key": "parens",
+          "field": "count",
+          "value": 0
+        },
+        {
           "type": "lookup",
           "from": "groups",
           "key": "term",
@@ -72,7 +79,6 @@
           "values": ["seq"],
           "as": ["group_seq"]
         },
-        {"type": "filter", "expr": "isValid(datum.group_seq)"},
         {
           "type": "lookup",
           "from": "subgroups",
@@ -81,8 +87,16 @@
           "values": ["seq"],
           "as": ["subgroup_seq"]
         },
+        {
+          "type": "filter",
+          "expr": "isValid(datum.group_seq) && if(datum.term == 'No', datum.subgroup_seq > 2, datum.subgroup_seq < 3)"
+        },
         {"type": "collect", "sort": {"field": ["group_seq", "subgroup_seq"]}},
-        {"type": "formula", "expr": "datum.count + '/' + totalAnswers", "as": "count_label"}
+        {
+          "type": "formula",
+          "expr": "datum.count + '/' + totalAnswers",
+          "as": "count_label"
+        }
       ]
     }
   ],
@@ -128,25 +142,21 @@
           "range": "height",
           "domain": {"data": "faceted_counts", "field": "value"},
           "padding": 0.1
-
         }
       ],
-      "signals": [
-        {"name": "height", "update": "bandwidth('ygroupscale')"}
-      ],
+      "signals": [{"name": "height", "update": "bandwidth('ygroupscale')"}],
       "marks": [
         {
           "type": "rect",
           "from": {"data": "faceted_counts"},
-
           "encode": {
             "update": {
               "x": {"value": 0},
               "x2": {"scale": "xscale", "signal": "totalAnswers"},
               "y": {"scale": "yscale", "field": "value"},
-              "height": { "signal": "barHeight"},
+              "height": {"signal": "barHeight"},
               "fill": {"value": "#020028"},
-              "opacity": { "signal": "navyOpacity" }
+              "opacity": {"signal": "navyOpacity"}
             }
           }
         },
@@ -155,10 +165,10 @@
           "from": {"data": "faceted_counts"},
           "encode": {
             "update": {
-              "x": { "value": 0},
+              "x": {"value": 0},
               "x2": {"scale": "xscale", "field": "count"},
               "y": {"scale": "yscale", "field": "value"},
-              "height": { "signal": "barHeight" },
+              "height": {"signal": "barHeight"},
               "fill": {"scale": "color", "field": "subgroup_seq"}
             }
           }
@@ -168,11 +178,11 @@
           "from": {"data": "faceted_counts"},
           "encode": {
             "update": {
-              "x": { "scale": "xscale", "signal": "totalAnswers", "offset": 4 },
-              "y": {"scale": "yscale", "field": "value", "offset": 2 },
-              "baseline": { "value": "top" },
+              "x": {"scale": "xscale", "signal": "totalAnswers", "offset": 4},
+              "y": {"scale": "yscale", "field": "value", "offset": 2},
+              "baseline": {"value": "top"},
               "fill": {"value": "#020028"},
-              "text": { "field": "count_label" },
+              "text": {"field": "count_label"},
               "fontWeight": {"value": "bold"}
             }
           }
