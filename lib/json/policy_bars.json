@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A nested bar chart example, with bars grouped by category.",
-  "width": 300,
-  "height": 290,
+  "width": 500,
+  "height": 500,
   "padding": 5,
   "autosize": "pad",
   "signals": [
@@ -17,7 +17,7 @@
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_whistleblowing_mechanism_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA+Asset+Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_policy_revised +answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA+Asset+Managers&filter[year]=latest",
       "transform": [
         {
           "type": "formula",
@@ -29,8 +29,8 @@
     {
       "name": "subgroups",
       "values": [
-        {"key": "(direct employees)"},
-        {"key": "(supply chain workers)"},
+        {"key": "(direct / tier 1)"},
+        {"key": "(beyond tier 1)"},
         {"key": ""}
       ],
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
@@ -38,13 +38,38 @@
     {
       "name": "groups",
       "values": [
-        {"title": "Hotline, Email, Contact Form", "term": "Hotline"},
-        {"title": "Focal Point", "term": "Focal Point"},
         {
-          "title": "Whistleblower protection",
-          "term": "Whistleblower protection"
+          "title": "Prohibit forced labour",
+          "term": "Prohibit use of forced labour"
         },
-        {"title": "None of the Above", "term": "No"}
+        {
+          "title": "Requires Suppliers to Comply with Laws & Policies",
+          "term": "Suppliers comply with laws and company’s policies"
+        },
+        {
+          "title": "Contracts including Modern Slavery Clauses",
+          "term": "Contracts include clauses on forced labour"
+        },
+        {
+          "title": "Code of Conduct includes Modern Slavery Clauses",
+          "term": "Code of conduct or supplier code includes clauses on slavery and human trafficking"
+        },
+        {
+          "title": "Prohibit Child labour",
+          "term": "Prohibit use of child labour"
+        },
+        {
+          "title": "Requires Suppliers to Protect Migrant Workers",
+          "term": "Suppliers protect migrant workers"
+        },
+        {
+          "title": "Requires Suppliers to Produce Own Statement",
+          "term": "Suppliers produce their own statement"
+        },
+        {
+          "title": "Prohibit Recruitment Fees",
+          "term": "Prohibit charging of recruitment fees to employee"
+        }
       ],
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
     },
@@ -63,6 +88,23 @@
           "type": "formula",
           "as": "parens",
           "expr": "replace(datum.value, /^[^\\(]*/, '')"
+        },
+        {
+          "type": "formula",
+          "as": "parens",
+          "expr": "replace(datum.parens, '(wages / freedom of association etc) ', '')"
+        },
+        {
+          "type": "impute",
+          "key": "term",
+          "keyvals": ["Prohibit charging of recruitment fees to employee"],
+          "field": "parens",
+          "value": "(direct / tier 1)"
+        },
+        {
+          "type": "formula",
+          "expr": "if(datum.count == null, 0, datum.count)",
+          "as": "count"
         },
         {
           "type": "impute",
@@ -96,6 +138,11 @@
           "type": "formula",
           "expr": "datum.count + '/' + totalAnswers",
           "as": "count_label"
+        },
+        {
+          "type": "formula",
+          "expr": "if(datum.value == null, datum.term + datum.parens, datum.value)",
+          "as": "value"
         }
       ]
     }
