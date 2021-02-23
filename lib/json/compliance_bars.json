@@ -1,0 +1,194 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A nested bar chart example, with bars grouped by category.",
+  "width": 300,
+  "height": 200,
+  "padding": 5,
+  "autosize": "pad",
+  "signals": [
+    {"name": "barHeight", "value": "15"},
+    {
+      "name": "navyOpacity",
+      "blind": {"input": "range", "min": 0, "max": 1},
+      "value": 1
+    }
+  ],
+  "data": [
+    {
+      "name": "signed",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_statement_signed_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest",
+comp      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Yes"],
+          "field": "count",
+          "value": 0
+        },
+        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
+        {"type": "filter", "expr": "datum.value == 'Yes'"}
+      ]
+    },
+    {
+      "name": "approved",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_Statement_Approval+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest",
+      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Approved by Board"],
+          "field": "count",
+          "value": 0
+        },
+        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
+        {"type": "filter", "expr": "datum.value == 'Approved by Board'"}
+      ]
+    },
+    {
+      "name": "homepage",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_statement_homepage_link+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest",
+      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Yes"],
+          "field": "count",
+          "value": 0
+        },
+        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
+        {"type": "filter", "expr": "datum.value == 'Yes'"}
+      ]
+    },
+    {
+      "name": "all",
+      "url": "https://wikirate.org/Walk_Free_Foundation+Meets_Minimum_UK_MSA_Requirements+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest",
+      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Yes"],
+          "field": "count",
+          "value": 0
+        },
+        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
+        {"type": "filter", "expr": "datum.value == 'Yes'"}
+      ]
+    },
+    {
+      "name": "labels",
+      "values": [
+        {"label": "Signed by Appropriate Person"},
+        {"label": "Board Approval"},
+        {"label": "Homepage Link"},
+        {"label": "All of the Above"}
+      ]
+    },
+    {
+      "name": "counts",
+      "source": ["signed", "approved", "homepage", "all"],
+      "transform": [
+        {"type": "window", "ops": ["row_number"], "as": ["seq"]},
+        {
+          "type": "formula",
+          "expr": "data('labels')[datum.seq -1]['label']",
+          "as": "title"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.count/datum.sum_count",
+          "as": "percentage"
+        },
+        {
+          "type": "formula",
+          "expr": "format(datum.count / datum.sum_count, '.0%')",
+          "as": "count_label"
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "xscale",
+      "domain": [0, 1],
+      "nice": true,
+      "zero": true,
+      "type": "linear",
+      "range": "width"
+    },
+    {
+      "name": "yscale",
+      "range": "height",
+      "domain": {"data": "counts", "field": "title"},
+      "type": "band",
+      "padding": 0.4
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "counts", "field": "color"},
+      "range": ["#F69400", "#F9DC01", "#F41C01"]
+    }
+  ],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": {"value": 0},
+          "x2": {"scale": "xscale", "value": 1},
+          "y": {"scale": "yscale", "field": "title"},
+          "height": {"signal": "barHeight"},
+          "fill": {"value": "#020028"},
+          "opacity": {"signal": "navyOpacity"}
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": {"value": 0},
+          "x2": {"scale": "xscale", "field": "percentage"},
+          "y": {"scale": "yscale", "field": "title"},
+          "height": {"signal": "barHeight"},
+          "fill": {"scale": "color", "field": "color"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": {"scale": "xscale", "value": 1 },
+          "y": {"scale": "yscale", "field": "title", "offset": -3},
+          "baseline": {"value": "bottom"},
+          "align": { "value": "right"},
+          "fill": {"value": "#020028"},
+          "text": {"field": "count_label"},
+          "fontWeight": {"value": "bold"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": {"value": 0},
+          "y": {"scale": "yscale", "field": "title", "offset": -3},
+          "text": {"field": "title"},
+          "fill": {"value": "#020028"},
+          "baseline": {"value": "bottom"},
+          "fontWeight": {"value": "bold"}
+        }
+      }
+    }
+  ]
+}
