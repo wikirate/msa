@@ -1,0 +1,53 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A nested bar chart example, with bars grouped by category.",
+  "width": 300,
+  "height": 200,
+  "padding": 5,
+  "autosize": "pad",
+  "signals": [
+    {"name": "totalAnswers", "update": "data('answers').length"},
+    {"name": "barHeight", "value": "15"},
+    {
+      "name": "navyOpacity",
+      "bind": {"input": "range", "min": 0, "max": 1},
+      "value": 1
+    }
+  ],
+  "data": [
+    {
+      "name": "signed",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_statement_signed_binary+answer/answer_list.json?limit=0",
+      "transform": [
+        {"type":"aggregate", "groupby":["value"]}
+      ]
+    },
+    {
+      "name": "approved",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_Statement_Approval+answer/answer_list.json?limit=0",
+      "transform": [
+        {"type":"aggregate", "groupby":["value"]}
+      ]
+    },
+    {
+      "name": "homepage",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_statement_homepage_link+answer/answer_list.json?limit=0",
+      "transform": [
+        {"type":"aggregate", "groupby":["value"]}
+      ]
+    },
+    {
+      "name": "all",
+      "url": "https://wikirate.org/Walk_Free_Foundation+Meets_Minimum_UK_MSA_Requirements+answer/answer_list.json?limit=0",
+      "transform": [
+        {"type":"aggregate", "groupby":["value"]}
+      ]
+    }
+
+
+  ],
+  "scales": [
+
+  ],
+  "marks": []
+}
