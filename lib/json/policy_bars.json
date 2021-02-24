@@ -27,13 +27,36 @@
       ]
     },
     {
+      "name": "directs",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_policy_applicable_to_tier_1_binary +answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA+Asset+Managers&filter[year]=latest",
+      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Yes"],
+          "field": "count",
+          "value": 0
+        },
+        {
+          "type": "joinaggregate",
+          "fields": ["count"],
+          "ops": ["sum"],
+          "as": ["denominator"]
+        },
+        {"type": "filter", "expr": "datum.value == 'Yes'"}
+      ]
+    },
+    {
       "name": "subgroups",
       "values": [
         {"key": "(direct / tier 1)"},
         {"key": "(beyond tier 1)"},
         {"key": ""}
       ],
-      "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
+      "transform": [
+        {"type": "window", "ops": ["row_number"], "as": ["seq"]}
+      ]
     },
     {
       "name": "groups",
@@ -74,7 +97,7 @@
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
     },
     {
-      "name": "counts",
+      "name": "discounts",
       "source": "answers",
       "transform": [
         {"type": "flatten", "fields": ["value_array"], "as": ["value"]},
@@ -113,6 +136,13 @@
           "field": "count",
           "value": 0
         },
+        {"type": "formula", "expr": "totalAnswers", "as": "denominator"}
+      ]
+    },
+    {
+      "name": "counts",
+      "source": ["discounts"],
+      "transform": [
         {
           "type": "lookup",
           "from": "groups",
@@ -131,7 +161,7 @@
         },
         {
           "type": "filter",
-          "expr": "isValid(datum.group_seq) && if(datum.term == 'No', datum.subgroup_seq > 2, datum.subgroup_seq < 3)"
+          "expr": "isValid(datum.group_seq) && (datum.subgroup_seq < 3)"
         },
         {"type": "collect", "sort": {"field": ["group_seq", "subgroup_seq"]}},
         {
@@ -150,7 +180,7 @@
   "scales": [
     {
       "name": "xscale",
-      "domain": [0, {"signal": "totalAnswers"}],
+      "domain": {"data": "counts", "field": "denominator"},
       "nice": true,
       "zero": true,
       "type": "linear",
@@ -199,7 +229,7 @@
           "encode": {
             "update": {
               "x": {"value": 0},
-              "x2": {"scale": "xscale", "signal": "totalAnswers"},
+              "x2": {"scale": "xscale", "field": "denominator"},
               "y": {"scale": "yscale", "field": "value"},
               "height": {"signal": "barHeight"},
               "fill": {"value": "#020028"},
@@ -225,7 +255,7 @@
           "from": {"data": "faceted_counts"},
           "encode": {
             "update": {
-              "x": {"scale": "xscale", "signal": "totalAnswers", "offset": 4},
+              "x": {"scale": "xscale", "field": "denominator", "offset": 4},
               "y": {"scale": "yscale", "field": "value", "offset": 2},
               "baseline": {"value": "top"},
               "fill": {"value": "#020028"},
