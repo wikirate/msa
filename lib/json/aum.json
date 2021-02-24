@@ -1,0 +1,250 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A basic grouped bar chart example.",
+  "width": 400,
+  "height": 200,
+  "padding": 5,
+  "data": [
+    {
+      "name": "high_supply",
+      "url": " https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=High_AUM_MSA&filter[year]=latest",
+      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Yes"],
+          "field": "count",
+          "value": 0
+        },
+        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
+        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {
+          "type": "formula",
+          "expr": "{'aum': 'high', 'due': 'supply'}",
+          "as": "keys"
+        }
+      ]
+    },
+    {
+      "name": "high_invest",
+      "url": " https://wikirate.org/Walk_Free_Foundation+MSA_supply_chain_due_diligence+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=High_AUM_MSA&filter[year]=latest",
+      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Yes"],
+          "field": "count",
+          "value": 0
+        },
+        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
+        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {
+          "type": "formula",
+          "expr": "{'aum': 'high', 'due': 'invest'}",
+          "as": "keys"
+        }
+      ]
+    },
+    {
+      "name": "medium_supply",
+      "url": " https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=Medium_AUM_MSA&filter[year]=latest",
+      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Yes"],
+          "field": "count",
+          "value": 0
+        },
+        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
+        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {
+          "type": "formula",
+          "expr": "{'aum': 'medium', 'due': 'supply'}",
+          "as": "keys"
+        }
+      ]
+    },
+    {
+      "name": "medium_invest",
+      "url": " https://wikirate.org/Walk_Free_Foundation+MSA_supply_chain_due_diligence+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=Medium_AUM_MSA&filter[year]=latest",
+      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Yes"],
+          "field": "count",
+          "value": 0
+        },
+        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
+        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {
+          "type": "formula",
+          "expr": "{'aum': 'medium', 'due': 'invest'}",
+          "as": "keys"
+        }
+      ]
+    },
+    {
+      "name": "low_supply",
+      "url": " https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=Low_AUM_MSA&filter[year]=latest",
+      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Yes"],
+          "field": "count",
+          "value": 0
+        },
+        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
+        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {
+          "type": "formula",
+          "expr": "{'aum': 'low', 'due': 'supply'}",
+          "as": "keys"
+        }
+      ]
+    },
+    {
+      "name": "low_invest",
+      "url": " https://wikirate.org/Walk_Free_Foundation+MSA_supply_chain_due_diligence+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=Low_AUM_MSA&filter[year]=latest",
+      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Yes"],
+          "field": "count",
+          "value": 0
+        },
+        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
+        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {
+          "type": "formula",
+          "expr": "{'aum': 'low', 'due': 'invest'}",
+          "as": "keys"
+        }
+      ]
+    },
+    {
+      "name": "all_supply",
+      "url": " https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest",
+      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Yes"],
+          "field": "count",
+          "value": 0
+        },
+        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
+        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {
+          "type": "formula",
+          "expr": "{'aum': 'all', 'due': 'supply'}",
+          "as": "keys"
+        }
+      ]
+    },
+    {
+      "name": "all_invest",
+      "url": " https://wikirate.org/Walk_Free_Foundation+MSA_supply_chain_due_diligence+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest",
+      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Yes"],
+          "field": "count",
+          "value": 0
+        },
+        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
+        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {
+          "type": "formula",
+          "expr": "{'aum': 'all', 'due': 'invest'}",
+          "as": "keys"
+        }
+      ]
+    },
+    {
+      "name": "groups",
+      "values": [
+        {"key": "high", "title": "High: >$1T"},
+        {"key": "medium", "title": "Medium"},
+        {"key": "low", "title": "Low: <$200B"},
+        {"key": "all", "title": "All companies"}
+      ]
+    },
+    {
+      "name": "subgroups",
+      "values": [
+        {"key": "supply", "title": "Supply Chain"},
+        {"key": "invest", "title": "Investment"}
+      ]
+    },
+    {
+      "name": "counts",
+      "source": [
+        "high_supply",   "high_invest",
+        "medium_supply", "medium_invest",
+        "low_supply",    "low_invest",
+        "all_supply",    "all_invest"
+      ],
+      "transform": [
+        {"type":"formula", "expr": "datum.keys.aum", "as": "group_key"},
+        {"type":"formula", "expr": "datum.keys.due", "as": "subgroup_key"},
+        {"type":"formula", "expr": "datum.group_key + '-' + datum.subgroup_key", "as": "bar_key"},
+        {"type":"formula", "expr": "datum.count/datum.sum_count", "as": "percent"}
+
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "yscale",
+      "type": "linear",
+      "domain": [0, 1],
+      "range": "height",
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "xscale",
+      "type": "band",
+      "domain": {"data": "groups", "field": "title"},
+      "range": "width",
+      "round": true
+    },
+    {"name": "color", "type": "ordinal", "range": {"scheme": "category20"}}
+  ],
+  "axes": [
+    {
+      "orient": "left",
+      "scale": "yscale",
+      "ticks": false,
+      "domain": false,
+      "labelPadding": 10,
+      "labelSeparation": 1,
+      "tickCount": 5,
+      "zindex": 1,
+      "format": ".0%"
+    },
+    {
+      "orient": "bottom",
+      "scale": "xscale",
+      "ticks": false,
+      "labelPadding": 10,
+      "domainColor": "#BBBBBB",
+      "title": "Assets Under Management",
+      "titlePadding": 10
+    }
+  ],
+  "marks": [{"type": "group"}]
+}
