@@ -2,8 +2,8 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A nested bar chart example, with bars grouped by category.",
   "width": 500,
-  "height": 500,
-  "padding": 5,
+  "height": 560,
+  "padding": 0,
   "autosize": "pad",
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
@@ -44,7 +44,34 @@
           "ops": ["sum"],
           "as": ["denominator"]
         },
-        {"type": "filter", "expr": "datum.value == 'Yes'"}
+        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {"type": "formula", "expr": "'have policy'", "as": "term"},
+        {"type": "formula", "expr": "'(direct / tier 1)'", "as": "parens"}
+      ]
+    },
+    {
+      "name": "beyonds",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_policy_applicable_beyond_tier_1_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA+Asset+Managers&filter[year]=latest",
+      "transform": [
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": ["Yes"],
+          "field": "count",
+          "value": 0
+        },
+        {
+          "type": "joinaggregate",
+          "fields": ["count"],
+          "ops": ["sum"],
+          "as": ["denominator"]
+        },
+        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {"type": "formula", "expr": "'have policy'", "as": "term"},
+        {"type": "formula", "expr": "'(beyond tier 1)'", "as": "parens"},
+        {"type": "formula", "expr": "null", "as": "value"}
+
       ]
     },
     {
@@ -61,6 +88,10 @@
     {
       "name": "groups",
       "values": [
+        {
+          "title": "Have a Modern Slavery Policy",
+          "term": "have policy"
+        },
         {
           "title": "Prohibit forced labour",
           "term": "Prohibit use of forced labour"
@@ -120,7 +151,16 @@
         {
           "type": "impute",
           "key": "term",
-          "keyvals": ["Prohibit charging of recruitment fees to employee"],
+          "keyvals": [
+            "Prohibit charging of recruitment fees to employee",
+            "Suppliers comply with laws and company’s policies",
+            "Contracts include clauses on forced labour",
+            "Code of conduct or supplier code includes clauses on slavery and human trafficking",
+            "Prohibit use of child labour",
+            "Suppliers protect migrant workers",
+            "Suppliers produce their own statement",
+            "Prohibit charging of recruitment fees to employee"
+          ],
           "field": "parens",
           "value": "(direct / tier 1)"
         },
@@ -141,7 +181,7 @@
     },
     {
       "name": "counts",
-      "source": ["discounts"],
+      "source": ["directs", "beyonds", "discounts"],
       "transform": [
         {
           "type": "lookup",
