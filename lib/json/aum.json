@@ -192,17 +192,28 @@
     {
       "name": "counts",
       "source": [
-        "high_supply",   "high_invest",
-        "medium_supply", "medium_invest",
-        "low_supply",    "low_invest",
-        "all_supply",    "all_invest"
+        "high_supply",
+        "high_invest",
+        "medium_supply",
+        "medium_invest",
+        "low_supply",
+        "low_invest",
+        "all_supply",
+        "all_invest"
       ],
       "transform": [
-        {"type":"formula", "expr": "datum.keys.aum", "as": "group_key"},
-        {"type":"formula", "expr": "datum.keys.due", "as": "subgroup_key"},
-        {"type":"formula", "expr": "datum.group_key + '-' + datum.subgroup_key", "as": "bar_key"},
-        {"type":"formula", "expr": "datum.count/datum.sum_count", "as": "percent"}
-
+        {"type": "formula", "expr": "datum.keys.aum", "as": "group_key"},
+        {"type": "formula", "expr": "datum.keys.due", "as": "subgroup_key"},
+        {
+          "type": "formula",
+          "expr": "datum.group_key + '-' + datum.subgroup_key",
+          "as": "bar_key"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.count/datum.sum_count",
+          "as": "percent"
+        }
       ]
     }
   ],
@@ -216,13 +227,25 @@
       "zero": true
     },
     {
-      "name": "xscale",
+      "name": "xAxisScale",
       "type": "band",
       "domain": {"data": "groups", "field": "title"},
       "range": "width",
       "round": true
     },
-    {"name": "color", "type": "ordinal", "range": {"scheme": "category20"}}
+    {
+      "name": "xGroupScale",
+      "type": "band",
+      "domain": {"data": "groups", "field": "key"},
+      "range": "width",
+      "round": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "counts", "field": "subgroup_key"},
+      "range": ["#F69400", "#F9DC01", "#F41C01"]
+    }
   ],
   "axes": [
     {
@@ -238,7 +261,7 @@
     },
     {
       "orient": "bottom",
-      "scale": "xscale",
+      "scale": "xAxisScale",
       "ticks": false,
       "labelPadding": 10,
       "domainColor": "#BBBBBB",
@@ -246,5 +269,46 @@
       "titlePadding": 10
     }
   ],
-  "marks": [{"type": "group"}]
+  "marks": [
+    {
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_counts",
+          "groupby": "group_key",
+          "data": "counts"
+        }
+      },
+      "encode": {
+        "renter": {
+          "x": {"scale": "XGroupScale", "field": "group_key"}
+        }
+      },
+      "scales": [
+        {
+          "name": "xscale",
+          "type": "band",
+          "range": "width",
+          "domain": {"data": "faceted_counts", "field": "bar_key"},
+          "padding": 0.1
+        }
+      ],
+      "signals": [{"name": "width", "update": "bandwidth('xGroupScale')"}],
+      "marks": [
+        {
+          "type": "rect",
+          "from": {"data": "faceted_counts"},
+          "encode": {
+            "update": {
+              "y": {"value": 0},
+              "y2": {"scale": "yscale", "field": "percent"},
+              "x": {"scale": "xscale", "field": "subgroup_key"},
+              "width": {"value":30},
+              "fill": {"scale": "color", "field": "subgroup_key"}
+            }
+          }
+        }
+      ]
+    }
+  ]
 }
