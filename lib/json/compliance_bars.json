@@ -17,7 +17,7 @@
     {
       "name": "signed",
       "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_statement_signed_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest",
-comp      "transform": [
+      "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
           "type": "impute",

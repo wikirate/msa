@@ -7,7 +7,7 @@
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Risk_assessment_but_none_identified_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Ethan_McCutchen+MSA_Risk_assessment_categories+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest"
     },
     {
       "name": "counts",
@@ -33,10 +33,7 @@
           "as": "percentage",
           "expr": "format(datum.count / datum.sum_count, '.0%')"
         },
-        {
-          "type": "collect",
-          "sort": { "field": "value" }
-        }
+        {"type": "collect", "sort": {"field": "value"}}
       ]
     }
   ],
@@ -73,7 +70,8 @@
           "radius": {"value": 50},
           "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
           "fill": {"value": "white"},
-          "align": {"value": "center"},
+          "fontWeight": {"value": "bold"},
+          "align": {"value": "right"},
           "baseline": {"value": "middle"},
           "text": {"field": "percentage"}
         }
@@ -85,7 +83,12 @@
       "fill": "color",
       "type": "symbol",
       "encode": {
-        "labels": {"update": {"fontWeight": [{"value": 400}]}},
+        "labels": {
+          "update": {
+            "fontWeight": {"value": 500},
+            "limit": 0
+          }
+        },
         "symbols": {"update": {"fillOpacity": [{"value": 1}]}}
       }
     }
@@ -94,7 +97,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "range": ["#020028", "#F69400"],
+      "range": ["#020028", "#F69400", "#F9DC01", "#F41C01"],
       "domain": {"data": "counts", "field": "value"}
     }
   ]
