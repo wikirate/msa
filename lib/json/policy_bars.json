@@ -152,7 +152,7 @@
           "type": "impute",
           "key": "term",
           "keyvals": [
-            "Prohibit charging of recruitment fees to employee",
+            "Prohibit use of forced labour",
             "Suppliers comply with laws and company’s policies",
             "Contracts include clauses on forced labour",
             "Code of conduct or supplier code includes clauses on slavery and human trafficking",
@@ -176,7 +176,8 @@
           "field": "count",
           "value": 0
         },
-        {"type": "formula", "expr": "totalAnswers", "as": "denominator"}
+        {"type": "formula", "expr": "totalAnswers", "as": "denominator"},
+        {"type": "collect", "sort": {"field": ["term"]}}
       ]
     },
     {
