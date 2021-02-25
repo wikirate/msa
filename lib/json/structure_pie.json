@@ -1,0 +1,101 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 220,
+  "height": 180,
+  "padding": 10,
+  "signals": [],
+  "data": [
+    {
+      "name": "answers",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Ownership_Disclosure+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest"
+    },
+    {
+      "name": "counts",
+      "source": "answers",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["value"],
+          "ops": ["count"],
+          "fields": ["count"],
+          "as": ["count"]
+        },
+        {"type": "pie", "field": "count", "sort": false},
+        {"type": "formula", "as": "filter", "expr": "{ value: datum.value }"},
+        {
+          "type": "window",
+          "ops": ["sum"],
+          "fields": ["count"],
+          "frame": [null, null]
+        },
+        {
+          "type": "formula",
+          "as": "percentage",
+          "expr": "format(datum.count / datum.sum_count, '.0%')"
+        },
+        {
+          "type": "collect",
+          "sort": { "field": "value" }
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "type": "arc",
+      "from": {"data": "counts"},
+      "encode": {
+        "enter": {
+          "fill": {"scale": "color", "field": "value"},
+          "x": {"value": 100},
+          "y": {"value": 100},
+          "tooltip": {"field": "count"}
+        },
+        "update": {
+          "startAngle": {"field": "startAngle"},
+          "endAngle": {"field": "endAngle"},
+          "padAngle": {"value": 0},
+          "innerRadius": {"value": 0},
+          "outerRadius": {"value": 100},
+          "cornerRadius": {"value": 0},
+          "opacity": {"value": 1}
+        },
+        "hover": {"opacity": {"value": 0.8}}
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "counts"},
+      "encode": {
+        "enter": {
+          "x": {"field": {"group": "width"}, "mult": 0.5},
+          "y": {"field": {"group": "height"}, "mult": 0.5},
+          "radius": {"value": 50},
+          "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
+          "fill": {"value": "white"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "text": {"field": "percentage"}
+        }
+      }
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "type": "symbol",
+      "encode": {
+        "labels": {"update": {"fontWeight": [{"value": 400}]}},
+        "symbols": {"update": {"fillOpacity": [{"value": 1}]}}
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": ["#020028", "#F69400"],
+      "domain": {"data": "counts", "field": "value"}
+    }
+  ]
+}
