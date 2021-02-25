@@ -223,11 +223,10 @@
       "type": "linear",
       "domain": [0, 1],
       "range": "height",
-      "nice": true,
-      "zero": true
+      "nice": true
     },
     {
-      "name": "xAxisScale",
+      "name": "xTitleScale",
       "type": "band",
       "domain": {"data": "groups", "field": "title"},
       "range": "width",
@@ -261,7 +260,7 @@
     },
     {
       "orient": "bottom",
-      "scale": "xAxisScale",
+      "scale": "xTitleScale",
       "ticks": false,
       "labelPadding": 10,
       "domainColor": "#BBBBBB",
@@ -280,10 +279,9 @@
         }
       },
       "encode": {
-        "renter": {
-          "x": {"scale": "XGroupScale", "field": "group_key"}
-        }
+        "enter": {"x": {"scale": "xGroupScale", "field": "group_key"}}
       },
+      "signals": [{"name": "width", "update": "bandwidth('xGroupScale')"}],
       "scales": [
         {
           "name": "xscale",
@@ -293,17 +291,16 @@
           "padding": 0.1
         }
       ],
-      "signals": [{"name": "width", "update": "bandwidth('xGroupScale')"}],
       "marks": [
         {
           "type": "rect",
           "from": {"data": "faceted_counts"},
           "encode": {
             "update": {
-              "y": {"value": 0},
-              "y2": {"scale": "yscale", "field": "percent"},
-              "x": {"scale": "xscale", "field": "subgroup_key"},
-              "width": {"value":30},
+              "y2": {"scale":"yscale", "value": 0},
+              "y": {"scale": "yscale", "field": "percent"},
+              "x": {"scale": "xscale", "field": "bar_key"},
+              "width": {"value": 30},
               "fill": {"scale": "color", "field": "subgroup_key"}
             }
           }
