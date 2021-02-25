@@ -1,0 +1,195 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A nested bar chart example, with bars grouped by category.",
+  "width": 500,
+  "height": 660,
+  "padding": 0,
+  "autosize": "pad",
+  "signals": [
+    {"name": "numCompanies", "update": "data('companies').length"},
+    {"name": "barHeight", "value": 16},
+    {"name": "height", "update": "(barHeight + 5) * numCompanies"}
+  ],
+  "data": [
+    {
+      "name": "statements",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+Modern_Slavery_Statement+answer/answer_list.json?limit=0&filter[company_group]=MSA+Asset+Managers&filter[year]=latest",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "if(test(/Yes/, datum.value), 'Yes', 'No')",
+          "as": "value"
+        }
+      ]
+    },
+    {
+      "name": "initiatives",
+      "url": "https://wikirate.org/Walk_Free_Foundation+Industry_initiatives_and_collaborations_sector_specific+answer/answer_list.json?limit=0&filter[company_group]=MSA+Asset+Managers&filter[year]=latest"
+    },
+    {
+      "name": "investments",
+      "url": "https://wikirate.org/Walk_Free_Foundation+Human_Rights_investment_policy_sector_specific+answer/answer_list.json?limit=0&filter[company_group]=MSA+Asset+Managers&filter[year]=latest"
+    },
+    {
+      "name": "reporting",
+      "url": "https://wikirate.org/Walk_Free_Foundation+Cascading_reporting_obligations_under_MSA_sector_specific+answer/answer_list.json?limit=0&filter[company_group]=MSA+Asset+Managers&filter[year]=latest"
+    },
+    {
+      "name": "assesses",
+      "url": "https://wikirate.org/Walk_Free_Foundation+Assesses_MS_risks_of_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[company_group]=MSA+Asset+Managers&filter[year]=latest"
+    },
+    {
+      "name": "engagement",
+      "url": "https://wikirate.org/Walk_Free_Foundation+Engagement_on_MS_with_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[company_group]=MSA+Asset+Managers&filter[year]=latest"
+    },
+    {
+      "name": "considers",
+      "url": "https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[company_group]=MSA+Asset+Managers&filter[year]=latest"
+    },
+    {
+      "name": "companies",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+Modern_Slavery_Statement+Answer/company_list.json?limit=0&filter%5Bcompany_group%5D=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known",
+      "transform": [
+        {"type": "collect", "sort": {"field": "name"}},
+        {"type": "window", "ops": ["row_number"], "as": ["seq"]},
+        {
+          "type": "formula",
+          "expr": "floor(datum.seq / 2) == datum.seq/2",
+          "as": "even"
+        }
+      ]
+    },
+    {
+      "name": "metrics",
+      "values": [
+        {"id": 1827651, "heading": "Modern Slavery Statement"},
+        {"id": 6908731, "heading": "Modern Slavery Initiatives"},
+        {"id": 6908650, "heading": "Investments: Human Rights Policy"},
+        {"id": 6908670, "heading": "Investments: Required Reporting"},
+        {"id": 6908693, "heading": "Investments: Risk Assessment"},
+        {"id": 6908714, "heading": "Investments: Human Rights Engagement"},
+        {"id": 6916105, "heading": "Investments: Considers Risks"}
+      ]
+    },
+    {
+      "name": "table",
+      "source": [
+        "statements",
+        "initiatives",
+        "investments",
+        "reporting",
+        "assesses",
+        "engagement",
+        "considers"
+      ],
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "companies",
+          "key": "id",
+          "fields": ["company"],
+          "values": ["name", "even"],
+          "as": ["company_name", "even"]
+        },
+        {
+          "type": "lookup",
+          "from": "metrics",
+          "key": "id",
+          "fields": ["metric"],
+          "values": ["heading"],
+          "as": ["metric_heading"]
+        },
+        {"type": "collect", "sort": {"field": "company_name"}}
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "xscale",
+      "domain": {"data": "table", "field": "metric_heading"},
+      "type": "band",
+      "range": "width"
+    },
+    {
+      "name": "rowscale",
+      "domain": [0, 1],
+      "type": "linear",
+      "range": "width"
+    },
+    {
+      "name": "yscale",
+      "range": "height",
+      "domain": {"data": "table", "field": "company_name"},
+      "type": "band",
+      "padding": 0.2
+    },
+    {
+      "name": "valueColor",
+      "type": "ordinal",
+      "domain": { "data": "table", "field": "value"},
+      "range": ["#3137F0", "#F41C01", "#666" ]
+    },
+    {
+      "name": "rowOpacity",
+      "type": "ordinal",
+      "domain": { "data": "table", "field": "even"},
+      "range": [0.02, 0.05 ]
+    }
+  ],
+  "axes": [
+    {
+      "scale": "xscale",
+      "orient": "top",
+      "domain": false,
+      "ticks": false,
+      "grid": false,
+      "labelAngle": 325,
+      "offset": 5,
+      "labelBaseline": "bottom",
+      "labelAlign": "left",
+      "labelFontWeight": 700,
+      "labelLimit": 0
+    },
+    {
+      "scale": "yscale",
+      "orient": "left",
+      "labelLimit": 0,
+      "ticks": false,
+      "domain": false,
+      "labelPadding": 10,
+      "labelFontWeight": 700,
+      "offset": 15
+    }
+  ],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data": "table"},
+      "encode": {
+        "update": {
+          "x": {"scale": "rowscale", "value": 0 },
+          "x2": {"scale": "rowscale", "value": 1 },
+          "y": {"scale": "yscale", "field": "company_name", "offset": -5},
+          "fill": { "value": "#F69400" },
+          "opacity": {"scale": "rowOpacity", "field": "even"},
+          "height": { "signal": "barHeight +5" },
+          "align": {"value": "center"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "table"},
+      "encode": {
+        "update": {
+          "x": {"scale": "xscale", "field": "metric_heading", "offset": 20},
+          "y": {"scale": "yscale", "field": "company_name"},
+          "fill": {"scale": "valueColor", "field": "value"},
+          "text": {"field": "value"},
+          "baseline": {"value": "top"},
+          "align": {"value": "center"}
+        }
+      }
+    }
+  ]
+}
