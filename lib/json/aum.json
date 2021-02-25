@@ -202,8 +202,22 @@
         "all_invest"
       ],
       "transform": [
-        {"type": "formula", "expr": "datum.keys.aum", "as": "group_key"},
-        {"type": "formula", "expr": "datum.keys.due", "as": "subgroup_key"},
+        {
+          "type": "lookup",
+          "key": "key",
+          "from": "groups",
+          "fields": ["keys.aum"],
+          "values": ["key", "title"],
+          "as": ["group_key", "group_title"]
+        },
+        {
+          "type": "lookup",
+          "key": "key",
+          "from": "subgroups",
+          "fields": ["keys.due"],
+          "values": ["key", "title"],
+          "as": ["subgroup_key", "subgroup_title"]
+        },
         {
           "type": "formula",
           "expr": "datum.group_key + '-' + datum.subgroup_key",
@@ -213,6 +227,11 @@
           "type": "formula",
           "expr": "datum.count/datum.sum_count",
           "as": "percent"
+        },
+        {
+          "type": "formula",
+          "expr": "format(datum.percent, '.0%')",
+          "as": "count_label"
         }
       ]
     }
@@ -226,24 +245,18 @@
       "nice": true
     },
     {
-      "name": "xTitleScale",
-      "type": "band",
-      "domain": {"data": "groups", "field": "title"},
-      "range": "width",
-      "round": true
-    },
-    {
       "name": "xGroupScale",
       "type": "band",
-      "domain": {"data": "groups", "field": "key"},
+      "domain": {"data": "counts", "field": "group_title"},
       "range": "width",
+      "padding": 0.2,
       "round": true
     },
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "counts", "field": "subgroup_key"},
-      "range": ["#F69400", "#F9DC01", "#F41C01"]
+      "domain": {"data": "counts", "field": "subgroup_title"},
+      "range": ["#F69400", "#020028"]
     }
   ],
   "axes": [
@@ -260,12 +273,13 @@
     },
     {
       "orient": "bottom",
-      "scale": "xTitleScale",
+      "scale": "xGroupScale",
       "ticks": false,
       "labelPadding": 10,
       "domainColor": "#BBBBBB",
       "title": "Assets Under Management",
-      "titlePadding": 10
+      "titlePadding": 10,
+      "titleFontWeight": "600"
     }
   ],
   "marks": [
@@ -274,12 +288,12 @@
       "from": {
         "facet": {
           "name": "faceted_counts",
-          "groupby": "group_key",
+          "groupby": "group_title",
           "data": "counts"
         }
       },
       "encode": {
-        "enter": {"x": {"scale": "xGroupScale", "field": "group_key"}}
+        "enter": {"x": {"scale": "xGroupScale", "field": "group_title"}}
       },
       "signals": [{"name": "width", "update": "bandwidth('xGroupScale')"}],
       "scales": [
@@ -297,15 +311,50 @@
           "from": {"data": "faceted_counts"},
           "encode": {
             "update": {
-              "y2": {"scale":"yscale", "value": 0},
+              "y2": {"scale": "yscale", "value": 0},
               "y": {"scale": "yscale", "field": "percent"},
               "x": {"scale": "xscale", "field": "bar_key"},
               "width": {"value": 30},
-              "fill": {"scale": "color", "field": "subgroup_key"}
+              "fill": {"scale": "color", "field": "subgroup_title"}
+            }
+          }
+        },
+        {
+          "type": "text",
+          "from": {"data": "faceted_counts"},
+          "encode": {
+            "update": {
+              "y": {
+                "scale": "yscale",
+                "field": "percent",
+                "offset": {"value": -5}
+              },
+              "x": {
+                "scale": "xscale",
+                "field": "bar_key",
+                "offset": {"value": 5}
+              },
+              "text": {"field": "count_label"}
             }
           }
         }
       ]
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "type": "symbol",
+      "orient": "top-right",
+      "direction": "horizontal",
+      "encode": {
+        "labels": {"update": {"fontWeight": [{"value": 400}]}},
+        "symbols": {"update": {"fillOpacity": [{"value": 1}]}}
+      },
+      "title": "Due Diligence:",
+      "titleOrient": "left",
+      "titleFontWeight": { "value": "600" },
+      "symbolType": "square"
     }
   ]
 }
