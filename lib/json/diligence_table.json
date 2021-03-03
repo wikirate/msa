@@ -50,14 +50,38 @@
       "name": "companies",
       "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+Modern_Slavery_Statement+Answer/company_list.json?limit=0&filter%5Bcompany_group%5D=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known",
       "transform": [
-        {"type": "collect", "sort": {"field": "name"}},
-        {"type": "window", "ops": ["row_number"], "as": ["seq"]},
-        {
-          "type": "formula",
-          "expr": "floor(datum.seq / 2) == datum.seq/2",
-          "as": "even"
-        }
+
+        {"type": "lookup",
+          "key": "company",
+          "from": "statements",
+          "fields": [
+            "id"
+          ],
+          "values": [
+            "value"
+          ],
+          "as": [
+            "statement"
+          ]
+
+        },
+        {"type": "collect",
+          "sort": {
+            "field": ["statement", "name"],
+            "order": ["descending", "ascending"]
+
+          }},
+        {"type": "window", "ops": ["row_number"], "as": ["seq"]}
       ]
+    },
+    {
+      "name": "values",
+      "values": [
+        { "key": "Yes",     "short": "Yes" },
+        { "key": "No",      "short": "No" },
+        { "key": "Unknown", "short": "-" }
+      ],
+      "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
     },
     {
       "name": "metrics",
@@ -88,8 +112,8 @@
           "from": "companies",
           "key": "id",
           "fields": ["company"],
-          "values": ["name", "even"],
-          "as": ["company_name", "even"]
+          "values": ["name", "seq"],
+          "as": ["company_name", "seq"]
         },
         {
           "type": "lookup",
@@ -99,7 +123,14 @@
           "values": ["heading"],
           "as": ["metric_heading"]
         },
-        {"type": "collect", "sort": {"field": "company_name"}}
+        {
+          "type": "lookup",
+          "from": "values",
+          "key": "key",
+          "fields": ["value"],
+          "values": ["short"]
+        },
+        {"type": "collect", "sort": {"field": "seq"}}
       ]
     }
   ],
@@ -126,14 +157,14 @@
     {
       "name": "valueColor",
       "type": "ordinal",
-      "domain": { "data": "table", "field": "value"},
-      "range": ["#3137F0", "#F41C01", "#666" ]
+      "domain": { "data": "values", "field": "key"},
+      "range": ["#333", "#FFF", "#999" ]
     },
     {
-      "name": "rowOpacity",
+      "name": "cellColor",
       "type": "ordinal",
-      "domain": { "data": "table", "field": "even"},
-      "range": [0.02, 0.05 ]
+      "domain": { "data": "values", "field": "short"},
+      "range": ["#F69400", "#020028", "#FEF7ED" ]
     }
   ],
   "axes": [
@@ -144,35 +175,37 @@
       "ticks": false,
       "grid": false,
       "labelAngle": 325,
-      "offset": 5,
+      "offset": 15,
       "labelBaseline": "bottom",
       "labelAlign": "left",
       "labelFontWeight": 700,
       "labelLimit": 0
-    },
-    {
-      "scale": "yscale",
-      "orient": "left",
-      "labelLimit": 0,
-      "ticks": false,
-      "domain": false,
-      "labelPadding": 10,
-      "labelFontWeight": 700,
-      "offset": 15
     }
   ],
   "marks": [
+    {
+      "type": "text",
+      "from": {"data": "companies"},
+      "encode": {
+        "update": {
+          "x2": {"scale": "rowscale", "value": 0 },
+          "y": {"scale": "yscale", "field": "name"},
+          "text": {"field": "name"},
+          "height": { "signal": "barHeight +5" },
+          "align": {"value": "right"}
+        }
+      }
+    },
     {
       "type": "rect",
       "from": {"data": "table"},
       "encode": {
         "update": {
-          "x": {"scale": "rowscale", "value": 0 },
-          "x2": {"scale": "rowscale", "value": 1 },
-          "y": {"scale": "yscale", "field": "company_name", "offset": -5},
-          "fill": { "value": "#F69400" },
-          "opacity": {"scale": "rowOpacity", "field": "even"},
-          "height": { "signal": "barHeight +5" },
+          "x": {"scale": "xscale", "field": "metric_heading"},
+          "y": {"scale": "yscale", "field": "company_name", "offset": -15},
+          "fill": {"scale": "cellColor", "field": "value"},
+          "width": { "value": 70 },
+          "height": { "signal": "barHeight+4" },
           "align": {"value": "center"}
         }
       }
@@ -182,11 +215,12 @@
       "from": {"data": "table"},
       "encode": {
         "update": {
-          "x": {"scale": "xscale", "field": "metric_heading", "offset": 20},
+          "x": {"scale": "xscale", "field": "metric_heading", "offset": 35},
+          "width": { "value": 70 },
           "y": {"scale": "yscale", "field": "company_name"},
           "fill": {"scale": "valueColor", "field": "value"},
-          "text": {"field": "value"},
-          "baseline": {"value": "top"},
+          "text": {"field": "short"},
+
           "align": {"value": "center"}
         }
       }
