@@ -6,8 +6,8 @@
   "autosize": "pad",
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
-    {"name": "barHeight", "value": 14},
-    {"name": "height", "update": "(barHeight + 5) * totalAnswers"}
+    {"name": "barHeight", "value": 17},
+    {"name": "height", "update": "(barHeight + 2) * totalAnswers"}
   ],
   "data": [
     {
@@ -60,10 +60,8 @@
       "ticks": false,
       "grid": true,
       "zindex": 5,
-      "gridColor": "#020028",
-      "gridDash": [5, 3],
-      "gridDashOffset": 17,
-      "gridWidth": 1.5
+      "gridColor": "#888",
+      "gridWidth": 1
     },
     {
       "scale": "yscale",
