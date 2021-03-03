@@ -7,13 +7,15 @@
   "autosize": "pad",
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
-    {"name": "barHeight", "value": "15"},
-    { "name": "navyOpacity", "value": 1}
+    {"name": "numGroups", "update": "data('groups').length"},
+    {"name": "barHeight", "value": 15},
+    {"name": "navyOpacity", "value": 1},
+    {"name": "height", "update": "numGroups * (barHeight + 5)+ 100"}
   ],
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+Modern_Slavery_Statement+Answer/answer_list.json?limit=0&filter%5Bcompany_group%5D=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_KPIs_combined+Answer/answer_list.json?limit=0&filter%5Bcompany_group%5D=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known",
       "transform": [
         {
           "type": "formula",
@@ -23,34 +25,38 @@
       ]
     },
     {
+      "name": "groups",
+      "values": [
+        {"key": "Effectiveness KPIs"},
+        {"key": "Business KPIs"},
+        {"key": "No", "title": "None of the Above"}
+      ],
+      "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
+    },
+    {
       "name": "counts",
       "source": "answers",
       "transform": [
         {"type": "flatten", "fields": ["value_array"], "as": ["value"]},
-        {
-          "type": "formula",
-          "expr": "if(test(/UK Modern/, datum.value), 'FY ' + datum.year, if(test(/^No/, datum.value), 'No Statement', null))",
-          "as": "title"
-        },
-        {"type": "aggregate", "groupby": ["title"]},
-        {
-          "type": "formula",
-          "expr": "if(datum.title == 'No Statement', 1, 0)",
-          "as": "color"
-        },
-        {"type": "filter", "expr": "isValid(datum.title)"},
-        {
-          "type": "collect",
-          "sort": {
-            "field": ["color", "title"],
-            "order": ["ascending", "descending"]
-          }
-        },
+        {"type": "aggregate", "groupby": ["value"]},
         {
           "type": "formula",
           "expr": "datum.count + '/' + totalAnswers",
           "as": "count_label"
-        }
+        },
+        {
+          "type": "lookup",
+          "from": "groups",
+          "key": "key",
+          "fields": ["value"],
+          "values": ["title", "seq"]
+        },
+        {
+          "type": "formula",
+          "expr": "if(isDefined(datum.title), datum.title, datum.value)",
+          "as": "title"
+        },
+        {"type": "collect", "sort": {"field": "seq"}}
       ]
     }
   ],
@@ -110,10 +116,10 @@
       "from": {"data": "counts"},
       "encode": {
         "update": {
-          "x": {"scale": "xscale", "signal": "totalAnswers" },
+          "x": {"scale": "xscale", "signal": "totalAnswers"},
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "baseline": {"value": "bottom"},
-          "align": { "value": "right"},
+          "align": {"value": "right"},
           "fill": {"value": "#020028"},
           "text": {"field": "count_label"},
           "fontWeight": {"value": "bold"}

@@ -7,7 +7,7 @@
   "data": [
     {
       "name": "high_supply",
-      "url": " https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=High_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=High_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -28,7 +28,7 @@
     },
     {
       "name": "high_invest",
-      "url": " https://wikirate.org/Walk_Free_Foundation+MSA_supply_chain_due_diligence+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=High_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_supply_chain_due_diligence+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=High_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -49,7 +49,7 @@
     },
     {
       "name": "medium_supply",
-      "url": " https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=Medium_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=Medium_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -70,7 +70,7 @@
     },
     {
       "name": "medium_invest",
-      "url": " https://wikirate.org/Walk_Free_Foundation+MSA_supply_chain_due_diligence+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=Medium_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_supply_chain_due_diligence+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=Medium_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -91,7 +91,7 @@
     },
     {
       "name": "low_supply",
-      "url": " https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=Low_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=Low_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {

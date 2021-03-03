@@ -50,36 +50,30 @@
       "name": "companies",
       "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+Modern_Slavery_Statement+Answer/company_list.json?limit=0&filter%5Bcompany_group%5D=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known",
       "transform": [
-
-        {"type": "lookup",
+        {
+          "type": "lookup",
           "key": "company",
           "from": "statements",
-          "fields": [
-            "id"
-          ],
-          "values": [
-            "value"
-          ],
-          "as": [
-            "statement"
-          ]
-
+          "fields": ["id"],
+          "values": ["value"],
+          "as": ["statement"]
         },
-        {"type": "collect",
+        {
+          "type": "collect",
           "sort": {
             "field": ["statement", "name"],
             "order": ["descending", "ascending"]
-
-          }},
+          }
+        },
         {"type": "window", "ops": ["row_number"], "as": ["seq"]}
       ]
     },
     {
       "name": "values",
       "values": [
-        { "key": "Yes",     "short": "Yes" },
-        { "key": "No",      "short": "No" },
-        { "key": "Unknown", "short": "-" }
+        {"key": "Yes", "short": "Yes"},
+        {"key": "No", "short": "No"},
+        {"key": "Unknown", "short": "-"}
       ],
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
     },
@@ -141,12 +135,7 @@
       "type": "band",
       "range": "width"
     },
-    {
-      "name": "rowscale",
-      "domain": [0, 1],
-      "type": "linear",
-      "range": "width"
-    },
+    {"name": "rowscale", "domain": [0, 1], "type": "linear", "range": "width"},
     {
       "name": "yscale",
       "range": "height",
@@ -157,14 +146,14 @@
     {
       "name": "valueColor",
       "type": "ordinal",
-      "domain": { "data": "values", "field": "key"},
-      "range": ["#333", "#FFF", "#999" ]
+      "domain": {"data": "values", "field": "key"},
+      "range": ["#333", "#FFF", "#999"]
     },
     {
       "name": "cellColor",
       "type": "ordinal",
-      "domain": { "data": "values", "field": "short"},
-      "range": ["#F69400", "#020028", "#FEF7ED" ]
+      "domain": {"data": "values", "field": "short"},
+      "range": ["#F69400", "#020028", "#FEF7ED"]
     }
   ],
   "axes": [
@@ -174,7 +163,7 @@
       "domain": false,
       "ticks": false,
       "grid": false,
-      "labelAngle": 325,
+      "labelAngle": 333,
       "offset": 15,
       "labelBaseline": "bottom",
       "labelAlign": "left",
@@ -184,14 +173,29 @@
   ],
   "marks": [
     {
+      "type": "rect",
+      "from": {"data": "table"},
+      "encode": {
+        "update": {
+          "x": {"value": -2},
+          "x2": {"value": -300},
+          "y": {"scale": "yscale", "field": "company_name", "offset": -15},
+          "fill": {"value":"#FEF7ED"},
+          "height": {"signal": "barHeight+4"},
+          "align": {"value": "center"}
+        }
+      }
+    },
+    {
       "type": "text",
       "from": {"data": "companies"},
       "encode": {
         "update": {
-          "x2": {"scale": "rowscale", "value": 0 },
+          "x": {"value": -10},
           "y": {"scale": "yscale", "field": "name"},
+          "width": {"value": 400},
           "text": {"field": "name"},
-          "height": { "signal": "barHeight +5" },
+          "height": {"signal": "barHeight +5"},
           "align": {"value": "right"}
         }
       }
@@ -203,9 +207,9 @@
         "update": {
           "x": {"scale": "xscale", "field": "metric_heading"},
           "y": {"scale": "yscale", "field": "company_name", "offset": -15},
-          "fill": {"scale": "cellColor", "field": "value"},
-          "width": { "value": 70 },
-          "height": { "signal": "barHeight+4" },
+          "fill": {"scale": "cellColor", "field": "short"},
+          "width": {"value": 70},
+          "height": {"signal": "barHeight+4"},
           "align": {"value": "center"}
         }
       }
@@ -216,11 +220,10 @@
       "encode": {
         "update": {
           "x": {"scale": "xscale", "field": "metric_heading", "offset": 35},
-          "width": { "value": 70 },
+          "width": {"value": 70},
           "y": {"scale": "yscale", "field": "company_name"},
           "fill": {"scale": "valueColor", "field": "value"},
           "text": {"field": "short"},
-
           "align": {"value": "center"}
         }
       }

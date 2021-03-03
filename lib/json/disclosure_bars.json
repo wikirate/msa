@@ -6,7 +6,7 @@
   "autosize": "pad",
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
-    { "name": "numGroups", "update": "data('groups').length"},
+    {"name": "numGroups", "update": "data('groups').length"},
     {"name": "barHeight", "value": 15},
     {"name": "navyOpacity", "value": 1},
     {"name": "height", "update": "numGroups * (barHeight + 5)+ 100"}

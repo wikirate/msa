@@ -7,7 +7,7 @@
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Ethan_McCutchen+MSA_Risk_assessment_categories+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Risk_assessment_categories+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest"
     },
     {
       "name": "counts",
