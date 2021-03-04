@@ -8,15 +8,12 @@
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
     {"name": "barHeight", "value": "15"},
-    {
-      "name": "navyOpacity",
-      "value": 1
-    }
+    {"name": "navyOpacity", "value": 1}
   ],
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_whistleblowing_mechanism_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA+Asset+Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_risk_management_grouped+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA+Asset+Managers&filter[year]=latest",
       "transform": [
         {
           "type": "formula",
@@ -28,8 +25,8 @@
     {
       "name": "subgroups",
       "values": [
-        {"key": "(direct employees)"},
-        {"key": "(supply chain workers)"},
+        {"key": "(self- reporting)"},
+        {"key": "(independent)"},
         {"key": ""}
       ],
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
@@ -37,13 +34,9 @@
     {
       "name": "groups",
       "values": [
-        {"title": "Hotline, Email, Contact Form", "term": "Hotline"},
-        {"title": "Focal Point", "term": "Focal Point"},
-        {
-          "title": "Whistleblower protection",
-          "term": "Whistleblower protection"
-        },
-        {"title": "None of the Above", "term": "No"}
+        {"title": "Audits of suppliers", "term": "Audits of suppliers"},
+        {"title": "On-site visits", "term": "On-site visits"},
+        {"title": "Neither", "term": "Neither"}
       ],
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
     },
@@ -85,10 +78,6 @@
           "fields": ["parens"],
           "values": ["seq"],
           "as": ["subgroup_seq"]
-        },
-        {
-          "type": "filter",
-          "expr": "isValid(datum.group_seq) && if(datum.term == 'No', datum.subgroup_seq > 2, datum.subgroup_seq < 3)"
         },
         {"type": "collect", "sort": {"field": ["group_seq", "subgroup_seq"]}},
         {
