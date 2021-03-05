@@ -1,0 +1,152 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A nested bar chart example, with bars grouped by category.",
+  "width": 300,
+  "padding": 5,
+  "autosize": "pad",
+  "signals": [
+    {"name": "totalAnswers", "update": "data('answers').length"},
+    {"name": "numGroups", "update": "data('groups').length"},
+    {"name": "barHeight", "value": 15},
+    {"name": "navyOpacity", "value": 1},
+    {"name": "height", "update": "numGroups * (barHeight + 5)+ 100"}
+  ],
+  "data": [
+    {
+      "name": "answers",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Identification_of_risks_grouped+Answer/answer_list.json?limit=0&filter%5Bcompany_group%5D=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "split(datum.value, ', ')",
+          "as": "value_array"
+        }
+      ]
+    },
+    {
+      "name": "groups",
+      "values": [
+        {"key": "Geographic", "title": "Geographic / Risk Region", "color": 0},
+        {"key": "Resource", "title": "Resource Risk", "color": 0},
+        {"key": "Workforce", "title": "Workforce Risk", "color": 0},
+        {"key": "Industry", "title": "Industry Risk", "color": 0},
+        {"key": "None", "title": "None of the above", "color": 1}
+      ]
+    },
+    {
+      "name": "counts",
+      "source": "answers",
+      "transform": [
+        {"type": "flatten", "fields": ["value_array"], "as": ["value"]},
+        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "impute",
+          "key": "value",
+          "keyvals": [
+            "None",
+            "Geographic",
+            "Resource",
+            "Workforce",
+            "Industry"
+          ],
+          "field": "count",
+          "value": 0
+        },
+        {
+          "type": "formula",
+          "expr": "datum.count + '/' + totalAnswers",
+          "as": "count_label"
+        },
+        {
+          "type": "lookup",
+          "key": "key",
+          "from": "groups",
+          "fields": ["value"],
+          "values": ["title", "color"]
+        },
+        {"type": "filter", "expr": "isValid(datum.title)"}
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "xscale",
+      "domain": [0, {"signal": "totalAnswers"}],
+      "nice": true,
+      "zero": true,
+      "type": "linear",
+      "range": "width"
+    },
+    {
+      "name": "yscale",
+      "range": "height",
+      "domain": {"data": "groups", "field": "title"},
+      "type": "band",
+      "padding": 0.4
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "groups", "field": "color"},
+      "range": ["#F69400", "#F41C01"]
+    }
+  ],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": {"scale": "xscale", "value": 0},
+          "x2": {"scale": "xscale", "signal": "totalAnswers"},
+          "y": {"scale": "yscale", "field": "title"},
+          "height": {"signal": "barHeight"},
+          "fill": {"value": "#020028"},
+          "opacity": {"signal": "navyOpacity"}
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": {"value": 0},
+          "x2": {"scale": "xscale", "field": "count"},
+          "y": {"scale": "yscale", "field": "title"},
+          "height": {"signal": "barHeight"},
+          "fill": {"scale": "color", "field": "color"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": {"scale": "xscale", "signal": "totalAnswers"},
+          "y": {"scale": "yscale", "field": "title", "offset": -3},
+          "baseline": {"value": "bottom"},
+          "align": {"value": "right"},
+          "fill": {"value": "#020028"},
+          "text": {"field": "count_label"},
+          "fontWeight": {"value": "bold"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": {"value": 0},
+          "y": {"scale": "yscale", "field": "title", "offset": -3},
+          "text": {"field": "title"},
+          "fill": {"value": "#020028"},
+          "baseline": {"value": "bottom"},
+          "fontWeight": {"value": "bold"}
+        }
+      }
+    }
+  ]
+}
