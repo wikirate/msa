@@ -1,5 +1,4 @@
 /*
-
 navy: #000028
 yellow: #FFDC00
 red: #FE0000
@@ -8,8 +7,6 @@ blue: #0037F1
 neutral orange: #FEEFDD
 neutral grey: #F6F5EA
 */
-
-
 
 @font-face {
   font-family: GothamBold;
@@ -50,14 +47,6 @@ neutral grey: #F6F5EA
   src: url(../fonts/TiemposText-RegularItalic.otf);
   font-style: italic;
 }
-
-
-/*@font-face {*/
-/*  font-family: GothamNarrow;*/
-/*  src: url(fonts/GothamNarrow-Book.otf);*/
-/*  font-weight: normal*/
-/*}*/
-
 
 
 body {
@@ -116,8 +105,9 @@ section.banner {
   background-size: auto 600px;
 }
 
-section.main .intro {
-  padding: 4em 0 2em 0;
+section.intro {
+  padding-top: 4em;
+  padding-bottom: 2em;
 }
 
 h2 {
@@ -126,11 +116,33 @@ h2 {
   font-size: 1.6em;
 }
 
+.bar-header {
+  background-color: #FF9300;
+  padding: 1em 3em;
+}
+
+.bar-header h3 {
+  font-family: MediaSans;
+  text-transform: uppercase;
+  color: #000028;
+}
+
+.bar-subtitle {
+  font-family: TiemposText;
+}
+
+.bar-body {
+  padding: 3em;
+  background-color: #F6F5EA;
+  margin-bottom: 2em;
+}
+
 a {
   color: #FF9300
 }
 footer {
   background: #F6F5EA;
+  margin-top: 5em;
 }
 footer .row {
   padding: 0 10%;
