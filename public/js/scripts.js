@@ -38,7 +38,7 @@ initChart = function (spec, id) {
 initVega = function (spec, el) {
   var runtime;
   runtime = vega.parse(spec);
-  return new vega.View(runtime).initialize(el).hover().run();
+  return new vega.View(runtime, { renderer: "svg" }).initialize(el).hover().run();
 };
 
 $(document).ready(function() {

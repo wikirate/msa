@@ -134,6 +134,10 @@ h2 {
 
 /* ----- Accordions ----- */
 
+.accordion {
+  margin-bottom: 2em;
+}
+
 .accordion-button, .accordion-button:not(.collapsed) {
   background-color: #FF9300;
   padding: 1em 3em;
@@ -156,10 +160,10 @@ h3 {
 .accordion-collapse {
   padding: 2em;
   background-color: #F6F5EA;
-  margin-bottom: 2em;
   border: 0;
   border-radius: 0 !important;
 }
+
 
 /* ----- Charts ----- */
 
@@ -167,6 +171,10 @@ h3 {
   font-style: italic;
 }
 
+.charts svg {
+  width: 100% !important;
+  height: auto !important;
+}
 
 /* ----- Footers ----- */
 
