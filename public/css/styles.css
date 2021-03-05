@@ -50,7 +50,8 @@ neutral grey: #F6F5EA
 
 
 body {
-  font-family: GothamNarrow
+  font-family: GothamNarrow;
+  color: #000028;
 }
 
 header {
@@ -73,7 +74,6 @@ section.top h1 {
   font-size: 4em;
   padding: 1.2em 0 0.1em 0;
   text-transform: uppercase;
-  color: #000028;
   line-height: 1.1;
 }
 
@@ -115,6 +115,40 @@ h2 {
   font-weight: normal;
   font-size: 1.6em;
 }
+
+
+.accordion-button, .accordion-button:not(.collapsed) {
+  background-color: #FF9300;
+  padding: 1em 3em;
+  border: 0;
+  border-radius: 0 !important;
+}
+.accordion-button:focus {
+  box-shadow: 0 0 0 0.25rem #FFDC00;
+}
+
+
+.accordion-button-text {
+  color: #000028;
+}
+.accordion-button h3 {
+  font-family: MediaSans;
+  text-transform: uppercase;
+}
+
+.accordion-button .subtitle {
+  font-family: TiemposText;
+}
+
+.accordion-collapse {
+  padding: 2em;
+  background-color: #F6F5EA;
+  margin-bottom: 2em;
+  border: 0;
+  border-radius: 0 !important;
+}
+
+
 
 .bar-header {
   background-color: #FF9300;
