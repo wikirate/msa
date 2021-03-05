@@ -1,5 +1,5 @@
 vizUrl = function (id) {
-  return '../json/' + id + '.json'
+  return 'json/' + id + '.json'
 }
 
 loadViz = function (viz) {
