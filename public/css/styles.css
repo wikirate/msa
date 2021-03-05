@@ -116,7 +116,8 @@ section.banner {
   background-image: url(../images/gettyimage.jpg);
   height: 600px;
   background-repeat: repeat-x;
-  background-size: auto 600px;
+  background-size: cover;
+  background-position: center;
 }
 
 /* ----- Intro Section ----- */
@@ -174,6 +175,17 @@ h3 {
 .charts svg {
   width: 100% !important;
   height: auto !important;
+}
+
+.chart {
+  padding: 3em;
+  border-bottom: 2px solid #888888;
+}
+
+.viz text {
+  font-family: 'GothamNarrow';
+  text-transform: uppercase;
+  /* color: #000028 !important; */
 }
 
 /* ----- Footers ----- */
