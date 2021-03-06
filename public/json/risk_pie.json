@@ -65,13 +65,14 @@
       "from": {"data": "counts"},
       "encode": {
         "enter": {
-          "x": {"field": {"group": "width"}, "mult": 0.5},
-          "y": {"field": {"group": "height"}, "mult": 0.5},
-          "radius": {"value": 50},
+          "x": {"value": 100},
+          "y": {"value": 100},
+          "radius": {"value": 65},
           "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
           "fill": {"value": "white"},
           "fontWeight": {"value": "bold"},
-          "align": {"value": "right"},
+          "fontSize": { "value": 15 },
+          "align": {"value": "center"},
           "baseline": {"value": "middle"},
           "text": {"field": "percentage"}
         }
@@ -82,11 +83,13 @@
     {
       "fill": "color",
       "type": "symbol",
+      "orient": "top",
+      "offset": { "value": 20 },
       "encode": {
         "labels": {
           "update": {
             "fontWeight": {"value": 500},
-            "limit": 0
+            "limit": { "value": 0 }
           }
         },
         "symbols": {"update": {"fillOpacity": [{"value": 1}]}}

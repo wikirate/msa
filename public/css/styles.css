@@ -185,7 +185,11 @@ h3 {
 .viz text {
   font-family: 'GothamNarrow';
   text-transform: uppercase;
-  /* color: #000028 !important; */
+  color: #000028 !important;
+}
+
+.viz .role-legend text {
+  text-transform: none;
 }
 
 /* ----- Footers ----- */
@@ -199,7 +203,6 @@ footer {
 footer .row {
   align-items: center;
 }
-
 
 footer .col-sm {
   padding: 0 5%;
