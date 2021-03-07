@@ -153,7 +153,7 @@
       "name": "cellColor",
       "type": "ordinal",
       "domain": {"data": "values", "field": "short"},
-      "range": ["#F69400", "#020028", "#FEF7ED"]
+      "range": ["#FF9300", "#000028", "#FEF7ED"]
     }
   ],
   "axes": [

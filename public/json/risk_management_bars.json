@@ -108,7 +108,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "counts", "field": "subgroup_seq"},
-      "range": ["#F69400", "#F9DC01", "#F41C01"]
+      "range": ["#FF9300", "#FFDC00", "#FE0000"]
     }
   ],
   "marks": [
@@ -143,7 +143,7 @@
               "x2": {"scale": "xscale", "signal": "totalAnswers"},
               "y": {"scale": "yscale", "field": "value"},
               "height": {"signal": "barHeight"},
-              "fill": {"value": "#020028"},
+              "fill": {"value": "#000028"},
               "opacity": {"signal": "navyOpacity"}
             }
           }
@@ -169,7 +169,7 @@
               "x": {"scale": "xscale", "signal": "totalAnswers", "offset": 4},
               "y": {"scale": "yscale", "field": "value", "offset": 2},
               "baseline": {"value": "top"},
-              "fill": {"value": "#020028"},
+              "fill": {"value": "#000028"},
               "text": {"field": "count_label"},
               "fontWeight": {"value": "bold"}
             }

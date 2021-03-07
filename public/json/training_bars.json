@@ -110,7 +110,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "counts", "field": "color"},
-      "range": ["#F69400", "#F9DC01", "#F41C01"]
+      "range": ["#FF9300", "#FFDC00", "#FE0000"]
     }
   ],
   "marks": [
@@ -123,7 +123,7 @@
           "x2": {"scale": "xscale", "signal": "totalAnswers"},
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
-          "fill": {"value": "#020028"},
+          "fill": {"value": "#000028"},
           "opacity": {"signal": "navyOpacity"}
         }
       }
@@ -150,7 +150,7 @@
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "baseline": {"value": "bottom"},
           "align": {"value": "right"},
-          "fill": {"value": "#020028"},
+          "fill": {"value": "#000028"},
           "text": {"field": "count_label"},
           "fontWeight": {"value": "bold"}
         }
@@ -164,7 +164,7 @@
           "x": {"value": 0},
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "text": {"field": "title"},
-          "fill": {"value": "#020028"},
+          "fill": {"value": "#000028"},
           "baseline": {"value": "bottom"},
           "fontWeight": {"value": "bold"}
         }

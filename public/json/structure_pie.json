@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "width": 220,
+  "width": 190,
   "height": 180,
   "padding": 10,
   "signals": [],
@@ -68,9 +68,11 @@
       "from": {"data": "counts"},
       "encode": {
         "enter": {
-          "x": {"field": {"group": "width"}, "mult": 0.5},
-          "y": {"field": {"group": "height"}, "mult": 0.5},
-          "radius": {"value": 50},
+          "x": {"value": 100},
+          "y": {"value": 100},
+          "radius": {"value": 65},
+          "fontWeight": {"value": "bold"},
+          "fontSize": { "value": 15 },
           "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
           "fill": {"value": "white"},
           "align": {"value": "center"},
@@ -94,7 +96,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "range": ["#020028", "#F69400"],
+      "range": ["#000028", "#FF9300"],
       "domain": {"data": "counts", "field": "value"}
     }
   ]

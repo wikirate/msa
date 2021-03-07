@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A basic grouped bar chart example.",
-  "width": 400,
-  "height": 200,
+  "width": 700,
+  "height": 400,
   "padding": 5,
   "data": [
     {
@@ -256,7 +256,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "counts", "field": "subgroup_title"},
-      "range": ["#F69400", "#020028"]
+      "range": ["#FF9300", "#000028"]
     }
   ],
   "axes": [
@@ -269,7 +269,8 @@
       "labelSeparation": 1,
       "tickCount": 5,
       "zindex": 1,
-      "format": ".0%"
+      "format": ".0%",
+      "grid": true
     },
     {
       "orient": "bottom",
@@ -292,6 +293,7 @@
           "data": "counts"
         }
       },
+      "zindex": 5,
       "encode": {
         "enter": {"x": {"scale": "xGroupScale", "field": "group_title"}}
       },
@@ -314,7 +316,7 @@
               "y2": {"scale": "yscale", "value": 0},
               "y": {"scale": "yscale", "field": "percent"},
               "x": {"scale": "xscale", "field": "bar_key"},
-              "width": {"value": 30},
+              "width": {"value": 50},
               "fill": {"scale": "color", "field": "subgroup_title"}
             }
           }
@@ -332,8 +334,9 @@
               "x": {
                 "scale": "xscale",
                 "field": "bar_key",
-                "offset": {"value": 5}
+                "offset": {"value": 15}
               },
+              "fontSize": {"value": 13},
               "text": {"field": "count_label"}
             }
           }

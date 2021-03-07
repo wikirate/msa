@@ -188,7 +188,10 @@ h3 {
   color: #000028 !important;
 }
 
-.viz .role-legend text {
+.viz .role-legend text,
+#aum svg text,
+#disclosure svg text,
+#diligence_table svg text {
   text-transform: none;
 }
 

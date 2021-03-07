@@ -49,7 +49,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "range": ["#F69400", "#F9DC01", "#F41C01"]
+      "range": ["#FF9300", "#FFDC00", "#FE0000"]
     }
   ],
   "axes": [

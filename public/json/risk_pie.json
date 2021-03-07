@@ -100,7 +100,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "range": ["#020028", "#F69400", "#F9DC01", "#F41C01"],
+      "range": ["#000028", "#FF9300", "#FFDC00", "#FE0000"],
       "domain": {"data": "counts", "field": "value"}
     }
   ]
