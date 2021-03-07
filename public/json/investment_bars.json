@@ -122,6 +122,11 @@
           "type": "formula",
           "expr": "format(datum.count / datum.sum_count, '.0%')",
           "as": "count_label"
+        },
+        {
+          "type": "formula",
+          "expr": "if(datum.value == 'No', 2, 0)",
+          "as": "color"
         }
       ]
     }
@@ -144,9 +149,9 @@
     },
     {
       "name": "color",
-      "type": "ordinal",
-      "domain": {"data": "counts", "field": "color"},
-      "range": ["#FF9300", "#FFDC00", "#FE0000"]
+      "type": "linear",
+      "domain": [0, 3],
+      "range": ["#FF9300", "#FFDC00", "#FE0000", "#0037F1"]
     }
   ],
   "marks": [

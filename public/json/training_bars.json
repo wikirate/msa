@@ -86,7 +86,12 @@
           "expr": "datum.count + '/' + totalAnswers",
           "as": "count_label"
         },
-        {"type": "collect", "sort": {"field": "seq"}}
+        {"type": "collect", "sort": {"field": "seq"}},
+        {
+          "type": "formula",
+          "expr": "if(datum.value == 'Any', 3, 0)",
+          "as": "color"
+        }
       ]
     }
   ],
@@ -108,9 +113,9 @@
     },
     {
       "name": "color",
-      "type": "ordinal",
-      "domain": {"data": "counts", "field": "color"},
-      "range": ["#FF9300", "#FFDC00", "#FE0000"]
+      "type": "linear",
+      "domain": [0, 3],
+      "range": ["#FF9300", "#FFDC00", "#FE0000", "#0037F1"]
     }
   ],
   "marks": [
