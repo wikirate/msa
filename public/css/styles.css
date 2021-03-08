@@ -207,6 +207,7 @@ h2 {
 
 .charts .subtitle {
   font-style: italic;
+  font-size: 1.2em;
 }
 
 .charts svg {
@@ -219,11 +220,16 @@ h2 {
 }
 
 .chart {
-  padding: 3em 0;
+  padding-top: 3em;
+  padding-bottom: 3em;
 }
 
 .charts hr {
   border: 2px solid #888888;
+}
+
+.viz {
+  padding: 1em 0;
 }
 
 .viz text {

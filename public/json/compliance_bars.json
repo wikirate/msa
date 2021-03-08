@@ -3,8 +3,6 @@
   "description": "A nested bar chart example, with bars grouped by category.",
   "width": 700,
   "height": 200,
-  "padding": 5,
-  "autosize": "pad",
   "signals": [
     {"name": "barHeight", "value": "15"},
     {
