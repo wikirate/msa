@@ -214,9 +214,16 @@ h2 {
   height: auto !important;
 }
 
+.charts .row {
+  justify-content: space-between;
+}
+
 .chart {
-  padding: 3em;
-  border-bottom: 2px solid #888888;
+  padding: 3em 0;
+}
+
+.charts hr {
+  border: 2px solid #888888;
 }
 
 .viz text {
