@@ -16,8 +16,7 @@ loadViz = function (viz) {
 };
 
 initChart = function (spec, id) {
-  el = $("#" + id);
-  initVega(spec, el[0]);
+  initVega(prepareVegaSpec(spec), $("#" + id)[0]);
 };
 
 // handleChartClicks = function (vega, el) {
@@ -35,14 +34,63 @@ initChart = function (spec, id) {
 //   });
 // };
 
+
+prepareVegaSpec = function (spec) {
+  group = currentGroup();
+  if (group) {
+    restrictToGroup(spec["data"], group);
+  }
+  return spec;
+}
+
+restrictToGroup = function(data, group) {
+  and_query = '&filter[company_group][]=' + encodeURIComponent(group);
+  $.each(data, function(i, hash) {
+    if (hash["url"]) {
+      hash["url"] = hash["url"] + and_query
+    }
+  });
+}
+
 initVega = function (spec, el) {
-  var runtime;
   runtime = vega.parse(spec);
   return new vega.View(runtime, { renderer: "svg" }).initialize(el).hover().run();
 };
 
-$(document).ready(function() {
+currentGroup = function () {
+  return $(".filter-dropdown").data("currentGroup");
+}
+
+updateCurrentGroup = function (group) {
+  $(".filter-dropdown").data("currentGroup", group);
+}
+
+loadAllViz = function () {
   $(".viz").each(function () {
     loadViz($(this));
+  });
+}
+
+updateFilter = function (item) {
+  if (item.hasClass("reset-item")) {
+    item.parent().hide();
+    text = "Filter the Data";
+  } else {
+    text = "Filtering: " + item.text();
+    $(".reset-item-li").show()
+  }
+  $(".filter-dropdown .dropdown-toggle").text(text);
+}
+
+$(document).ready( function () {
+  loadAllViz();
+
+  $(".filter-dropdown .dropdown-item").on("click", function (event) {
+    item = $(this);
+    updateCurrentGroup(item.data("group"));
+    updateFilter(item);
+    $(".viz").html("");
+    loadAllViz();
+    event.preventDefault();
   });
 });

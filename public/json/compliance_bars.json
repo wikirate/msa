@@ -15,7 +15,7 @@
   "data": [
     {
       "name": "signed",
-      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_statement_signed_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_statement_signed_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -31,7 +31,7 @@
     },
     {
       "name": "approved",
-      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_Statement_Approval+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_Statement_Approval+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -47,7 +47,7 @@
     },
     {
       "name": "homepage",
-      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_statement_homepage_link+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_statement_homepage_link+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -63,7 +63,7 @@
     },
     {
       "name": "all",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Meets_Minimum_UK_MSA_Requirements+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+Meets_Minimum_UK_MSA_Requirements+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {

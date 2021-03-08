@@ -16,7 +16,7 @@
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_policy_revised+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA+Asset+Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_policy_revised+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest",
       "transform": [
         {
           "type": "formula",
@@ -27,7 +27,7 @@
     },
     {
       "name": "directs",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_policy_applicable_to_tier_1_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA+Asset+Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_policy_applicable_to_tier_1_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -50,7 +50,7 @@
     },
     {
       "name": "beyonds",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_policy_applicable_beyond_tier_1_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA+Asset+Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_policy_applicable_beyond_tier_1_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {

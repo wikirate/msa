@@ -16,7 +16,7 @@
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_whistleblowing_mechanism_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group]=MSA+Asset+Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_whistleblowing_mechanism_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest",
       "transform": [
         {
           "type": "formula",
@@ -65,6 +65,18 @@
         },
         {
           "type": "impute",
+          "key": "term",
+          "keyvals": ["Hotline", "Focal Point", "Whistleblower protection", "No"],
+          "field": "parens",
+          "value": "(direct employees)"
+        },
+        {
+          "type": "formula",
+          "expr": "if(datum.count == null, 0, datum.count)",
+          "as": "count"
+        },
+        {
+          "type": "impute",
           "groupby": ["term"],
           "key": "parens",
           "field": "count",
@@ -95,6 +107,11 @@
           "type": "formula",
           "expr": "datum.count + '/' + totalAnswers",
           "as": "count_label"
+        },
+        {
+          "type": "formula",
+          "expr": "if(datum.value == null, datum.term + datum.parens, datum.value)",
+          "as": "value"
         }
       ]
     }
