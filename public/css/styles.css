@@ -184,7 +184,7 @@ h2 {
 
 .accordion-button, .accordion-button:not(.collapsed) {
   background-color: #FF9300;
-  padding: 1em 3em;
+  padding: 1em;
   border: 0;
   border-radius: 0 !important;
 }
@@ -194,10 +194,11 @@ h2 {
 
 .accordion-button-text {
   color: #000028;
+  padding: 0 2%;
 }
 
 .accordion-collapse {
-  padding: 2em;
+  padding: 2em 2%;
   background-color: #F6F5EA;
   border: 0;
   border-radius: 0 !important;
@@ -236,6 +237,10 @@ h2 {
   font-family: 'GothamNarrow';
   text-transform: uppercase;
   color: #000028 !important;
+}
+
+#disclosure-sorting input {
+  margin: 5px;
 }
 
 .viz .role-legend text,

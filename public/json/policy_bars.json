@@ -1,8 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A nested bar chart example, with bars grouped by category.",
+  "description": "Modern Slavery Supply Chain Policies",
   "width": 720,
   "height": 600,
+  "padding": { "right": 10 },
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
     {"name": "barHeight", "value": "15"},

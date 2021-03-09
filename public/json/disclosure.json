@@ -1,11 +1,22 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A nested bar chart example, with bars grouped by category.",
+  "description": "Disclosure rates by asset manager",
   "width": 500,
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
     {"name": "barHeight", "value": 17},
-    {"name": "height", "update": "(barHeight + 2) * totalAnswers"}
+    {"name": "height", "update": "(barHeight + 2) * totalAnswers"},
+    {
+      "name": "sort",
+      "bind": {
+        "input": "radio",
+        "options": ["company_name", "value"],
+        "labels": ["name", "number"],
+        "element": "#disclosure-sorting",
+        "name": "sort:"
+      },
+      "value": "company_name"
+    }
   ],
   "data": [
     {
@@ -24,7 +35,13 @@
           "values": ["name"],
           "as": ["company_name"]
         },
-        {"type": "collect", "sort": {"field": "company_name"}}
+        {
+          "type": "window",
+          "sort": {"field": {"signal": "sort"}},
+          "ops": ["row_number"],
+          "fields": [null],
+          "as": ["rank"]
+        }
       ]
     }
   ],
@@ -40,7 +57,15 @@
     {
       "name": "yscale",
       "range": "height",
-      "domain": {"data": "answers", "field": "company_name"},
+      "domain": {
+        "data": "answers",
+        "field": "company_name",
+        "sort": {
+          "field": "rank",
+          "op":"min",
+          "order": {"signal": "if(sort == 'value', 'descending', 'ascending')"}
+        }
+      },
       "type": "band",
       "padding": 0.2
     },
@@ -67,7 +92,8 @@
       "labelLimit": 0,
       "ticks": false,
       "domain": false,
-      "labelPadding": 10
+      "labelPadding": 10,
+      "labelFontSize": 13
     }
   ],
   "marks": [

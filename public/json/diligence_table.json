@@ -1,12 +1,27 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A nested bar chart example, with bars grouped by category.",
+  "description": "Investment portfolio due diligence",
   "width": 500,
   "height": 660,
   "signals": [
     {"name": "numCompanies", "update": "data('companies').length"},
     {"name": "barHeight", "value": 16},
-    {"name": "height", "update": "(barHeight + 5) * numCompanies"}
+    {"name": "height", "update": "(barHeight + 5) * numCompanies"},
+    {
+      "name": "activeHeading",
+      "value": "Modern Slavery Statement",
+      "on": [{"events": "@x_labels:click", "update": "datum.value"}]
+    },
+    {
+      "name": "activeIndex",
+      "update": "indexof(pluck(data('metrics'), 'heading'),activeHeading)"
+    },
+    {
+      "name": "sortTable",
+      "update": "pluck(data('metrics'), 'table')[activeIndex]",
+      "value": "statements"
+    },
+    {"name": "signalTest", "update": "{hi: 'statements'}['hi']"}
   ],
   "data": [
     {
@@ -45,28 +60,6 @@
       "url": "https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
     },
     {
-      "name": "companies",
-      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+Modern_Slavery_Statement+Answer/company_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known",
-      "transform": [
-        {
-          "type": "lookup",
-          "key": "company",
-          "from": "statements",
-          "fields": ["id"],
-          "values": ["value"],
-          "as": ["statement"]
-        },
-        {
-          "type": "collect",
-          "sort": {
-            "field": ["statement", "name"],
-            "order": ["descending", "ascending"]
-          }
-        },
-        {"type": "window", "ops": ["row_number"], "as": ["seq"]}
-      ]
-    },
-    {
       "name": "values",
       "values": [
         {"key": "Yes", "short": "Yes"},
@@ -76,15 +69,136 @@
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
     },
     {
+      "name": "companies",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+Modern_Slavery_Statement+Answer/company_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known",
+      "transform": [
+        {
+          "type": "lookup",
+          "key": "company",
+          "from": "statements",
+          "fields": ["id"],
+          "values": ["value"],
+          "as": ["statements"]
+        },
+        {
+          "type": "lookup",
+          "key": "company",
+          "from": "initiatives",
+          "fields": ["id"],
+          "values": ["value"],
+          "as": ["initiatives"]
+        },
+        {
+          "type": "lookup",
+          "key": "company",
+          "from": "investments",
+          "fields": ["id"],
+          "values": ["value"],
+          "as": ["investments"]
+        },
+        {
+          "type": "lookup",
+          "key": "company",
+          "from": "reporting",
+          "fields": ["id"],
+          "values": ["value"],
+          "as": ["reporting"]
+        },
+        {
+          "type": "lookup",
+          "key": "company",
+          "from": "assesses",
+          "fields": ["id"],
+          "values": ["value"],
+          "as": ["assesses"]
+        },
+        {
+          "type": "lookup",
+          "key": "company",
+          "from": "engagement",
+          "fields": ["id"],
+          "values": ["value"],
+          "as": ["engagement"]
+        },
+        {
+          "type": "lookup",
+          "key": "company",
+          "from": "considers",
+          "fields": ["id"],
+          "values": ["value"],
+          "as": ["considers"]
+        },
+        {
+          "type": "lookup",
+          "key": "key",
+          "from": "values",
+          "fields": [
+            "statements",
+            "initiatives",
+            "investments",
+            "reporting",
+            "assesses",
+            "engagement",
+            "considers"
+          ],
+          "values": ["seq"],
+          "as": [
+            "statements",
+            "initiatives",
+            "investments",
+            "reporting",
+            "assesses",
+            "engagement",
+            "considers"
+          ]
+        },
+        {
+          "type": "collect",
+          "sort": {
+            "field": ["statements", "name"],
+            "order": ["descending", "ascending"]
+          }
+        }
+      ]
+    },
+    {
       "name": "metrics",
       "values": [
-        {"id": 1827651, "heading": "Modern Slavery Statement"},
-        {"id": 6908731, "heading": "Modern Slavery Initiatives"},
-        {"id": 6908650, "heading": "Investments: Human Rights Policy"},
-        {"id": 6908670, "heading": "Investments: Required Reporting"},
-        {"id": 6908693, "heading": "Investments: Risk Assessment"},
-        {"id": 6908714, "heading": "Investments: Human Rights Engagement"},
-        {"id": 6916105, "heading": "Investments: Considers Risks"}
+        {
+          "id": 1827651,
+          "heading": "Modern Slavery Statement",
+          "table": "statements"
+        },
+        {
+          "id": 6908731,
+          "heading": "Modern Slavery Initiatives",
+          "table": "initiatives"
+        },
+        {
+          "id": 6908650,
+          "heading": "Investments: Human Rights Policy",
+          "table": "investments"
+        },
+        {
+          "id": 6908670,
+          "heading": "Investments: Required Reporting",
+          "table": "reporting"
+        },
+        {
+          "id": 6908693,
+          "heading": "Investments: Risk Assessment",
+          "table": "assesses"
+        },
+        {
+          "id": 6908714,
+          "heading": "Investments: Human Rights Engagement",
+          "table": "engagement"
+        },
+        {
+          "id": 6916105,
+          "heading": "Investments: Considers Risks",
+          "table": "considers"
+        }
       ]
     },
     {
@@ -104,8 +218,8 @@
           "from": "companies",
           "key": "id",
           "fields": ["company"],
-          "values": ["name", "seq"],
-          "as": ["company_name", "seq"]
+          "values": ["name"],
+          "as": ["company_name"]
         },
         {
           "type": "lookup",
@@ -121,8 +235,7 @@
           "key": "key",
           "fields": ["value"],
           "values": ["short"]
-        },
-        {"type": "collect", "sort": {"field": "seq"}}
+        }
       ]
     }
   ],
@@ -137,7 +250,11 @@
     {
       "name": "yscale",
       "range": "height",
-      "domain": {"data": "table", "field": "company_name"},
+      "domain": {
+        "data": "companies",
+        "field": "id",
+        "sort": {"field": {"signal": "sortTable"}, "op": "min"}
+      },
       "type": "band",
       "padding": 0.2
     },
@@ -161,12 +278,13 @@
       "domain": false,
       "ticks": false,
       "grid": false,
-      "labelAngle": 333,
+      "labelAngle": 25,
       "offset": 15,
       "labelBaseline": "bottom",
-      "labelAlign": "left",
+      "labelAlign": "right",
       "labelFontWeight": 700,
-      "labelLimit": 0
+      "labelLimit": 0,
+      "encode": {"labels": {"name": "x_labels", "interactive": true}}
     }
   ],
   "marks": [
@@ -177,8 +295,8 @@
         "update": {
           "x": {"value": -2},
           "x2": {"value": -300},
-          "y": {"scale": "yscale", "field": "company_name", "offset": -15},
-          "fill": {"value":"#FEF7ED"},
+          "y": {"scale": "yscale", "field": "company", "offset": -15},
+          "fill": {"value": "#FEF7ED"},
           "height": {"signal": "barHeight+4"},
           "align": {"value": "center"}
         }
@@ -190,7 +308,7 @@
       "encode": {
         "update": {
           "x": {"value": -10},
-          "y": {"scale": "yscale", "field": "name"},
+          "y": {"scale": "yscale", "field": "id"},
           "width": {"value": 400},
           "text": {"field": "name"},
           "height": {"signal": "barHeight +5"},
@@ -204,7 +322,7 @@
       "encode": {
         "update": {
           "x": {"scale": "xscale", "field": "metric_heading"},
-          "y": {"scale": "yscale", "field": "company_name", "offset": -15},
+          "y": {"scale": "yscale", "field": "company", "offset": -15},
           "fill": {"scale": "cellColor", "field": "short"},
           "width": {"value": 70},
           "height": {"signal": "barHeight+4"},
@@ -219,7 +337,7 @@
         "update": {
           "x": {"scale": "xscale", "field": "metric_heading", "offset": 35},
           "width": {"value": 70},
-          "y": {"scale": "yscale", "field": "company_name"},
+          "y": {"scale": "yscale", "field": "company"},
           "fill": {"scale": "valueColor", "field": "value"},
           "text": {"field": "short"},
           "align": {"value": "center"}
