@@ -105,6 +105,7 @@
       }
     },
     {
+      "name": "nocounts",
       "type": "text",
       "from": {"data": "counts"},
       "encode": {
