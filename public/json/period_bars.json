@@ -1,17 +1,16 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A nested bar chart example, with bars grouped by category.",
+  "description": "Reporting Periods for Assessed Modern Slavery",
   "width": 300,
   "height": 200,
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
-    {"name": "barHeight", "value": "15"},
-    { "name": "navyOpacity", "value": 1}
+    {"name": "barHeight", "value": "15"}
   ],
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+Modern_Slavery_Statement+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+Modern_Slavery_Statement+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known&filter[company_group][]=FTSE_100",
       "transform": [
         {
           "type": "formula",
@@ -31,6 +30,9 @@
           "as": "title"
         },
         {"type": "aggregate", "groupby": ["title"]},
+        {"type": "impute", "key": "title", "keyvals": ["FY 2020", "FY 2019", "FY 2018", "No Statement"], "field": "count", "value": 0
+
+        },
         {
           "type": "formula",
           "expr": "if(datum.title == 'No Statement', 2, 0)",
@@ -85,8 +87,7 @@
           "x2": {"scale": "xscale", "signal": "totalAnswers"},
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
-          "fill": {"value": "#000028"},
-          "opacity": {"signal": "navyOpacity"}
+          "fill": {"value": "#000028"}
         }
       }
     },
@@ -100,6 +101,20 @@
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
           "fill": {"scale": "color", "field": "color"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": {"value": 5},
+          "y": {"scale": "yscale", "field": "title", "offset": 2},
+          "baseline":{ "value": "top"},
+          "text": {"signal": "if(datum.count == 0, 'None', '')"},
+          "fill": {"value": "white"},
+          "fontStyle": {"value": "italic" }
         }
       }
     },
