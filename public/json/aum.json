@@ -1,24 +1,25 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A basic grouped bar chart example.",
+  "description": "Due Diligence by Assets Under Management",
   "width": 700,
   "height": 400,
   "padding": 5,
   "data": [
     {
       "name": "high_supply",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=High_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=High_AUM_MSA&filter[year]=latest",
       "transform": [
-        {"type": "aggregate", "groupby": ["value"]},
+        {"type": "formula", "expr": "datum.value > 0", "as": "value"},
         {
           "type": "impute",
           "key": "value",
-          "keyvals": ["Yes"],
+          "keyvals": [true],
           "field": "count",
           "value": 0
         },
+        {"type": "aggregate", "groupby": ["value"]},
         {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
-        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {"type": "filter", "expr": "datum.value"},
         {
           "type": "formula",
           "expr": "{'aum': 'high', 'due': 'supply'}",
@@ -28,7 +29,7 @@
     },
     {
       "name": "high_invest",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_supply_chain_due_diligence+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=High_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=High_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -49,18 +50,19 @@
     },
     {
       "name": "medium_supply",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Medium_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Medium_AUM_MSA&filter[year]=latest",
       "transform": [
-        {"type": "aggregate", "groupby": ["value"]},
+        {"type": "formula", "expr": "datum.value > 0", "as": "value"},
         {
           "type": "impute",
           "key": "value",
-          "keyvals": ["Yes"],
+          "keyvals": [true],
           "field": "count",
           "value": 0
         },
+        {"type": "aggregate", "groupby": ["value"]},
         {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
-        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {"type": "filter", "expr": "datum.value"},
         {
           "type": "formula",
           "expr": "{'aum': 'medium', 'due': 'supply'}",
@@ -70,7 +72,7 @@
     },
     {
       "name": "medium_invest",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_supply_chain_due_diligence+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Medium_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Medium_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -91,18 +93,19 @@
     },
     {
       "name": "low_supply",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Low_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Low_AUM_MSA&filter[year]=latest",
       "transform": [
-        {"type": "aggregate", "groupby": ["value"]},
+        {"type": "formula", "expr": "datum.value > 0", "as": "value"},
         {
           "type": "impute",
           "key": "value",
-          "keyvals": ["Yes"],
+          "keyvals": [true],
           "field": "count",
           "value": 0
         },
+        {"type": "aggregate", "groupby": ["value"]},
         {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
-        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {"type": "filter", "expr": "datum.value"},
         {
           "type": "formula",
           "expr": "{'aum': 'low', 'due': 'supply'}",
@@ -112,7 +115,7 @@
     },
     {
       "name": "low_invest",
-      "url": " https://wikirate.org/Walk_Free_Foundation+MSA_supply_chain_due_diligence+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Low_AUM_MSA&filter[year]=latest",
+      "url": " https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Low_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -133,18 +136,19 @@
     },
     {
       "name": "all_supply",
-      "url": " https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
-        {"type": "aggregate", "groupby": ["value"]},
+        {"type": "formula", "expr": "datum.value > 0", "as": "value"},
         {
           "type": "impute",
           "key": "value",
-          "keyvals": ["Yes"],
+          "keyvals": [true],
           "field": "count",
           "value": 0
         },
+        {"type": "aggregate", "groupby": ["value"]},
         {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
-        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {"type": "filter", "expr": "datum.value"},
         {
           "type": "formula",
           "expr": "{'aum': 'all', 'due': 'supply'}",
@@ -154,7 +158,7 @@
     },
     {
       "name": "all_invest",
-      "url": " https://wikirate.org/Walk_Free_Foundation+MSA_supply_chain_due_diligence+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -247,7 +251,7 @@
     {
       "name": "xGroupScale",
       "type": "band",
-      "domain": {"data": "counts", "field": "group_title"},
+      "domain": {"data": "groups", "field": "title"},
       "range": "width",
       "padding": 0.2,
       "round": true
@@ -348,7 +352,7 @@
     {
       "fill": "color",
       "type": "symbol",
-      "orient": "top-right",
+      "orient": "top",
       "direction": "horizontal",
       "encode": {
         "labels": {"update": {"fontWeight": [{"value": 400}]}},
