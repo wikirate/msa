@@ -95,8 +95,8 @@ header {
 }
 
 header img {
-  height: 100px;
-  margin-left: -18px;
+  height: 70px;
+  margin: 1em 0;
 }
 
 .filter-dropdown {
