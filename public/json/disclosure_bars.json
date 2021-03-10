@@ -1,13 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A nested bar chart example, with bars grouped by category.",
+  "description": "Supply Chain Disclosure",
   "width": 300,
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
     {"name": "numGroups", "update": "data('groups').length"},
     {"name": "barHeight", "value": 15},
-    {"name": "navyOpacity", "value": 1},
-    {"name": "height", "update": "numGroups * (barHeight + 5)+ 100"}
+    {"name": "height", "update": "numGroups * (barHeight + 15)+ 100"}
   ],
   "data": [
     {
@@ -89,8 +88,7 @@
           "x2": {"scale": "xscale", "signal": "totalAnswers"},
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
-          "fill": {"value": "#000028"},
-          "opacity": {"signal": "navyOpacity"}
+          "fill": {"value": "#000028"}
         }
       }
     },
@@ -104,6 +102,21 @@
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
           "fill": {"scale": "color", "field": "title"}
+        }
+      }
+    },
+    {
+      "name": "nocounts",
+      "type": "text",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": {"value": 5},
+          "y": {"scale": "yscale", "field": "title", "offset": 2},
+          "baseline":{ "value": "top"},
+          "text": {"signal": "if(datum.count == 0, 'None', '')"},
+          "fill": {"value": "white"},
+          "fontStyle": {"value": "italic" }
         }
       }
     },

@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A nested bar chart example, with bars grouped by category.",
+  "description": "Modern Slavery Due Diligence Processes in Investments",
   "width": 360,
   "height": 240,
   "signals": [
@@ -192,6 +192,21 @@
           "fill": {"value": "#000028"},
           "text": {"field": "count_label"},
           "fontWeight": {"value": "bold"}
+        }
+      }
+    },
+    {
+      "name": "nocounts",
+      "type": "text",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": {"value": 5},
+          "y": {"scale": "yscale", "field": "title", "offset": 2},
+          "baseline":{ "value": "top"},
+          "text": {"signal": "if(datum.count == 0, 'None', '')"},
+          "fill": {"value": "white"},
+          "fontStyle": {"value": "italic" }
         }
       }
     },
