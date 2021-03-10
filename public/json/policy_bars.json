@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Modern Slavery Supply Chain Policies",
-  "width": 720,
-  "height": 620,
+  "width": 620,
+  "height": 550,
   "padding": { "right": 10 },
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
