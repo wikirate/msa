@@ -2,15 +2,11 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Modern Slavery Supply Chain Policies",
   "width": 720,
-  "height": 600,
+  "height": 620,
   "padding": { "right": 10 },
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
-    {"name": "barHeight", "value": "15"},
-    {
-      "name": "navyOpacity",
-      "value": 1
-    }
+    {"name": "barHeight", "value": "15"}
   ],
   "data": [
     {
@@ -75,8 +71,8 @@
     {
       "name": "subgroups",
       "values": [
-        {"key": "(direct / tier 1)"},
-        {"key": "(beyond tier 1)"},
+        {"key": "(direct / tier 1)", "label": "Tier 1" },
+        {"key": "(beyond tier 1)", "label": "Beyond Tier 1"},
         {"key": ""}
       ],
       "transform": [
@@ -195,8 +191,8 @@
           "from": "subgroups",
           "key": "key",
           "fields": ["parens"],
-          "values": ["seq"],
-          "as": ["subgroup_seq"]
+          "values": ["seq", "label"],
+          "as": ["subgroup_seq", "subgroup_label"]
         },
         {
           "type": "filter",
@@ -235,7 +231,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "counts", "field": "subgroup_seq"},
+      "domain": {"data": "counts", "field": "subgroup_label"},
       "range": ["#FF9300", "#FFDC00", "#FE0000"]
     }
   ],
@@ -271,8 +267,7 @@
               "x2": {"scale": "xscale", "field": "denominator"},
               "y": {"scale": "yscale", "field": "value"},
               "height": {"signal": "barHeight"},
-              "fill": {"value": "#000028"},
-              "opacity": {"signal": "navyOpacity"}
+              "fill": {"value": "#000028"}
             }
           }
         },
@@ -285,7 +280,22 @@
               "x2": {"scale": "xscale", "field": "count"},
               "y": {"scale": "yscale", "field": "value"},
               "height": {"signal": "barHeight"},
-              "fill": {"scale": "color", "field": "subgroup_seq"}
+              "fill": {"scale": "color", "field": "subgroup_label"}
+            }
+          }
+        },
+        {
+          "name": "nocounts",
+          "type": "text",
+          "from": {"data": "faceted_counts"},
+          "encode": {
+            "update": {
+              "x": {"value": 5},
+              "y": {"scale": "yscale", "field": "value", "offset": 2},
+              "baseline":{ "value": "top"},
+              "text": {"signal": "if(datum.count == 0, 'None', '')"},
+              "fill": {"value": "white"},
+              "fontStyle": {"value": "italic" }
             }
           }
         },
@@ -317,6 +327,21 @@
           "baseline": {"value": "bottom"},
           "fontWeight": {"value": "bold"}
         }
+      }
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "type": "symbol",
+      "orient": "none",
+      "direction": "horizontal",
+      "encode": {
+        "legend": {
+          "update": {"x":{"signal": "width", "offset": -150}, "y": {"offset": -5}}
+        },
+        "labels": {"update": {"fontWeight": [{"value": 800}]}},
+        "symbols": {"update": {"fillOpacity": [{"value": 1}]}}
       }
     }
   ]
