@@ -58,17 +58,6 @@ a {
   text-decoration: none;
 }
 
-a.download-button {
-  background: #FF9300;
-  border: 0;
-  padding: 15px;
-  font-family: 'MediaSans';
-  text-transform: uppercase;
-  margin: 2em 0 3em 0;
-  display: inline-block;
-  color: #000028;
-}
-
 h3 {
   font-family: MediaSans;
   text-transform: uppercase;
@@ -152,6 +141,37 @@ section.top .subtitle {
   font-size: 1.7em;
   line-height: 1.3;
 }
+
+section.top a {
+  border: 0;
+  padding: 1em 3em 1em 1em;
+  font-family: 'MediaSans';
+  text-transform: uppercase;
+  margin: 2em 0 3em 0;
+  display: inline-block;
+  color: #000028;
+  position: relative;
+}
+
+section.top a.download-button {
+  background: #FF9300;
+}
+
+section.top a h3::after {
+  color: #0037f1;
+  content: "\f054";
+  display: inline-block;
+  font-family: FontAwesome;
+  font-size: 25px;
+  position: absolute;
+  top: calc(50% - 16px);
+  right: 0.75em;
+}
+
+section.top a.contribute-button {
+  margin-left: 2em;
+}
+
 
 /* ----- Banner ----- */
 
