@@ -235,14 +235,27 @@
         }
       ]
     },
-    { "name": "counts",
+    {
+      "name": "countRows",
+      "values": [
+        {"key": "count", "label": "Yes companies (total)", "y": -60},
+        {"key": "percent", "label": "Yes companies (percent)", "y": -38}
+      ]
+    },
+    {
+      "name": "counts",
       "source": "table",
       "transform": [
-        {"type":"filter", "expr": "datum.value == 'Yes'"},
-        {"type": "aggregate", "groupby":["metric_heading"]},
-        {"type": "formula", "expr": "format(datum.count / numCompanies, '.0%')", "as": "percent"}
+        {"type": "filter", "expr": "datum.value == 'Yes'"},
+        {"type": "aggregate", "groupby": ["metric_heading"]},
+        {
+          "type": "formula",
+          "expr": "format(datum.count / numCompanies, '.0%')",
+          "as": "percent"
+        },
+        {"type":"fold", "fields":[ "count", "percent"]},
+        {"type":"lookup", "from": "countRows", "key":"key", "fields":["key"], "values":["y"]}
       ]
-
     }
   ],
   "scales": [
@@ -258,17 +271,6 @@
       "range": "height",
       "domain": {
         "data": "companies",
-        "field": "id",
-        "sort": {"field": {"signal": "sortTable"}, "op": "min"}
-      },
-      "type": "band",
-      "padding": 0.2
-    },
-    {
-      "name": "yNot",
-      "range": "height",
-      "domain": {
-        "data": "counts",
         "field": "id",
         "sort": {"field": {"signal": "sortTable"}, "op": "min"}
       },
@@ -296,7 +298,7 @@
       "ticks": false,
       "grid": false,
       "labelAngle": 25,
-      "offset": 60,
+      "offset": 65,
       "labelBaseline": "bottom",
       "labelAlign": "right",
       "labelFontWeight": 700,
@@ -306,11 +308,14 @@
           "name": "x_labels",
           "interactive": true,
           "update": {
-            "fill": {"signal": "if(datum.value == activeHeading, '#FF9300', '#000028')"},
-            "cursor": { "value": "default"}
+            "fill": {
+              "signal": "if(datum.value == activeHeading, '#FF9300', '#000028')"
+            },
+            "cursor": {"value": "default"}
           },
-          "hover": {"fill": {"value": "#0037F1"},
-            "cursor": { "value": "pointer"}
+          "hover": {
+            "fill": {"value": "#0037F1"},
+            "cursor": {"value": "pointer"}
           }
         }
       }
@@ -318,6 +323,7 @@
   ],
   "marks": [
     {
+      "name": "companyBackgrounds",
       "type": "rect",
       "from": {"data": "table"},
       "encode": {
@@ -332,6 +338,7 @@
       }
     },
     {
+      "name": "companyNames",
       "type": "text",
       "from": {"data": "companies"},
       "encode": {
@@ -345,6 +352,89 @@
         }
       }
     },
+    {
+      "name": "countHeadingBackgrounds",
+      "type": "rect",
+      "from": {"data": "countRows"},
+      "encode": {
+        "update": {
+          "x": {"value": -2},
+          "x2": {"value": -300},
+          "y": {"field": "y"},
+          "fill": {"value": "#FFDC00"},
+          "opacity": {"value": 0.3},
+          "height": {"signal": "barHeight"},
+          "align": {"value": "center"}
+        }
+      }
+    },
+    {
+      "name": "countHeadings",
+      "type": "text",
+      "from": {"data": "countRows"},
+      "encode": {
+        "update": {
+          "x": {"value": -10},
+          "y": { "field": "y", "offset": 15},
+          "width": {"value": 400},
+          "text": {"field": "label"},
+          "height": {"signal": "barHeight"},
+          "align": {"value": "right"},
+          "fontStyle": { "value": "italic"}
+        }
+      }
+    },
+    {
+      "name": "countBackgrounds",
+      "type": "rect",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": {
+            "scale": "xscale",
+            "field": "metric_heading",
+            "offset": {
+              "signal": "if(datum.metric_heading == 'due diligence in investments', 5, 0)"
+            }
+          },
+          "y": {"field": "y"},
+          "fill": {"value": "#FFDC00"},
+          "width": {"value": 56},
+          "height": {"signal": "barHeight"},
+          "align": {"value": "center"},
+          "opacity": {
+            "signal": "if(datum.metric_heading == activeHeading, 0.3, 1)"
+          }
+        }
+      }
+    },
+
+
+    {
+      "type": "text",
+      "from": {"data": "counts"},
+      "encode": {
+        "update": {
+          "x": {
+            "scale": "xscale",
+            "field": "metric_heading",
+            "offset": {
+              "signal": "if(datum.metric_heading == 'due diligence in investments', 35, 27)"
+            }
+          },
+          "width": {"value": 70},
+          "y": {"field": "y", "offset": 15},
+          "fill": { "value": "#000028"},
+          "fontWeight": {
+            "signal": "if(datum.metric_heading == activeHeading, 'bold', 100)"
+          },
+          "fontStyle" : {"value": "italic"},
+          "text": {"field": "value"},
+          "align": {"value": "center"}
+        }
+      }
+    },
+
     {
       "type": "rect",
       "from": {"data": "table"},
@@ -362,7 +452,9 @@
           "width": {"value": 56},
           "height": {"signal": "barHeight"},
           "align": {"value": "center"},
-          "opacity": {"signal": "if(datum.metric_heading == activeHeading, 0.75, 1)"}
+          "opacity": {
+            "signal": "if(datum.metric_heading == activeHeading, 0.75, 1)"
+          }
         }
       }
     },
@@ -381,7 +473,9 @@
           "width": {"value": 70},
           "y": {"scale": "yscale", "field": "company"},
           "fill": {"scale": "valueColor", "field": "value"},
-          "fontWeight": {"signal": "if(datum.metric_heading == activeHeading, 'bold', 100)"},
+          "fontWeight": {
+            "signal": "if(datum.metric_heading == activeHeading, 'bold', 100)"
+          },
           "text": {"field": "short"},
           "align": {"value": "center"}
         }
