@@ -1,13 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Risk Management",
-  "width": 300,
+  "width": 250,
   "height": 250,
   "padding": {"right": 5},
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
-    {"name": "barHeight", "value": "15"},
-    {"name": "navyOpacity", "value": 1}
+    {"name": "barHeight", "value": "15"}
   ],
   "data": [
     {
@@ -142,8 +141,7 @@
               "x2": {"scale": "xscale", "signal": "totalAnswers"},
               "y": {"scale": "yscale", "field": "value"},
               "height": {"signal": "barHeight"},
-              "fill": {"value": "#000028"},
-              "opacity": {"signal": "navyOpacity"}
+              "fill": {"value": "#000028"}
             }
           }
         },

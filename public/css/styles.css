@@ -86,6 +86,7 @@ header {
 header img {
   height: 70px;
   margin: 1em 0;
+  max-width: 40%;
 }
 
 .filter-dropdown {
@@ -135,6 +136,12 @@ section.top h1 {
   padding: 1.2em 0 0.1em 0;
   text-transform: uppercase;
   line-height: 1.1;
+}
+
+@media screen and (max-width: 500px) {
+  section.top h1 {
+    font-size: 3em;
+  }
 }
 
 section.top .subtitle {
@@ -223,6 +230,20 @@ h2 {
   border-radius: 0 !important;
 }
 
+.subsection-header h3 {
+  background-color: #FFDC00;
+  color: #000028;
+  padding: 0.5em;
+  margin: 1em 0 0.5em 0;
+}
+
+a.anchor {
+  display: block;
+  position: relative;
+  top: -100px;
+  visibility: hidden;
+}
+
 /* ----- Charts ----- */
 
 .charts .subtitle {
@@ -270,6 +291,11 @@ h2 {
   text-transform: none;
 }
 
+#diligence_table svg .x_labels text {
+  text-transform: uppercase;
+  font-family: MediaSans;
+}
+
 /* ----- Footers ----- */
 
 footer {
@@ -282,7 +308,7 @@ footer .row {
   align-items: center;
 }
 
-footer .col-sm {
+footer .col-4 {
   padding: 0 5%;
   text-align: center;
 }
@@ -290,8 +316,7 @@ footer .col-sm {
 footer .center-col {
   border: 2px solid #888888;
   border-width: 0 2px;
-  padding-top: 2em;
-  padding-bottom: 2em;
+  margin-top: 2em;
 }
 
 footer img {

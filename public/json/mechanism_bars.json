@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A nested bar chart example, with bars grouped by category.",
-  "width": 300,
-  "height": 300,
+  "description": "Whistleblowing or grievance mechanisms",
+  "width": 250,
+  "height": 275,
   "padding": {"right": 5},
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
@@ -50,6 +50,21 @@
         {"type": "flatten", "fields": ["value_array"], "as": ["value"]},
         {"type": "aggregate", "ops": ["count"], "groupby": ["value"]},
         {
+          "type": "impute",
+          "key": "value",
+          "keyvals": [
+            "Hotline (direct employees)",
+            "Focal Point (direct employees)",
+            "Whistleblower protection (direct employees)",
+            "Hotline (supply chain workers)",
+            "Focal Point (supply chain workers)",
+            "Whistleblower protection (supply chain workers)",
+            "No"
+          ],
+          "field": "count",
+          "value": "0"
+        },
+        {
           "type": "formula",
           "as": "term",
           "expr": "replace(datum.value, / \\(.*/, '')"
@@ -60,28 +75,9 @@
           "expr": "replace(datum.value, /^[^\\(]*/, '')"
         },
         {
-          "type": "impute",
-          "key": "term",
-          "keyvals": [
-            "Hotline",
-            "Focal Point",
-            "Whistleblower protection",
-            "No"
-          ],
-          "field": "parens",
-          "value": "(direct employees)"
-        },
-        {
           "type": "formula",
           "expr": "if(datum.count == null, 0, datum.count)",
           "as": "count"
-        },
-        {
-          "type": "impute",
-          "groupby": ["term"],
-          "key": "parens",
-          "field": "count",
-          "value": 0
         },
         {
           "type": "lookup",
@@ -193,6 +189,21 @@
               "y": {"scale": "yscale", "field": "value"},
               "height": {"signal": "barHeight"},
               "fill": {"scale": "color", "field": "subgroup_seq"}
+            }
+          }
+        },
+        {
+          "name": "nocounts",
+          "type": "text",
+          "from": {"data": "faceted_counts"},
+          "encode": {
+            "update": {
+              "x": {"value": 5},
+              "y": {"scale": "yscale", "field": "value", "offset": 2},
+              "baseline":{ "value": "top"},
+              "text": {"signal": "if(datum.count == 0, 'None', '')"},
+              "fill": {"value": "white"},
+              "fontStyle": {"value": "italic" }
             }
           }
         },
