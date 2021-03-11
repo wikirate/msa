@@ -58,6 +58,10 @@ a {
   text-decoration: none;
 }
 
+a:focus, a:hover {
+  color: #0037F1;
+}
+
 h3 {
   font-family: MediaSans;
   text-transform: uppercase;

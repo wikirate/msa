@@ -5,7 +5,17 @@
   "height": 200,
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
-    {"name": "barHeight", "value": "15"}
+    {"name": "barHeight", "value": "15"},
+    {
+      "name": "barOver",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover", "update": "datum"},
+        {"events": "text:mouseover", "update": "datum"},
+        {"events": "rect:mouseout", "update": "{}"},
+        {"events": "text:mouseout", "update": "{}"}
+      ]
+    }
   ],
   "data": [
     {
@@ -20,23 +30,58 @@
       ]
     },
     {
+      "name": "bars",
+      "values": [
+        {
+          "key": "2020",
+          "title": "FY 2020",
+          "color": 0,
+          "filter": {"value": "Yes - UK Modern Slavery Act", "year": "2020"}
+        },
+        {
+          "key": "2019",
+          "title": "FY 2019",
+          "color": 0,
+          "filter": {"value": "Yes - UK Modern Slavery Act", "year": "2019"}
+        },
+        {
+          "key": "2018",
+          "title": "FY 2018",
+          "color": 0,
+          "filter": {"value": "Yes - UK Modern Slavery Act", "year": "2018"}
+        },
+        {
+          "key": "No",
+          "title": "No Statement",
+          "color": 2,
+          "filter": {"value": "No - Neither", "year": "latest"}
+        }
+      ]
+    },
+    {
       "name": "counts",
       "source": "answers",
       "transform": [
         {"type": "flatten", "fields": ["value_array"], "as": ["value"]},
         {
           "type": "formula",
-          "expr": "if(test(/UK Modern/, datum.value), 'FY ' + datum.year, if(test(/^No/, datum.value), 'No Statement', null))",
-          "as": "title"
+          "expr": "if(test(/UK Modern/, datum.value), datum.year, if(test(/^No/, datum.value), 'No', null))",
+          "as": "key"
         },
-        {"type": "aggregate", "groupby": ["title"]},
-        {"type": "impute", "key": "title", "keyvals": ["FY 2020", "FY 2019", "FY 2018", "No Statement"], "field": "count", "value": 0
-
+        {"type": "aggregate", "groupby": ["key"]},
+        {
+          "type": "impute",
+          "key": "key",
+          "keyvals": {"signal": "pluck(data('bars'), 'key')"},
+          "field": "count",
+          "value": 0
         },
         {
-          "type": "formula",
-          "expr": "if(datum.title == 'No Statement', 2, 0)",
-          "as": "color"
+          "type": "lookup",
+          "from": "bars",
+          "key": "key",
+          "fields": ["key"],
+          "values": ["title", "color", "filter"]
         },
         {"type": "filter", "expr": "isValid(datum.title)"},
         {
@@ -50,6 +95,11 @@
           "type": "formula",
           "expr": "datum.count + '/' + totalAnswers",
           "as": "count_label"
+        },
+        {
+          "type": "formula",
+          "expr": "format(datum.count / totalAnswers, '.0%')",
+          "as": "percent_label"
         }
       ]
     }
@@ -66,7 +116,7 @@
     {
       "name": "yscale",
       "range": "height",
-      "domain": {"data": "counts", "field": "title"},
+      "domain": {"data": "bars", "field": "title"},
       "type": "band",
       "padding": 0.4
     },
@@ -87,21 +137,30 @@
           "x2": {"scale": "xscale", "signal": "totalAnswers"},
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
-          "fill": {"value": "#000028"}
-        }
+          "fill": {"value": "#000028"},
+          "tooltip": {"field": "percent_label"},
+          "opacity": {"signal": "if(barOver.key == datum.key, 0.5, 1)"}
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
       "type": "rect",
       "from": {"data": "counts"},
+      "tooltip": {"field": "percent_label"},
+      "zindex": {"value": 4},
       "encode": {
         "update": {
-          "x": {"value": 0},
+          "x": {"signal": "if(barOver.key == datum.key, 1, 0)"},
           "x2": {"scale": "xscale", "field": "count"},
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
-          "fill": {"scale": "color", "field": "color"}
-        }
+          "fill": {"scale": "color", "field": "color"},
+          "stroke": {"value": "#0037F1"},
+          "strokeWidth": {"signal": "if(barOver.key == datum.key, 2, 0)"},
+          "tooltip": {"field": "percent_label"}
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -112,10 +171,10 @@
         "update": {
           "x": {"value": 5},
           "y": {"scale": "yscale", "field": "title", "offset": 2},
-          "baseline":{ "value": "top"},
+          "baseline": {"value": "top"},
           "text": {"signal": "if(datum.count == 0, 'None', '')"},
           "fill": {"value": "white"},
-          "fontStyle": {"value": "italic" }
+          "fontStyle": {"value": "italic"}
         }
       }
     },
@@ -124,11 +183,13 @@
       "from": {"data": "counts"},
       "encode": {
         "update": {
-          "x": {"scale": "xscale", "signal": "totalAnswers" },
+          "x": {"scale": "xscale", "signal": "totalAnswers"},
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "baseline": {"value": "bottom"},
-          "align": { "value": "right"},
-          "fill": {"value": "#000028"},
+          "align": {"value": "right"},
+          "fill": {
+            "signal": "if(barOver.key == datum.key, '#0037F1', '#000028')"
+          },
           "text": {"field": "count_label"},
           "fontWeight": {"value": "bold"}
         }
@@ -142,7 +203,9 @@
           "x": {"value": 0},
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "text": {"field": "title"},
-          "fill": {"value": "#000028"},
+          "fill": {
+            "signal": "if(barOver.key == datum.key, '#0037F1', '#000028')"
+          },
           "baseline": {"value": "bottom"},
           "fontWeight": {"value": "bold"}
         }
