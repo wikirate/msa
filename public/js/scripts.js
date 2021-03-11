@@ -1,3 +1,5 @@
+wikiRateOrg = 'https://wikirate.org/';
+
 vizUrl = function (id) {
   return 'json/' + id + '.json'
 }
@@ -16,24 +18,27 @@ loadViz = function (viz) {
 };
 
 initChart = function (spec, id) {
-  initVega(prepareVegaSpec(spec), $("#" + id)[0]);
+  el = $("#" + id);
+  v = initVega(prepareVegaSpec(spec), el[0]);
+  handleChartClicks(v, el);
 };
 
-// handleChartClicks = function (vega, el) {
-//   return vega.addEventListener('click', function (_event, item) {
-//     var d;
-//     if (!el.closest("._filtered-content").exists()) {
-//       return;
-//     }
-//     d = item.datum;
-//     if (d.filter) {
-//       return updateFilter(el, d.filter);
-//     } else if (d.details) {
-//       return updateDetails(d.details);
-//     }
-//   });
-// };
+handleChartClicks = function (v, el) {
+  return v.addEventListener('click', function (_event, item) {
+    wikiRateLink(item.datum, el);
+  });
+};
 
+wikiRateLink = function (datum, el) {
+  wrPage = el.data("wikirate_page");
+  filter = datum.filter;
+  if (filter && wrPage) {
+    filter["company_group"] = ["MSA Asset Managers"];
+    filter["year"] ||= "latest";
+    url = wikiRateOrg + wrPage + '?' + $.param({ filter: filter });
+    window.open(url, "_WikiRateFromWalkFree");
+  }
+}
 
 prepareVegaSpec = function (spec) {
   group = currentGroup();

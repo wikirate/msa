@@ -3,7 +3,16 @@
   "width": 190,
   "height": 180,
   "padding": 10,
-  "signals": [],
+  "signals": [
+    {
+      "name": "grouptip",
+      "value": {},
+      "on": [
+        {"events": "arc:mouseover", "update": "datum"},
+        {"events": "arc:mouseout", "update": "{}"}
+      ]
+    }
+  ],
   "data": [
     {
       "name": "answers",
@@ -33,14 +42,16 @@
           "as": "percentage",
           "expr": "format(datum.count / datum.sum_count, '.0%')"
         },
-        {
-          "type": "collect",
-          "sort": { "field": "value" }
-        },
+        {"type": "collect", "sort": {"field": "value"}},
         {
           "type": "formula",
           "expr": "if(datum.value == 'Yes', 'Met', 'Not Met')",
           "as": "value"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.count + ' out of ' + datum.sum_count + ' companies'",
+          "as": "count_label"
         }
       ]
     }
@@ -54,7 +65,7 @@
           "fill": {"scale": "color", "field": "value"},
           "x": {"value": 100},
           "y": {"value": 100},
-          "tooltip": {"field": "count"}
+          "tooltip": {"field": "count_label"}
         },
         "update": {
           "startAngle": {"field": "startAngle"},
@@ -63,9 +74,15 @@
           "innerRadius": {"value": 0},
           "outerRadius": {"value": 100},
           "cornerRadius": {"value": 0},
-          "opacity": {"value": 1}
+          "opacity": {"value": 1},
+          "strokeWidth": {"value": 0},
+          "stroke": {"value": "#0037F1"}
         },
-        "hover": {"opacity": {"value": 0.8}}
+        "hover": {
+          "opacity": {"value": 0.9},
+          "strokeWidth": {"value": 2},
+          "cursor": {"value": "pointer"}
+        }
       }
     },
     {
@@ -77,7 +94,7 @@
           "y": {"value": 100},
           "radius": {"value": 65},
           "fontWeight": {"value": "bold"},
-          "fontSize": { "value": 15 },
+          "fontSize": {"value": 15},
           "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
           "fill": {"value": "white"},
           "align": {"value": "center"},
@@ -92,8 +109,22 @@
       "fill": "color",
       "type": "symbol",
       "encode": {
-        "labels": {"update": {"fontWeight": [{"value": 400}]}},
-        "symbols": {"update": {"fillOpacity": [{"value": 1}]}}
+        "labels": {
+          "update": {
+            "fontSize": {"value": 13},
+            "fontWeight": [
+              {"test": "grouptip.value == datum.label", "value": "bold"},
+              {"value": 400}
+            ]
+          }
+        },
+        "symbols": {
+          "update": {
+            "stroke": { "value": "#0037F1" },
+            "strokeWidth": { "signal" : "if(grouptip.value == datum.label, 1, 0)" }
+
+          }
+        }
       }
     }
   ],
