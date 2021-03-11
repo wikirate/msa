@@ -2,12 +2,11 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Investment portfolio due diligence",
   "width": 400,
-  "height": 660,
   "padding": {"top": 25},
   "signals": [
     {"name": "numCompanies", "update": "data('companies').length"},
     {"name": "barHeight", "value": 21},
-    {"name": "height", "update": "barHeight * numCompanies+25"},
+    {"name": "height", "update": "(barHeight+ 1)  * numCompanies"},
     {
       "name": "activeHeading",
       "value": "due diligence in investments",
