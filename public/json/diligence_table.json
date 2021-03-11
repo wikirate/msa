@@ -1,15 +1,16 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Investment portfolio due diligence",
-  "width": 500,
+  "width": 400,
   "height": 660,
+  "padding": {"top": 25},
   "signals": [
     {"name": "numCompanies", "update": "data('companies').length"},
-    {"name": "barHeight", "value": 16},
-    {"name": "height", "update": "(barHeight + 5) * numCompanies"},
+    {"name": "barHeight", "value": 21},
+    {"name": "height", "update": "barHeight * numCompanies + 100"},
     {
       "name": "activeHeading",
-      "value": "Modern Slavery Statement",
+      "value": "due diligence in investments",
       "on": [{"events": "@x_labels:click", "update": "datum.value"}]
     },
     {
@@ -166,37 +167,33 @@
       "values": [
         {
           "id": 1827651,
-          "heading": "Modern Slavery Statement",
+          "heading": "have human rights policy",
           "table": "statements"
         },
         {
           "id": 6908731,
-          "heading": "Modern Slavery Initiatives",
+          "heading": "take part in industry initiatives and collaborations",
           "table": "initiatives"
         },
         {
           "id": 6908650,
-          "heading": "Investments: Human Rights Policy",
+          "heading": "have human rights investment policy",
           "table": "investments"
         },
-        {
-          "id": 6908670,
-          "heading": "Investments: Required Reporting",
-          "table": "reporting"
-        },
+        {"id": 6908670, "heading": "require msa report", "table": "reporting"},
         {
           "id": 6908693,
-          "heading": "Investments: Risk Assessment",
+          "heading": "assess modern slavery risks",
           "table": "assesses"
         },
         {
           "id": 6908714,
-          "heading": "Investments: Human Rights Engagement",
+          "heading": "engage on modern slavery",
           "table": "engagement"
         },
         {
           "id": 6916105,
-          "heading": "Investments: Considers Risks",
+          "heading": "due diligence in investments",
           "table": "considers"
         }
       ]
@@ -237,12 +234,21 @@
           "values": ["short"]
         }
       ]
+    },
+    { "name": "counts",
+      "source": "table",
+      "transform": [
+        {"type":"filter", "expr": "datum.value == 'Yes'"},
+        {"type": "aggregate", "groupby":["metric_heading"]},
+        {"type": "formula", "expr": "format(datum.count / numCompanies, '.0%')", "as": "percent"}
+      ]
+
     }
   ],
   "scales": [
     {
       "name": "xscale",
-      "domain": {"data": "table", "field": "metric_heading"},
+      "domain": {"data": "metrics", "field": "heading"},
       "type": "band",
       "range": "width"
     },
@@ -252,6 +258,17 @@
       "range": "height",
       "domain": {
         "data": "companies",
+        "field": "id",
+        "sort": {"field": {"signal": "sortTable"}, "op": "min"}
+      },
+      "type": "band",
+      "padding": 0.2
+    },
+    {
+      "name": "yNot",
+      "range": "height",
+      "domain": {
+        "data": "counts",
         "field": "id",
         "sort": {"field": {"signal": "sortTable"}, "op": "min"}
       },
@@ -279,12 +296,24 @@
       "ticks": false,
       "grid": false,
       "labelAngle": 25,
-      "offset": 15,
+      "offset": 60,
       "labelBaseline": "bottom",
       "labelAlign": "right",
       "labelFontWeight": 700,
       "labelLimit": 0,
-      "encode": {"labels": {"name": "x_labels", "interactive": true}}
+      "encode": {
+        "labels": {
+          "name": "x_labels",
+          "interactive": true,
+          "update": {
+            "fill": {"signal": "if(datum.value == activeHeading, '#FF9300', '#000028')"},
+            "cursor": { "value": "default"}
+          },
+          "hover": {"fill": {"value": "#0037F1"},
+            "cursor": { "value": "pointer"}
+          }
+        }
+      }
     }
   ],
   "marks": [
@@ -297,7 +326,7 @@
           "x2": {"value": -300},
           "y": {"scale": "yscale", "field": "company", "offset": -15},
           "fill": {"value": "#FEF7ED"},
-          "height": {"signal": "barHeight+4"},
+          "height": {"signal": "barHeight"},
           "align": {"value": "center"}
         }
       }
@@ -311,7 +340,7 @@
           "y": {"scale": "yscale", "field": "id"},
           "width": {"value": 400},
           "text": {"field": "name"},
-          "height": {"signal": "barHeight +5"},
+          "height": {"signal": "barHeight"},
           "align": {"value": "right"}
         }
       }
@@ -321,12 +350,19 @@
       "from": {"data": "table"},
       "encode": {
         "update": {
-          "x": {"scale": "xscale", "field": "metric_heading"},
+          "x": {
+            "scale": "xscale",
+            "field": "metric_heading",
+            "offset": {
+              "signal": "if(datum.metric_heading == 'due diligence in investments', 5, 0)"
+            }
+          },
           "y": {"scale": "yscale", "field": "company", "offset": -15},
           "fill": {"scale": "cellColor", "field": "short"},
-          "width": {"value": 70},
-          "height": {"signal": "barHeight+4"},
-          "align": {"value": "center"}
+          "width": {"value": 56},
+          "height": {"signal": "barHeight"},
+          "align": {"value": "center"},
+          "opacity": {"signal": "if(datum.metric_heading == activeHeading, 0.75, 1)"}
         }
       }
     },
@@ -335,10 +371,17 @@
       "from": {"data": "table"},
       "encode": {
         "update": {
-          "x": {"scale": "xscale", "field": "metric_heading", "offset": 35},
+          "x": {
+            "scale": "xscale",
+            "field": "metric_heading",
+            "offset": {
+              "signal": "if(datum.metric_heading == 'due diligence in investments', 35, 27)"
+            }
+          },
           "width": {"value": 70},
           "y": {"scale": "yscale", "field": "company"},
           "fill": {"scale": "valueColor", "field": "value"},
+          "fontWeight": {"signal": "if(datum.metric_heading == activeHeading, 'bold', 100)"},
           "text": {"field": "short"},
           "align": {"value": "center"}
         }
