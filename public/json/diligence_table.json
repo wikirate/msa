@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Investment portfolio due diligence",
   "width": 400,
-  "padding": {"top": 25},
+  "padding": {"top": 20},
   "signals": [
     {"name": "numCompanies", "update": "data('companies').length"},
     {"name": "barHeight", "value": 21},
@@ -171,7 +171,7 @@
         },
         {
           "id": 6908731,
-          "heading": "take part in industry initiatives and collaborations",
+          "heading": "join industry initiatives",
           "table": "initiatives"
         },
         {
