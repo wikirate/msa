@@ -7,7 +7,7 @@
   "signals": [
     {"name": "numCompanies", "update": "data('companies').length"},
     {"name": "barHeight", "value": 21},
-    {"name": "height", "update": "barHeight * numCompanies + 100"},
+    {"name": "height", "update": "barHeight * numCompanies+25"},
     {
       "name": "activeHeading",
       "value": "due diligence in investments",
@@ -27,7 +27,7 @@
   "data": [
     {
       "name": "statements",
-      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+Modern_Slavery_Statement+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+Modern_Slavery_Statement+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[company_group][]=S_P500",
       "transform": [
         {
           "type": "formula",
@@ -38,27 +38,27 @@
     },
     {
       "name": "initiatives",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Industry_initiatives_and_collaborations_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free_Foundation+Industry_initiatives_and_collaborations_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[company_group][]=S_P500"
     },
     {
       "name": "investments",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Human_Rights_investment_policy_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free_Foundation+Human_Rights_investment_policy_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[company_group][]=S_P500"
     },
     {
       "name": "reporting",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Cascading_reporting_obligations_under_MSA_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free_Foundation+Cascading_reporting_obligations_under_MSA_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[company_group][]=S_P500"
     },
     {
       "name": "assesses",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Assesses_MS_risks_of_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free_Foundation+Assesses_MS_risks_of_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[company_group][]=S_P500"
     },
     {
       "name": "engagement",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Engagement_on_MS_with_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free_Foundation+Engagement_on_MS_with_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[company_group][]=S_P500"
     },
     {
       "name": "considers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[company_group][]=S_P500"
     },
     {
       "name": "values",
@@ -71,7 +71,7 @@
     },
     {
       "name": "companies",
-      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+Modern_Slavery_Statement+Answer/company_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known",
+      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+Modern_Slavery_Statement+Answer/company_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known&filter[company_group][]=S_P500",
       "transform": [
         {
           "type": "lookup",
@@ -248,6 +248,12 @@
       "transform": [
         {"type": "filter", "expr": "datum.value == 'Yes'"},
         {"type": "aggregate", "groupby": ["metric_heading"]},
+        {"type": "impute",
+          "key": "metric_heading",
+          "keyvals": {"signal": "pluck(data('metrics'), 'heading')"},
+          "field": "count",
+          "value": 0
+        },
         {
           "type": "formula",
           "expr": "format(datum.count / numCompanies, '.0%')",
@@ -309,7 +315,7 @@
           "interactive": true,
           "update": {
             "fill": {
-              "signal": "if(datum.value == activeHeading, '#FF9300', '#000028')"
+              "signal": "if(datum.value == activeHeading, '#0037F1', '#000028')"
             },
             "cursor": {"value": "default"}
           },
