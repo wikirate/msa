@@ -1,10 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Modern Slavery Due Diligence Processes in Investments",
-  "width": 360,
+  "width": 250,
   "height": 330,
   "signals": [
-    {"name": "barHeight", "value": "20"}
+    {"name": "numGroups", "value": 5},
+    {"name": "barHeight", "value": 15},
+    {"name": "height", "update": "numGroups * (barHeight + 15)+ 100"}
   ],
   "data": [
     {
@@ -56,8 +58,8 @@
       ]
     },
     {
-      "name": "participation",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Industry_initiatives_and_collaborations_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "name": "reporting",
+      "url": "https://wikirate.org/Walk_Free_Foundation+Cascading_reporting_obligations_under_MSA_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -90,16 +92,16 @@
     {
       "name": "labels",
       "values": [
-        {"label": "Human Rights policy covering portfolio"},
-        {"label": "Assesses modern slavery risk of investees"},
-        {"label": "Engagement on modern slavery with investees"},
-        {"label": "Participation in industry initiatives and collaborations"},
+        {"label": "Have Human Rights policy"},
+        {"label": "Assess modern slavery risk"},
+        {"label": "Engage on modern slavery"},
+        {"label": "Require MSA report"},
         {"label": "None of the above"}
       ]
     },
     {
       "name": "counts",
-      "source": ["portfolio", "assesses", "engagement", "participation", "none"],
+      "source": ["portfolio", "assesses", "engagement", "reporting", "none"],
       "transform": [
         {"type": "window", "ops": ["row_number"], "as": ["seq"]},
         {

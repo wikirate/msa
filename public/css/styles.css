@@ -97,7 +97,8 @@ header img {
   border-radius: 0;
   background: #FF9300;
   border: 0;
-  padding: 15px;
+  font-size: 1.1em;
+  padding: 0.8em 1em;
   font-family: 'MediaSans';
   text-transform: uppercase;
   display: inline-block;
@@ -128,6 +129,7 @@ a.dropdown-toggle::after {
   display: none;
 }
 
+
 /* ----- Top Section ----- */
 
 section.top {
@@ -157,9 +159,14 @@ section.top .subtitle {
   margin: 2em 0 3em 0;
 }
 
+.top-buttons h3 {
+  padding: 0;
+  margin: 0;
+}
+
 section.top a {
   border: 0;
-  padding: 1em 3em 1em 1em;
+  padding: 1em 3em 1em 1.2em;
   font-family: 'MediaSans';
   text-transform: uppercase;
   display: inline-block;
@@ -179,7 +186,7 @@ section.top a h3::after {
   display: inline-block;
   font-size: 25px;
   position: absolute;
-  top: calc(50% - 16px);
+  top: calc(50% - 12px);
   right: 0.75em;
 }
 

@@ -166,7 +166,7 @@
       "values": [
         {
           "id": 1827651,
-          "heading": "have human rights policy",
+          "heading": "have statement",
           "table": "statements"
         },
         {
@@ -176,7 +176,7 @@
         },
         {
           "id": 6908650,
-          "heading": "have human rights investment policy",
+          "heading": "have human rights policy",
           "table": "investments"
         },
         {"id": 6908670, "heading": "require msa report", "table": "reporting"},
@@ -333,7 +333,7 @@
       "from": {"data": "table"},
       "encode": {
         "update": {
-          "x": {"value": -2},
+          "x": {"value": -6},
           "x2": {"value": -300},
           "y": {"scale": "yscale", "field": "company", "offset": -15},
           "fill": {"value": "#FEF7ED"},
@@ -348,7 +348,7 @@
       "from": {"data": "companies"},
       "encode": {
         "update": {
-          "x": {"value": -10},
+          "x": {"value": -15},
           "y": {"scale": "yscale", "field": "id"},
           "width": {"value": 400},
           "text": {"field": "name"},
@@ -363,10 +363,10 @@
       "from": {"data": "countRows"},
       "encode": {
         "update": {
-          "x": {"value": -2},
+          "x": {"value": -6},
           "x2": {"value": -300},
           "y": {"field": "y"},
-          "fill": {"value": "#FFDC00"},
+          "fill": {"value": "#FF9300"},
           "opacity": {"value": 0.3},
           "height": {"signal": "barHeight"},
           "align": {"value": "center"}
@@ -379,7 +379,7 @@
       "from": {"data": "countRows"},
       "encode": {
         "update": {
-          "x": {"value": -10},
+          "x": {"value": -15},
           "y": { "field": "y", "offset": 15},
           "width": {"value": 400},
           "text": {"field": "label"},
@@ -403,19 +403,18 @@
             }
           },
           "y": {"field": "y"},
-          "fill": {"value": "#FFDC00"},
+          "fill": {"value": "#FF9300"},
           "width": {"value": 56},
           "height": {"signal": "barHeight"},
           "align": {"value": "center"},
           "opacity": {
-            "signal": "if(datum.metric_heading == activeHeading, 0.3, 1)"
+            "signal": "if(datum.metric_heading == activeHeading, 0.3, 0.6)"
           }
         }
       }
     },
-
-
     {
+      "name": "countValues",
       "type": "text",
       "from": {"data": "counts"},
       "encode": {
@@ -424,7 +423,7 @@
             "scale": "xscale",
             "field": "metric_heading",
             "offset": {
-              "signal": "if(datum.metric_heading == 'due diligence in investments', 35, 27)"
+              "signal": "if(datum.metric_heading == 'due diligence in investments', 33, 27)"
             }
           },
           "width": {"value": 70},
@@ -472,7 +471,7 @@
             "scale": "xscale",
             "field": "metric_heading",
             "offset": {
-              "signal": "if(datum.metric_heading == 'due diligence in investments', 35, 27)"
+              "signal": "if(datum.metric_heading == 'due diligence in investments', 33, 27)"
             }
           },
           "width": {"value": 70},

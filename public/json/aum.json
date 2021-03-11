@@ -352,15 +352,16 @@
     {
       "fill": "color",
       "type": "symbol",
-      "orient": "top",
+      "orient": "none",
       "direction": "horizontal",
       "encode": {
-        "labels": {"update": {"fontWeight": [{"value": 400}]}},
-        "symbols": {"update": {"fillOpacity": [{"value": 1}]}}
+        "legend": {
+          "update": {
+            "x": { "signal": "width", "offset": -180 },
+            "y": { "value": -40}
+          }
+        }
       },
-      "title": "Due Diligence:",
-      "titleOrient": "left",
-      "titleFontWeight": { "value": "600" },
       "symbolType": "square"
     }
   ]
