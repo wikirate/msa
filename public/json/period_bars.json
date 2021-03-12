@@ -11,11 +11,11 @@
       "value": {"orange": "#FF9300", "red": "#FE0000", "navy": "#000028"}
     },
     {
-      "name": "barOver",
+      "name": "barTitle",
       "value": {},
       "on": [
-        {"events": "rect:mouseover, text:mouseover", "update": "datum"},
-        {"events": "rect:mouseout, text:mouseout", "update": "{}"}
+        {"events": "rect:mouseover, text:mouseover", "update": "datum.title"},
+        {"events": "rect:mouseout, text:mouseout", "update": "null" }
       ]
     }
   ],
@@ -125,8 +125,8 @@
     {
       "name": "color",
       "type": "linear",
-      "domain": {"data": "counts", "field": "color"},
-      "range": [{"signal": "colors.orange"}, {"signal": "colors.red"}]
+      "domain": [0, 2],
+      "range": { "signal": "[colors.orange, colors.red, colors.navy]"}
     }
   ],
   "marks": [
@@ -141,7 +141,7 @@
           "height": {"signal": "barHeight"},
           "fill": {"signal": "colors.navy"},
           "tooltip": {"field": "percent_label"},
-          "opacity": {"signal": "if(barOver.key == datum.key, 0.5, 1)"}
+          "opacity": {"signal": "if(barTitle == datum.title, 0.5, 1)"}
         },
         "hover": {"cursor": {"value": "pointer"}}
       }
@@ -188,7 +188,8 @@
           "baseline": {"value": "bottom"},
           "align": {"value": "right"},
           "fill": {
-            "signal": "if(barOver.key == datum.key, colors.orange, colors.navy)"
+            "scale": "color",
+            "signal": "if(barTitle == datum.title, datum.color, 2)"
           },
           "text": {"field": "count_label"},
           "fontWeight": {"value": "bold"}
@@ -205,7 +206,8 @@
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "text": {"field": "title"},
           "fill": {
-            "signal": "if(barOver.key == datum.key, colors.orange, colors.navy)"
+            "scale": "color",
+            "signal": "if(barTitle == datum.title, datum.color, 2)"
           },
           "baseline": {"value": "bottom"},
           "fontWeight": {"value": "bold"}

@@ -6,8 +6,16 @@
   "signals": [
     {"name": "barHeight", "value": "15"},
     {
-      "name": "navyOpacity",
-      "value": 1
+      "name": "colors",
+      "value": {"orange": "#FF9300", "red": "#FE0000", "blue": "#0037F1", "navy": "#000028"}
+    },
+    {
+      "name": "barTitle",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover, text:mouseover", "update": "datum.title"},
+        {"events": "rect:mouseout, text:mouseout", "update": "{}"}
+      ]
     }
   ],
   "data": [
@@ -102,12 +110,17 @@
         {
           "type": "formula",
           "expr": "format(datum.count / datum.sum_count, '.0%')",
-          "as": "count_label"
+          "as": "percent_label"
         },
         {
           "type": "formula",
-          "expr": "if(datum.title == 'All of the Above', 3, 0)",
+          "expr": "if(datum.title == 'All of the Above', 1, 0)",
           "as": "color"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.count + ' out of ' + datum.sum_count + ' companies'",
+          "as": "count_label"
         }
       ]
     }
@@ -131,8 +144,8 @@
     {
       "name": "color",
       "type": "linear",
-      "domain": [0, 3],
-      "range": ["#FF9300", "#FFDC00", "#FE0000", "#0037F1"]
+      "domain": [0, 2],
+      "range": { "signal": "[colors.orange, colors.blue, colors.navy]"}
     }
   ],
   "marks": [
@@ -145,9 +158,11 @@
           "x2": {"scale": "xscale", "value": 1},
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
-          "fill": {"value": "#000028"},
-          "opacity": {"signal": "navyOpacity"}
-        }
+          "fill": {"signal": "colors.navy"},
+          "tooltip": {"field": "count_label"},
+          "opacity": {"signal": "if(barTitle == datum.title, 0.5, 1)"}
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -160,7 +175,8 @@
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
           "fill": {"scale": "color", "field": "color"}
-        }
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -168,14 +184,18 @@
       "from": {"data": "counts"},
       "encode": {
         "update": {
-          "x": {"scale": "xscale", "value": 1 },
+          "x": {"scale": "xscale", "value": 1},
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "baseline": {"value": "bottom"},
-          "align": { "value": "right"},
-          "fill": {"value": "#000028"},
-          "text": {"field": "count_label"},
+          "align": {"value": "right"},
+          "fill": {
+            "scale": "color",
+            "signal": "if(barTitle == datum.title, datum.color, 2)"
+          },
+          "text": {"field": "percent_label"},
           "fontWeight": {"value": "bold"}
-        }
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -186,10 +206,14 @@
           "x": {"value": 0},
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "text": {"field": "title"},
-          "fill": {"value": "#000028"},
+          "fill": {
+            "scale": "color",
+            "signal": "if(barTitle == datum.title, datum.color, 2)"
+          },
           "baseline": {"value": "bottom"},
           "fontWeight": {"value": "bold"}
-        }
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     }
   ]
