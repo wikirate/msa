@@ -5,12 +5,23 @@
   "padding": 10,
   "signals": [
     {
-      "name": "grouptip",
+      "name": "hoverDatum",
       "value": {},
       "on": [
-        {"events": "arc:mouseover", "update": "datum"},
-        {"events": "arc:mouseout", "update": "{}"}
+        {
+          "events": "arc:mouseover, @legendLabel:mouseover, @legendSymbol:mouseover",
+          "update": "datum"
+        },
+        {
+          "events": "arc:mouseout, @legendLabel:mouseout, @legendSymbol:mouseout",
+          "update": "{}"
+        }
       ]
+    },
+    {
+      "name": "hoverOpacity",
+      "update": "if(hoverDatum.value, 0.5, 1)",
+      "value": 1
     }
   ],
   "data": [
@@ -24,25 +35,53 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["value"],
-          "ops": ["count"],
-          "fields": ["count"],
-          "as": ["count"]
+          "groupby": [
+            "value"
+          ],
+          "ops": [
+            "count"
+          ],
+          "fields": [
+            "count"
+          ],
+          "as": [
+            "count"
+          ]
         },
-        {"type": "pie", "field": "count", "sort": false},
-        {"type": "formula", "as": "filter", "expr": "{ value: datum.value }"},
+        {
+          "type": "pie",
+          "field": "count",
+          "sort": false
+        },
+        {
+          "type": "formula",
+          "as": "filter",
+          "expr": "{ value: datum.value }"
+        },
         {
           "type": "window",
-          "ops": ["sum"],
-          "fields": ["count"],
-          "frame": [null, null]
+          "ops": [
+            "sum"
+          ],
+          "fields": [
+            "count"
+          ],
+          "frame": [
+            null,
+            null
+          ]
         },
         {
           "type": "formula",
           "as": "percentage",
           "expr": "format(datum.count / datum.sum_count, '.0%')"
         },
-        {"type": "collect", "sort": {"field": "value"}},
+        {
+          "type": "collect",
+          "sort": {
+            "field": "value"
+          }
+        },
         {
           "type": "formula",
           "expr": "if(datum.value == 'Yes', 'Met', 'Not Met')",
@@ -59,47 +98,95 @@
   "marks": [
     {
       "type": "arc",
-      "from": {"data": "counts"},
+      "from": {
+        "data": "counts"
+      },
       "encode": {
         "enter": {
-          "fill": {"scale": "color", "field": "value"},
-          "x": {"value": 100},
-          "y": {"value": 100},
-          "tooltip": {"field": "count_label"}
+          "fill": {
+            "scale": "color",
+            "field": "value"
+          },
+          "x": {
+            "value": 100
+          },
+          "y": {
+            "value": 100
+          },
+          "tooltip": {
+            "field": "count_label"
+          }
         },
         "update": {
-          "startAngle": {"field": "startAngle"},
-          "endAngle": {"field": "endAngle"},
-          "padAngle": {"value": 0},
-          "innerRadius": {"value": 0},
-          "outerRadius": {"value": 100},
-          "cornerRadius": {"value": 0},
-          "opacity": {"value": 1},
-          "strokeWidth": {"value": 0},
-          "stroke": {"value": "#0037F1"}
+          "startAngle": {
+            "field": "startAngle"
+          },
+          "endAngle": {
+            "field": "endAngle"
+          },
+          "padAngle": {
+            "value": 0
+          },
+          "innerRadius": {
+            "value": 0
+          },
+          "outerRadius": {
+            "value": 100
+          },
+          "cornerRadius": {
+            "value": 0
+          },
+          "opacity": {
+            "signal": "if(hoverDatum.value == datum.value, 1, hoverOpacity)"
+          }
         },
         "hover": {
-          "opacity": {"value": 0.9},
-          "strokeWidth": {"value": 2},
-          "cursor": {"value": "pointer"}
+          "opacity": {
+            "value": 1
+          },
+          "cursor": {
+            "value": "pointer"
+          }
         }
       }
     },
     {
       "type": "text",
-      "from": {"data": "counts"},
+      "from": {
+        "data": "counts"
+      },
       "encode": {
         "enter": {
-          "x": {"value": 100},
-          "y": {"value": 100},
-          "radius": {"value": 65},
-          "fontWeight": {"value": "bold"},
-          "fontSize": {"value": 15},
-          "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
-          "fill": {"value": "white"},
-          "align": {"value": "center"},
-          "baseline": {"value": "middle"},
-          "text": {"field": "percentage"}
+          "x": {
+            "value": 100
+          },
+          "y": {
+            "value": 100
+          },
+          "radius": {
+            "value": 65
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fontSize": {
+            "value": 15
+          },
+          "theta": {
+            "signal": "(datum.startAngle + datum.endAngle)/2"
+          },
+          "fill": {
+            "value": "white"
+          },
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "text": {
+            "field": "percentage"
+          }
         }
       }
     }
@@ -110,20 +197,26 @@
       "type": "symbol",
       "encode": {
         "labels": {
+          "name": "legendLabel",
+          "interactive": true,
           "update": {
-            "fontSize": {"value": 13},
+            "fontSize": {
+              "value": 13
+            },
             "fontWeight": [
-              {"test": "grouptip.value == datum.label", "value": "bold"},
-              {"value": 400}
+              {
+                "test": "hoverDatum.value == datum.label",
+                "value": "bold"
+              },
+              {
+                "value": 400
+              }
             ]
           }
         },
         "symbols": {
-          "update": {
-            "stroke": { "value": "#0037F1" },
-            "strokeWidth": { "signal" : "if(grouptip.value == datum.label, 1, 0)" }
-
-          }
+          "name": "legendSymbol",
+          "interactive": true
         }
       }
     }
@@ -132,8 +225,14 @@
     {
       "name": "color",
       "type": "ordinal",
-      "range": ["#000028", "#FF9300"],
-      "domain": {"data": "counts", "field": "value"}
+      "range": [
+        "#000028",
+        "#FF9300"
+      ],
+      "domain": {
+        "data": "counts",
+        "field": "value"
+      }
     }
   ]
 }

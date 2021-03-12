@@ -7,13 +7,15 @@
     {"name": "totalAnswers", "update": "data('answers').length"},
     {"name": "barHeight", "value": "15"},
     {
+      "name": "colors",
+      "value": {"orange": "#FF9300", "red": "#FE0000", "navy": "#000028"}
+    },
+    {
       "name": "barOver",
       "value": {},
       "on": [
-        {"events": "rect:mouseover", "update": "datum"},
-        {"events": "text:mouseover", "update": "datum"},
-        {"events": "rect:mouseout", "update": "{}"},
-        {"events": "text:mouseout", "update": "{}"}
+        {"events": "rect:mouseover, text:mouseover", "update": "datum"},
+        {"events": "rect:mouseout, text:mouseout", "update": "{}"}
       ]
     }
   ],
@@ -53,7 +55,7 @@
         {
           "key": "No",
           "title": "No Statement",
-          "color": 2,
+          "color": 1,
           "filter": {"value": "No - Neither", "year": "latest"}
         }
       ]
@@ -124,7 +126,7 @@
       "name": "color",
       "type": "linear",
       "domain": {"data": "counts", "field": "color"},
-      "range": ["#FF9300", "#FFDC00", "#FE0000"]
+      "range": [{"signal": "colors.orange"}, {"signal": "colors.red"}]
     }
   ],
   "marks": [
@@ -137,7 +139,7 @@
           "x2": {"scale": "xscale", "signal": "totalAnswers"},
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
-          "fill": {"value": "#000028"},
+          "fill": {"signal": "colors.navy"},
           "tooltip": {"field": "percent_label"},
           "opacity": {"signal": "if(barOver.key == datum.key, 0.5, 1)"}
         },
@@ -151,13 +153,11 @@
       "zindex": {"value": 4},
       "encode": {
         "update": {
-          "x": {"signal": "if(barOver.key == datum.key, 1, 0)"},
+          "x": {"value": 0},
           "x2": {"scale": "xscale", "field": "count"},
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
           "fill": {"scale": "color", "field": "color"},
-          "stroke": {"value": "#0037F1"},
-          "strokeWidth": {"signal": "if(barOver.key == datum.key, 2, 0)"},
           "tooltip": {"field": "percent_label"}
         },
         "hover": {"cursor": {"value": "pointer"}}
@@ -188,11 +188,12 @@
           "baseline": {"value": "bottom"},
           "align": {"value": "right"},
           "fill": {
-            "signal": "if(barOver.key == datum.key, '#0037F1', '#000028')"
+            "signal": "if(barOver.key == datum.key, colors.orange, colors.navy)"
           },
           "text": {"field": "count_label"},
           "fontWeight": {"value": "bold"}
-        }
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -204,11 +205,12 @@
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "text": {"field": "title"},
           "fill": {
-            "signal": "if(barOver.key == datum.key, '#0037F1', '#000028')"
+            "signal": "if(barOver.key == datum.key, colors.orange, colors.navy)"
           },
           "baseline": {"value": "bottom"},
           "fontWeight": {"value": "bold"}
-        }
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     }
   ]

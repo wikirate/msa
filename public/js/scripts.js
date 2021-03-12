@@ -18,9 +18,7 @@ loadViz = function (viz) {
 };
 
 initChart = function (spec, id) {
-  el = $("#" + id);
-  v = initVega(prepareVegaSpec(spec), el[0]);
-  handleChartClicks(v, el);
+  initVega(prepareVegaSpec(spec),  $("#" + id));
 };
 
 handleChartClicks = function (v, el) {
@@ -59,7 +57,11 @@ restrictToGroup = function(data, group) {
 
 initVega = function (spec, el) {
   runtime = vega.parse(spec);
-  return new vega.View(runtime, { renderer: "svg" }).initialize(el).hover().run();
+  vegaEmbed(el[0], spec, { renderer: "svg" }).then(function(result) {
+    handleChartClicks(result.view, el)
+  }).catch(console.error);
+  // return new vega.View(runtime, { renderer: "svg" }).initialize(el).hover().run();
+  //return
 };
 
 currentGroup = function () {

@@ -107,7 +107,7 @@ header img {
   text-transform: uppercase;
   display: inline-block;
   color: #000028;
-  margin-top: 1.5em;
+  margin: 1.4em 0;
 }
 
 a.dropdown-toggle::after {
@@ -278,7 +278,7 @@ a.anchor {
   font-size: 1.2em;
 }
 
-.charts svg {
+.charts .chart-wrapper svg {
   width: 100% !important;
   height: auto !important;
 }
@@ -298,6 +298,7 @@ a.anchor {
 
 .viz {
   padding: 1em 0;
+  width: 100%;
 }
 
 .viz text {
