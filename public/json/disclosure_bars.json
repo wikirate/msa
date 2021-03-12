@@ -6,7 +6,19 @@
     {"name": "totalAnswers", "update": "data('answers').length"},
     {"name": "numGroups", "update": "data('groups').length"},
     {"name": "barHeight", "value": 15},
-    {"name": "height", "update": "numGroups * (barHeight + 15)+ 100"}
+    {"name": "height", "update": "numGroups * (barHeight + 15)+ 100"},
+    {
+      "name": "colors",
+      "value": {"orange": "#FF9300", "red": "#FE0000", "blue": "#0037F1", "navy": "#000028"}
+    },
+    {
+      "name": "barTitle",
+      "value": null,
+      "on": [
+        {"events": "rect:mouseover, text:mouseover", "update": "datum.title"},
+        {"events": "rect:mouseout, text:mouseout", "update": "{}"}
+      ]
+    }
   ],
   "data": [
     {
@@ -23,9 +35,9 @@
     {
       "name": "groups",
       "values": [
-        { "key": "Geographical", "title": "Geographic Regions Disclosure"},
-        { "key": "Facility/Supplier", "title": "Facility/Suppliers Disclosure"},
-        { "key": "No", "title": "None of the above"}
+        { "key": "Geographical", "title": "Geographic Regions Disclosure", "color":  0},
+        { "key": "Facility/Supplier", "title": "Facility/Suppliers Disclosure", "color":  0},
+        { "key": "No", "title": "None of the above", "color":  1}
       ]
     },
     {
@@ -50,7 +62,12 @@
           "key": "key",
           "from": "groups",
           "fields": ["value"],
-          "values": ["title"]
+          "values": ["title", "color"]
+        },
+        {
+          "type": "formula",
+          "expr": "format(datum.count / totalAnswers, '.0%')",
+          "as": "percent_label"
         }
       ]
     }
@@ -73,9 +90,9 @@
     },
     {
       "name": "color",
-      "type": "ordinal",
-      "domain": {"data": "groups", "field": "title"},
-      "range": ["#FF9300", "#FF9300", "#FE0000"]
+      "type": "linear",
+      "domain": [0, 2],
+      "range": { "signal": "[colors.orange, colors.red, colors.navy]"}
     }
   ],
   "marks": [
@@ -88,8 +105,11 @@
           "x2": {"scale": "xscale", "signal": "totalAnswers"},
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
-          "fill": {"value": "#000028"}
-        }
+          "fill": {"signal": "colors.navy"},
+          "tooltip": {"field": "percent_label"},
+          "opacity": {"signal": "if(barTitle == datum.title, 0.5, 1)"}
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -101,8 +121,10 @@
           "x2": {"scale": "xscale", "field": "count"},
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
-          "fill": {"scale": "color", "field": "title"}
-        }
+          "fill": {"scale": "color", "field": "color"},
+          "tooltip": {"field": "percent_label"}
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -129,10 +151,14 @@
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "baseline": {"value": "bottom"},
           "align": {"value": "right"},
-          "fill": {"value": "#000028"},
           "text": {"field": "count_label"},
+          "fill": {
+            "scale": "color",
+            "signal": "if(barTitle == datum.title, datum.color, 2)"
+          },
           "fontWeight": {"value": "bold"}
-        }
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -143,10 +169,14 @@
           "x": {"value": 0},
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "text": {"field": "title"},
-          "fill": {"value": "#000028"},
           "baseline": {"value": "bottom"},
-          "fontWeight": {"value": "bold"}
-        }
+          "fontWeight": {"value": "bold"},
+          "fill": {
+            "scale": "color",
+            "signal": "if(barTitle == datum.title, datum.color, 2)"
+          }
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     }
   ]

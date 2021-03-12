@@ -11,7 +11,7 @@
     },
     {
       "name": "barTitle",
-      "value": {},
+      "value": null,
       "on": [
         {"events": "rect:mouseover, text:mouseover", "update": "datum.title"},
         {"events": "rect:mouseout, text:mouseout", "update": "{}"}
@@ -174,7 +174,8 @@
           "x2": {"scale": "xscale", "field": "percentage"},
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
-          "fill": {"scale": "color", "field": "color"}
+          "fill": {"scale": "color", "field": "color"},
+          "tooltip": {"field": "count_label"}
         },
         "hover": {"cursor": {"value": "pointer"}}
       }
@@ -188,11 +189,11 @@
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "baseline": {"value": "bottom"},
           "align": {"value": "right"},
+          "text": {"field": "percent_label"},
           "fill": {
             "scale": "color",
             "signal": "if(barTitle == datum.title, datum.color, 2)"
           },
-          "text": {"field": "percent_label"},
           "fontWeight": {"value": "bold"}
         },
         "hover": {"cursor": {"value": "pointer"}}
@@ -206,12 +207,12 @@
           "x": {"value": 0},
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "text": {"field": "title"},
+          "baseline": {"value": "bottom"},
+          "fontWeight": {"value": "bold"},
           "fill": {
             "scale": "color",
             "signal": "if(barTitle == datum.title, datum.color, 2)"
-          },
-          "baseline": {"value": "bottom"},
-          "fontWeight": {"value": "bold"}
+          }
         },
         "hover": {"cursor": {"value": "pointer"}}
       }

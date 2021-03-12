@@ -12,7 +12,7 @@
     },
     {
       "name": "barTitle",
-      "value": {},
+      "value": null,
       "on": [
         {"events": "rect:mouseover, text:mouseover", "update": "datum.title"},
         {"events": "rect:mouseout, text:mouseout", "update": "null" }

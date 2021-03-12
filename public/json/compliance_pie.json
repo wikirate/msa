@@ -5,22 +5,22 @@
   "padding": 10,
   "signals": [
     {
-      "name": "hoverDatum",
-      "value": {},
+      "name": "hoverValue",
+      "value": null,
       "on": [
         {
           "events": "arc:mouseover, @legendLabel:mouseover, @legendSymbol:mouseover",
-          "update": "datum"
+          "update": "datum.value"
         },
         {
           "events": "arc:mouseout, @legendLabel:mouseout, @legendSymbol:mouseout",
-          "update": "{}"
+          "update": "null"
         }
       ]
     },
     {
       "name": "hoverOpacity",
-      "update": "if(hoverDatum.value, 0.5, 1)",
+      "update": "if(hoverValue, 0.5, 1)",
       "value": 1
     }
   ],
@@ -137,7 +137,7 @@
             "value": 0
           },
           "opacity": {
-            "signal": "if(hoverDatum.value == datum.value, 1, hoverOpacity)"
+            "signal": "if(hoverValue == datum.value, 1, hoverOpacity)"
           }
         },
         "hover": {
@@ -205,7 +205,7 @@
             },
             "fontWeight": [
               {
-                "test": "hoverDatum.value == datum.label",
+                "test": "hoverValue == datum.label",
                 "value": "bold"
               },
               {
