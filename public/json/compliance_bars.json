@@ -148,7 +148,7 @@
         },
         {
           "type": "formula",
-          "expr": "{ value: datum.value }",
+          "expr": "{ value: [datum.value] }",
           "as": "filter"
         }
       ]

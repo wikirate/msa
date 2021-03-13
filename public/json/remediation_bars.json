@@ -29,7 +29,7 @@
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_incidents_remediation_revised+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known"
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_incidents_remediation_revised+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[status]=known"
     },
     {
       "name": "yes_answers",
@@ -46,19 +46,34 @@
     },
     {
       "name": "no_answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_incidents_remediation_binary+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known",
-      "transform": [
-        {"type": "filter", "expr": "datum.value == 'No'"}
-      ]
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_incidents_remediation_binary+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[status]=known",
+      "transform": [{"type": "filter", "expr": "datum.value == 'No'"}]
     },
     {
       "name": "groups",
       "values": [
         {"key": "Cancel contracts", "title": "Cancel contract(s)", "color": 0},
-        {"key": "Senior management", "title": "Involvement of senior management", "color": 0},
-        {"key": "Corrective action plan", "title": "Corrective action plan(s)", "color": 0},
-        {"key": "Worker remediation", "title": "Worker remediation", "color": 0},
-        {"key": "No", "title": "None of the above", "color": 1}
+        {
+          "key": "Senior management",
+          "title": "Involvement of senior management",
+          "color": 0
+        },
+        {
+          "key": "Corrective action plan",
+          "title": "Corrective action plan(s)",
+          "color": 0
+        },
+        {
+          "key": "Worker remediation",
+          "title": "Worker remediation",
+          "color": 0
+        },
+        {
+          "key": "No",
+          "title": "None of the above",
+          "color": 1,
+          "wikirate_page": "Walk_Free_Foundation+MSA_incidents_remediation_binary'"
+        }
       ]
     },
     {
@@ -93,9 +108,10 @@
           "key": "key",
           "from": "groups",
           "fields": ["value"],
-          "values": ["title", "color"]
+          "values": ["title", "color", "wikirate_page"]
         },
-        {"type": "filter", "expr": "isValid(datum.title)"}
+        {"type": "filter", "expr": "isValid(datum.title)"},
+        {"type": "formula", "as": "filter", "expr": "{ value: [datum.value] }"}
       ]
     }
   ],
@@ -162,10 +178,10 @@
         "update": {
           "x": {"value": 5},
           "y": {"scale": "yscale", "field": "title", "offset": 2},
-          "baseline":{ "value": "top"},
+          "baseline": {"value": "top"},
           "text": {"signal": "if(datum.count == 0, 'None', '')"},
           "fill": {"value": "white"},
-          "fontStyle": {"value": "italic" }
+          "fontStyle": {"value": "italic"}
         }
       }
     },
@@ -185,11 +201,7 @@
             "signal": "if(barTitle == datum.title, datum.color, 2)"
           }
         },
-        "hover": {
-          "cursor": {
-            "value": "pointer"
-          }
-        }
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -207,11 +219,7 @@
             "signal": "if(barTitle == datum.title, datum.color, 2)"
           }
         },
-        "hover": {
-          "cursor": {
-            "value": "pointer"
-          }
-        }
+        "hover": {"cursor": {"value": "pointer"}}
       }
     }
   ]

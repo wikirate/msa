@@ -23,11 +23,11 @@ initChart = function (spec, id) {
 
 handleChartClicks = function (v, el) {
   return v.addEventListener('click', function (_event, item) {
-    wikiRateLink(item.datum, el);
+    wikiRateChartLink(item.datum, el);
   });
 };
 
-wikiRateLink = function (datum, el) {
+wikiRateChartLink = function (datum, el) {
   wrPage = datum.wikirate_page || wikiRatePage(el);
   filter = datum.filter;
   if (filter && wrPage) {
@@ -37,7 +37,7 @@ wikiRateLink = function (datum, el) {
 
 openWikiRate = function (page, query) {
   url = wikiRateOrg + page + '?' + query;
-  window.open(url, "_WikiRateFromWalkFree");
+  window.open(url, "_blank");
 }
 
 wikiRatePage = function (el) {
@@ -46,9 +46,16 @@ wikiRatePage = function (el) {
 
 filterParams = function (filter) {
   filter ||= {};
-  filter["company_group"] = ["MSA Asset Managers"];
+  filter["company_group"] = filterGroups();
   filter["year"] ||= "latest";
   return $.param({ filter: filter });
+}
+
+filterGroups = function () {
+  groups = ["MSA Asset Managers"];
+  current = currentGroup();
+  if (current) { groups.push(current) }
+  return groups;
 }
 
 prepareVegaSpec = function (spec) {

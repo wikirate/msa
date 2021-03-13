@@ -48,7 +48,7 @@
     },
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_training_revised+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_training_revised+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[status]=known",
       "transform": [
         {
           "type": "formula",
@@ -131,7 +131,8 @@
           "type": "formula",
           "expr": "if(datum.value == 'Any', 1, 0)",
           "as": "color"
-        }
+        },
+        {"type": "formula", "as": "filter", "expr": "{ value: [datum.value] }"}
       ]
     }
   ],

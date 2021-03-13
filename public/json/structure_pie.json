@@ -42,7 +42,7 @@
           "as": ["count"]
         },
         {"type": "pie", "field": "count", "sort": false},
-        {"type": "formula", "as": "filter", "expr": "{ value: datum.value }"},
+        {"type": "formula", "as": "filter", "expr": "{ value: [datum.value] }"},
         {
           "type": "window",
           "ops": ["sum"],

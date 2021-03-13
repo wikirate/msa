@@ -57,7 +57,7 @@
         {
           "type": "formula",
           "as": "filter",
-          "expr": "{ value: datum.value }"
+          "expr": "{ value: [datum.value] }"
         },
         {
           "type": "window",

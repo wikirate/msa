@@ -110,7 +110,8 @@
           "type": "formula",
           "expr": "datum.term + ' ' + datum.parens",
           "as": "title"
-        }
+        },
+        {"type": "formula", "as": "filter", "expr": "{ value: [datum.value] }"}
       ]
     }
   ],

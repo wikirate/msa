@@ -48,7 +48,7 @@
           "as": ["count"]
         },
         {"type": "pie", "field": "count", "sort": false},
-        {"type": "formula", "as": "filter", "expr": "{ value: datum.value }"},
+        {"type": "formula", "as": "filter", "expr": "{ value: [datum.value] }"},
         {
           "type": "window",
           "ops": ["sum"],
@@ -65,7 +65,8 @@
           "type": "formula",
           "expr": "datum.count + ' out of ' + datum.sum_count + ' companies'",
           "as": "count_label"
-        }
+        },
+        {"type": "formula", "as": "filter", "expr": "{ value: [datum.value] }"}
       ]
     }
   ],

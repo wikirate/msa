@@ -108,13 +108,38 @@
       ]
     },
     {
-      "name": "labels",
+      "name": "metrics",
       "values": [
-        {"label": "Have Human Rights policy"},
-        {"label": "Assess modern slavery risk"},
-        {"label": "Engage on modern slavery"},
-        {"label": "Require MSA report"},
-        {"label": "None of the above"}
+        {
+          "seq": 1,
+          "title": "Have human rights policy",
+          "wikirate_page": "Walk_Free_Foundation+Human_Rights_investment_policy_sector_specific",
+          "color": 0
+        },
+        {
+          "seq": 2,
+          "title": "Assess modern slavery risk",
+          "wikirate_page": "Walk_Free_Foundation+Assesses_MS_risks_of_investee_companies_sector_specific",
+          "color": 0
+        },
+        {
+          "seq": 3,
+          "title": "Engage on modern slavery",
+          "wikirate_page": "Walk_Free_Foundation+Engagement_on_MS_with_investee_companies_sector_specific",
+          "color": 0
+        },
+        {
+          "seq": 4,
+          "title": "Require MSA report",
+          "wikirate_page": "Walk_Free_Foundation+Cascading_reporting_obligations_under_MSA_sector_specific",
+          "color": 0
+        },
+        {
+          "seq": 5,
+          "title": "None of the above",
+          "wikirate_page": "Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific",
+          "color": 1
+        }
       ]
     },
     {
@@ -123,9 +148,11 @@
       "transform": [
         {"type": "window", "ops": ["row_number"], "as": ["seq"]},
         {
-          "type": "formula",
-          "expr": "data('labels')[datum.seq -1]['label']",
-          "as": "title"
+          "type": "lookup",
+          "from": "metrics",
+          "key": "seq",
+          "fields": ["seq"],
+          "values": ["title", "color", "wikirate_page"]
         },
         {
           "type": "formula",
@@ -142,11 +169,7 @@
           "expr": "format(datum.percentage, '.0%')",
           "as": "percent_label"
         },
-        {
-          "type": "formula",
-          "expr": "if(datum.value == 'No', 1, 0)",
-          "as": "color"
-        }
+        {"type": "formula", "as": "filter", "expr": "{ value: [datum.value] }"}
       ]
     }
   ],
@@ -169,13 +192,8 @@
     {
       "name": "color",
       "type": "linear",
-      "domain": [
-        0,
-        2
-      ],
-      "range": {
-        "signal": "[colors.orange, colors.red, colors.navy]"
-      }
+      "domain": [0, 2],
+      "range": {"signal": "[colors.orange, colors.red, colors.navy]"}
     }
   ],
   "marks": [
@@ -188,21 +206,11 @@
           "x2": {"scale": "xscale", "value": 1},
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
-          "fill": {
-            "signal": "colors.navy"
-          },
-          "tooltip": {
-            "field": "count_label"
-          },
-          "opacity": {
-            "signal": "if(barTitle == datum.title, 0.5, 1)"
-          }
+          "fill": {"signal": "colors.navy"},
+          "tooltip": {"field": "count_label"},
+          "opacity": {"signal": "if(barTitle == datum.title, 0.5, 1)"}
         },
-        "hover": {
-          "cursor": {
-            "value": "pointer"
-          }
-        }
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -215,15 +223,9 @@
           "y": {"scale": "yscale", "field": "title"},
           "height": {"signal": "barHeight"},
           "fill": {"scale": "color", "field": "color"},
-          "tooltip": {
-            "field": "count_label"
-          }
+          "tooltip": {"field": "count_label"}
         },
-        "hover": {
-          "cursor": {
-            "value": "pointer"
-          }
-        }
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -231,10 +233,10 @@
       "from": {"data": "counts"},
       "encode": {
         "update": {
-          "x": {"scale": "xscale", "value": 1 },
+          "x": {"scale": "xscale", "value": 1},
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "baseline": {"value": "bottom"},
-          "align": { "value": "right"},
+          "align": {"value": "right"},
           "text": {"field": "percent_label"},
           "fontWeight": {"value": "bold"},
           "fill": {
@@ -242,11 +244,7 @@
             "signal": "if(barTitle == datum.title, datum.color, 2)"
           }
         },
-        "hover": {
-          "cursor": {
-            "value": "pointer"
-          }
-        }
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -257,10 +255,10 @@
         "update": {
           "x": {"value": 5},
           "y": {"scale": "yscale", "field": "title", "offset": 2},
-          "baseline":{ "value": "top"},
+          "baseline": {"value": "top"},
           "text": {"signal": "if(datum.count == 0, 'None', '')"},
           "fill": {"value": "white"},
-          "fontStyle": {"value": "italic" }
+          "fontStyle": {"value": "italic"}
         }
       }
     },
@@ -279,11 +277,7 @@
             "signal": "if(barTitle == datum.title, datum.color, 2)"
           }
         },
-        "hover": {
-          "cursor": {
-            "value": "pointer"
-          }
-        }
+        "hover": {"cursor": {"value": "pointer"}}
       }
     }
   ]

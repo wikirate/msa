@@ -131,7 +131,8 @@
           "type": "formula",
           "expr": "if(datum.value == null, datum.term + datum.parens, datum.value)",
           "as": "value"
-        }
+        },
+        {"type": "formula", "as": "filter", "expr": "{ value: [datum.value] }"}
       ]
     }
   ],
