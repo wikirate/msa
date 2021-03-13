@@ -104,7 +104,7 @@
     },
     {
       "name": "homepage",
-      "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_statement_homepage_link+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_statement_homepage_link+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {
           "type": "aggregate",
