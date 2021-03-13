@@ -7,9 +7,19 @@
     {"name": "numCompanies", "update": "data('companies').length"},
     {"name": "barHeight", "value": 21},
     {"name": "height", "update": "(barHeight+ 1)  * numCompanies"},
+    {"name": "lastColumn", "update": "data('metrics')[6]['heading']"},
+    {"name": "firstColumn", "update": "data('metrics')[0]['heading']"},
+    {
+      "name": "currentAnswer",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover, text:mouseover", "update": "datum"},
+        {"events": "rect:mouseout, text:mouseout", "update": "{}"}
+      ]
+    },
     {
       "name": "activeHeading",
-      "value": "due diligence in investments",
+      "update": "lastColumn",
       "on": [{"events": "@x_labels:click", "update": "datum.value"}]
     },
     {
@@ -21,7 +31,17 @@
       "update": "pluck(data('metrics'), 'table')[activeIndex]",
       "value": "statements"
     },
-    {"name": "signalTest", "update": "{hi: 'statements'}['hi']"}
+    {
+      "name": "colors",
+      "value": {
+        "orange": "#FF9300",
+        "red": "#FE0000",
+        "blue": "#0037F1",
+        "navy": "#000028",
+        "yellow": "#FFDC00",
+        "faintNavy": "#DDDDE3"
+      }
+    }
   ],
   "data": [
     {
@@ -64,7 +84,7 @@
       "values": [
         {"key": "Yes", "short": "Yes"},
         {"key": "No", "short": "No"},
-        {"key": "Unknown", "short": "-"}
+        {"key": "Unknown", "short": "–"}
       ],
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
     },
@@ -164,11 +184,7 @@
     {
       "name": "metrics",
       "values": [
-        {
-          "id": 1827651,
-          "heading": "have statement",
-          "table": "statements"
-        },
+        {"id": 1827651, "heading": "have statement", "table": "statements"},
         {
           "id": 6908731,
           "heading": "join industry initiatives",
@@ -190,11 +206,7 @@
           "heading": "engage on modern slavery",
           "table": "engagement"
         },
-        {
-          "id": 6916105,
-          "heading": "due diligence in investments",
-          "table": "considers"
-        }
+        {"id": 6916105, "heading": "total", "table": "considers"}
       ]
     },
     {
@@ -237,8 +249,8 @@
     {
       "name": "countRows",
       "values": [
-        {"key": "count", "label": "Yes companies (total)", "y": -60},
-        {"key": "percent", "label": "Yes companies (percent)", "y": -38}
+        {"key": "count", "label": "Total", "y": -60},
+        {"key": "percent", "label": "Percent", "y": -38}
       ]
     },
     {
@@ -247,7 +259,8 @@
       "transform": [
         {"type": "filter", "expr": "datum.value == 'Yes'"},
         {"type": "aggregate", "groupby": ["metric_heading"]},
-        {"type": "impute",
+        {
+          "type": "impute",
           "key": "metric_heading",
           "keyvals": {"signal": "pluck(data('metrics'), 'heading')"},
           "field": "count",
@@ -258,8 +271,15 @@
           "expr": "format(datum.count / numCompanies, '.0%')",
           "as": "percent"
         },
-        {"type":"fold", "fields":[ "count", "percent"]},
-        {"type":"lookup", "from": "countRows", "key":"key", "fields":["key"], "values":["y"]}
+        {"type": "fold", "fields": ["count", "percent"]},
+        {
+          "type": "lookup",
+          "from": "countRows",
+          "key": "key",
+          "fields": ["key"],
+          "values": ["y"]
+        },
+        {"type": "window", "ops": ["row_number"], "as": ["id"]}
       ]
     }
   ],
@@ -292,7 +312,7 @@
       "name": "cellColor",
       "type": "ordinal",
       "domain": {"data": "values", "field": "short"},
-      "range": ["#FF9300", "#000028", "#FEF7ED"]
+      "range": {"signal": "[colors.orange, colors.navy, colors.faintNavy]"}
     }
   ],
   "axes": [
@@ -330,13 +350,13 @@
     {
       "name": "companyBackgrounds",
       "type": "rect",
-      "from": {"data": "table"},
+      "from": {"data": "companies"},
       "encode": {
         "update": {
           "x": {"value": -6},
           "x2": {"value": -300},
-          "y": {"scale": "yscale", "field": "company", "offset": -15},
-          "fill": {"value": "#FEF7ED"},
+          "y": {"scale": "yscale", "field": "id", "offset": -15},
+          "fill": {"signal": "colors.faintNavy"},
           "height": {"signal": "barHeight"},
           "align": {"value": "center"}
         }
@@ -353,7 +373,10 @@
           "width": {"value": 400},
           "text": {"field": "name"},
           "height": {"signal": "barHeight"},
-          "align": {"value": "right"}
+          "align": {"value": "right"},
+          "fill": {
+            "signal": "if(currentAnswer.company == datum.id || currentAnswer.id == datum.id, colors.blue, colors.navy)"
+          }
         }
       }
     },
@@ -380,12 +403,15 @@
       "encode": {
         "update": {
           "x": {"value": -15},
-          "y": { "field": "y", "offset": 15},
+          "y": {"field": "y", "offset": 15},
           "width": {"value": 400},
           "text": {"field": "label"},
           "height": {"signal": "barHeight"},
           "align": {"value": "right"},
-          "fontStyle": { "value": "italic"}
+          "fontStyle": {"value": "italic"},
+          "fill": {
+            "signal": "if(currentAnswer.key == datum.key, colors.blue, colors.navy)"
+          }
         }
       }
     },
@@ -399,7 +425,7 @@
             "scale": "xscale",
             "field": "metric_heading",
             "offset": {
-              "signal": "if(datum.metric_heading == 'due diligence in investments', 5, 0)"
+              "signal": "if(datum.metric_heading == lastColumn, 5, if(datum.metric_heading == firstColumn, -5, 0))"
             }
           },
           "y": {"field": "y"},
@@ -409,7 +435,9 @@
           "align": {"value": "center"},
           "opacity": {
             "signal": "if(datum.metric_heading == activeHeading, 0.3, 0.6)"
-          }
+          },
+          "stroke": {"value": "#fff"},
+          "strokeWidth": {"signal": "if(currentAnswer.id == datum.id, 3, 0)"}
         }
       }
     },
@@ -423,22 +451,21 @@
             "scale": "xscale",
             "field": "metric_heading",
             "offset": {
-              "signal": "if(datum.metric_heading == 'due diligence in investments', 33, 27)"
+              "signal": "if(datum.metric_heading == lastColumn, 33, if(datum.metric_heading == firstColumn, 22, 27))"
             }
           },
           "width": {"value": 70},
           "y": {"field": "y", "offset": 15},
-          "fill": { "value": "#000028"},
+          "fill": {"signal": "colors.navy"},
           "fontWeight": {
-            "signal": "if(datum.metric_heading == activeHeading, 'bold', 100)"
+            "signal": "if(datum.id == currentAnswer.id || datum.metric_heading == activeHeading, 'bold', 100)"
           },
-          "fontStyle" : {"value": "italic"},
+          "fontStyle": {"value": "italic"},
           "text": {"field": "value"},
           "align": {"value": "center"}
         }
       }
     },
-
     {
       "type": "rect",
       "from": {"data": "table"},
@@ -448,7 +475,7 @@
             "scale": "xscale",
             "field": "metric_heading",
             "offset": {
-              "signal": "if(datum.metric_heading == 'due diligence in investments', 5, 0)"
+              "signal": "if(datum.metric_heading == lastColumn, 5, if(datum.metric_heading == firstColumn, -5, 0))"
             }
           },
           "y": {"scale": "yscale", "field": "company", "offset": -15},
@@ -458,7 +485,9 @@
           "align": {"value": "center"},
           "opacity": {
             "signal": "if(datum.metric_heading == activeHeading, 0.75, 1)"
-          }
+          },
+          "stroke": {"value": "#fff"},
+          "strokeWidth": {"signal": "if(currentAnswer.id == datum.id, 3, 0)"}
         }
       }
     },
@@ -471,14 +500,14 @@
             "scale": "xscale",
             "field": "metric_heading",
             "offset": {
-              "signal": "if(datum.metric_heading == 'due diligence in investments', 33, 27)"
+              "signal": "if(datum.metric_heading == lastColumn, 33, if(datum.metric_heading == firstColumn, 22, 27))"
             }
           },
           "width": {"value": 70},
           "y": {"scale": "yscale", "field": "company"},
           "fill": {"scale": "valueColor", "field": "value"},
           "fontWeight": {
-            "signal": "if(datum.metric_heading == activeHeading, 'bold', 100)"
+            "signal": "if(datum.id == currentAnswer.id || datum.metric_heading == activeHeading, 'bold', 100)"
           },
           "text": {"field": "short"},
           "align": {"value": "center"}
