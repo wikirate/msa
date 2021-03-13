@@ -3,25 +3,33 @@
   "width": 220,
   "height": 180,
   "padding": 10,
-  "signals": [    {
-    "name": "hoverValue",
-    "value": null,
-    "on": [
-      {
-        "events": "arc:mouseover, @legendLabel:mouseover, @legendSymbol:mouseover",
-        "update": "datum.value"
-      },
-      {
-        "events": "arc:mouseout, @legendLabel:mouseout, @legendSymbol:mouseout",
-        "update": "null"
-      }
-    ]
-  },
+  "signals": [
     {
-      "name": "hoverOpacity",
-      "update": "if(hoverValue, 0.5, 1)",
-      "value": 1
-    }],
+      "name": "colors",
+      "value": {
+        "orange": "#FF9300",
+        "red": "#FE0000",
+        "blue": "#0037F1",
+        "navy": "#000028",
+        "yellow": "#FFDC00"
+      }
+    },
+    {
+      "name": "hoverValue",
+      "value": null,
+      "on": [
+        {
+          "events": "arc:mouseover, @legendLabel:mouseover, @legendSymbol:mouseover",
+          "update": "datum.value"
+        },
+        {
+          "events": "arc:mouseout, @legendLabel:mouseout, @legendSymbol:mouseout",
+          "update": "null"
+        }
+      ]
+    },
+    {"name": "hoverOpacity", "update": "if(hoverValue, 0.5, 1)", "value": 1}
+  ],
   "data": [
     {
       "name": "answers",
@@ -89,7 +97,7 @@
           "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
           "fill": {"value": "white"},
           "fontWeight": {"value": "bold"},
-          "fontSize": { "value": 15 },
+          "fontSize": {"value": 15},
           "align": {"value": "center"},
           "baseline": {"value": "middle"},
           "text": {"field": "percentage"}
@@ -102,13 +110,10 @@
       "fill": "color",
       "type": "symbol",
       "orient": "top",
-      "offset": { "value": 20 },
+      "offset": {"value": 20},
       "encode": {
         "labels": {
-          "update": {
-            "fontWeight": {"value": 500},
-            "limit": { "value": 0 }
-          }
+          "update": {"fontWeight": {"value": 500}, "limit": {"value": 0}}
         },
         "symbols": {"update": {"fillOpacity": [{"value": 1}]}}
       }
