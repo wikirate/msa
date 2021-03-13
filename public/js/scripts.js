@@ -28,14 +28,27 @@ handleChartClicks = function (v, el) {
 };
 
 wikiRateLink = function (datum, el) {
-  wrPage = el.data("wikirate_page");
+  wrPage = datum.wikirate_page || wikiRatePage(el);
   filter = datum.filter;
   if (filter && wrPage) {
-    filter["company_group"] = ["MSA Asset Managers"];
-    filter["year"] ||= "latest";
-    url = wikiRateOrg + wrPage + '?' + $.param({ filter: filter });
-    window.open(url, "_WikiRateFromWalkFree");
+    openWikiRate(wrPage, filterParams(filter));
   }
+}
+
+openWikiRate = function (page, query) {
+  url = wikiRateOrg + page + '?' + query;
+  window.open(url, "_WikiRateFromWalkFree");
+}
+
+wikiRatePage = function (el) {
+  return el.data("wikirate_page") || el.closest(".chart").data("wikirate_page");
+}
+
+filterParams = function (filter) {
+  filter ||= {};
+  filter["company_group"] = ["MSA Asset Managers"];
+  filter["year"] ||= "latest";
+  return $.param({ filter: filter });
 }
 
 prepareVegaSpec = function (spec) {
@@ -98,6 +111,11 @@ $(document).ready( function () {
     updateFilter(item);
     $(".viz").html("");
     loadAllViz();
+    event.preventDefault();
+  });
+
+  $(".metric-link").on("click", function (event) {
+    openWikiRate(wikiRatePage($(this)), filterParams());
     event.preventDefault();
   });
 });

@@ -54,8 +54,8 @@ body {
 }
 
 a {
-  color: #FF9300;
-  text-decoration: none;
+  color: #000028;
+  text-decoration: underline;
 }
 
 a:focus, a:hover {
@@ -66,12 +66,6 @@ h3 {
   font-family: MediaSans;
   text-transform: uppercase;
   color: #000028;
-}
-
-a.download-button .tick {
-  color: #0037F1;
-  font-weight: bold;
-  padding-left: 10px;
 }
 
 .subtitle {
@@ -133,7 +127,6 @@ a.dropdown-toggle::after {
   display: none;
 }
 
-
 /* ----- Top Section ----- */
 
 section.top {
@@ -174,6 +167,7 @@ section.top a {
   font-family: 'MediaSans';
   text-transform: uppercase;
   display: inline-block;
+  text-decoration: none;
   color: #000028;
   position: relative;
 }
@@ -272,6 +266,10 @@ a.anchor {
 }
 
 /* ----- Charts ----- */
+
+.metric-link {
+  cursor: pointer;
+}
 
 .charts .subtitle {
   font-style: italic;
