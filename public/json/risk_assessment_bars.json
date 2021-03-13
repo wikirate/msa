@@ -94,7 +94,8 @@
           "fields": ["value"],
           "values": ["title", "color"]
         },
-        {"type": "filter", "expr": "isValid(datum.title)"}
+        {"type": "filter", "expr": "isValid(datum.title)"},
+        {"type": "formula", "as": "filter", "expr": "{ value: datum.value }"}
       ]
     }
   ],

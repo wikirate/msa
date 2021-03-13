@@ -68,7 +68,8 @@
           "type": "formula",
           "expr": "format(datum.count / totalAnswers, '.0%')",
           "as": "percent_label"
-        }
+        },
+        {"type": "formula", "as": "filter", "expr": "{ value: datum.value }"}
       ]
     }
   ],
