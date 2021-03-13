@@ -78,7 +78,7 @@
           "fill": {"scale": "color", "field": "value"},
           "x": {"value": 100},
           "y": {"value": 100},
-          "tooltip": {"field": "count"}
+          "tooltip": {"field": "count_label"}
         },
         "update": {
           "startAngle": {"field": "startAngle"},
