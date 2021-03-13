@@ -1,5 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Companies meeting minimum requirements",
   "width": 190,
   "height": 180,
   "padding": 10,

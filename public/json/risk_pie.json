@@ -1,5 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Risk assessment tool and risks identified",
   "width": 220,
   "height": 180,
   "padding": 10,
@@ -59,7 +60,12 @@
           "as": "percentage",
           "expr": "format(datum.count / datum.sum_count, '.0%')"
         },
-        {"type": "collect", "sort": {"field": "value"}}
+        {"type": "collect", "sort": {"field": "value"}},
+        {
+          "type": "formula",
+          "expr": "datum.count + ' out of ' + datum.sum_count + ' companies'",
+          "as": "count_label"
+        }
       ]
     }
   ],
@@ -81,9 +87,18 @@
           "innerRadius": {"value": 0},
           "outerRadius": {"value": 100},
           "cornerRadius": {"value": 0},
-          "opacity": {"value": 1}
+          "opacity": {
+            "signal": "if(hoverValue == datum.value, 1, hoverOpacity)"
+          }
         },
-        "hover": {"opacity": {"value": 0.8}}
+        "hover": {
+          "opacity": {
+            "value": 1
+          },
+          "cursor": {
+            "value": "pointer"
+          }
+        }
       }
     },
     {
@@ -111,11 +126,28 @@
       "type": "symbol",
       "orient": "top",
       "offset": {"value": 20},
+
       "encode": {
         "labels": {
-          "update": {"fontWeight": {"value": 500}, "limit": {"value": 0}}
+          "name": "legendLabel",
+          "interactive": true,
+          "update": {
+            "limit": {"value": 0},
+            "fontWeight": [
+              {
+                "test": "hoverValue == datum.label",
+                "value": "bold"
+              },
+              {
+                "value": 400
+              }
+            ]
+          }
         },
-        "symbols": {"update": {"fillOpacity": [{"value": 1}]}}
+        "symbols": {
+          "name": "legendSymbol",
+          "interactive": true
+        }
       }
     }
   ],
@@ -123,7 +155,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "range": ["#000028", "#FF9300", "#FFDC00", "#FE0000"],
+      "range": {"signal": "[colors.orange, colors.red, colors.yellow, colors.navy]"},
       "domain": {"data": "counts", "field": "value"}
     }
   ]
