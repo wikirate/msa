@@ -7,7 +7,24 @@
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
     {"name": "barHeight", "value": "15"},
-    {"name": "navyOpacity", "value": 1}
+    {
+      "name": "colors",
+      "value": {
+        "orange": "#FF9300",
+        "red": "#FE0000",
+        "blue": "#0037F1",
+        "navy": "#000028",
+        "yellow": "#FFDC00"
+      }
+    },
+    {
+      "name": "barOver",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover, text:mouseover", "update": "datum"},
+        {"events": "rect:mouseout, text:mouseout", "update": "{}"}
+      ]
+    }
   ],
   "data": [
     {
@@ -24,9 +41,9 @@
     {
       "name": "subgroups",
       "values": [
-        {"key": "(direct employees)", "label": "direct employees"},
-        {"key": "(supply chain workers)", "label": "supply chain workers"},
-        {"key": "", "label": "direct employees"}
+        {"key": "(direct employees)", "label": "Direct employees", "color": 0},
+        {"key": "(supply chain workers)", "label": "Supply chain workers", "color": 1},
+        {"key": "", "label": "Direct employees", "color": 2}
       ],
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
     },
@@ -92,8 +109,8 @@
           "from": "subgroups",
           "key": "key",
           "fields": ["parens"],
-          "values": ["seq", "label"],
-          "as": ["subgroup_seq", "subgroup_label"]
+          "values": ["seq", "label", "color"],
+          "as": ["subgroup_seq", "subgroup_label", "color"]
         },
         {
           "type": "filter",
@@ -104,6 +121,11 @@
           "type": "formula",
           "expr": "datum.count + '/' + totalAnswers",
           "as": "count_label"
+        },
+        {
+          "type": "formula",
+          "expr": "format(datum.count / totalAnswers, '.0%')",
+          "as": "percent_label"
         },
         {
           "type": "formula",
@@ -130,16 +152,16 @@
       "padding": 0.4
     },
     {
-      "name": "color",
-      "type": "ordinal",
-      "domain": {"data": "counts", "field": "subgroup_seq"},
-      "range": ["#FF9300", "#FFDC00", "#FE0000"]
-    },
-    {
       "name": "twoColor",
       "type": "ordinal",
       "domain": {"data": "counts", "field": "subgroup_label"},
-      "range": ["#FF9300", "#FFDC00"]
+      "range": {"signal": "[colors.orange, colors.yellow]"}
+    },
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": [0, 3],
+      "range": {"signal": "[colors.orange, colors.yellow, colors.red, colors.navy]"}
     }
   ],
   "marks": [
@@ -174,8 +196,11 @@
               "x2": {"scale": "xscale", "signal": "totalAnswers"},
               "y": {"scale": "yscale", "field": "value"},
               "height": {"signal": "barHeight"},
-              "fill": {"value": "#000028"},
-              "opacity": {"signal": "navyOpacity"}
+              "fill": {"signal": "colors.navy"},
+              "tooltip": {"field": "percent_label"},
+              "opacity": {"signal": "if(barOver.value == datum.value, 0.5, 1)"}
+            },
+            "hover": {"cursor": {"value": "pointer"}
             }
           }
         },
@@ -188,7 +213,10 @@
               "x2": {"scale": "xscale", "field": "count"},
               "y": {"scale": "yscale", "field": "value"},
               "height": {"signal": "barHeight"},
-              "fill": {"scale": "color", "field": "subgroup_seq"}
+              "fill": {"scale": "color", "field": "color"},
+              "tooltip": {"field": "percent_label"}
+            },
+            "hover": {"cursor": {"value": "pointer"}
             }
           }
         },
@@ -215,9 +243,14 @@
               "x": {"scale": "xscale", "signal": "totalAnswers", "offset": 4},
               "y": {"scale": "yscale", "field": "value", "offset": 2},
               "baseline": {"value": "top"},
-              "fill": {"value": "#000028"},
               "text": {"field": "count_label"},
-              "fontWeight": {"value": "bold"}
+              "fontWeight": {"value": "bold"},
+              "fill": {
+                "scale": "color",
+                "signal": "if(barOver.value == datum.value, datum.color, 3)"
+              }
+            },
+            "hover": {"cursor": {"value": "pointer"}
             }
           }
         }
@@ -231,9 +264,12 @@
           "x": {"value": 0},
           "y": {"scale": "ygroupscale", "field": "term", "offset": -2},
           "text": {"field": "title"},
-          "fill": {"value": "black"},
           "baseline": {"value": "bottom"},
-          "fontWeight": {"value": "bold"}
+          "fontWeight": {"value": "bold"},
+          "fill": {
+            "scale": "color",
+            "signal": "if(barOver.term == datum.term && barOver.subgroup_seq, barOver.color, 3)"
+          }
         }
       }
     }
@@ -246,10 +282,12 @@
       "direction": "horizontal",
       "encode": {
         "legend": {
-          "update": {"x":{"signal": "width", "offset": -220}, "y": {"offset": -15}}
+          "update": {
+            "x": {"value": 0},
+            "y": {"offset": -15}
+          }
         },
-        "labels": {"update": {"fontWeight": [{"value": 800}]}},
-        "symbols": {"update": {"fillOpacity": [{"value": 1}]}}
+        "labels": {"update": {"fontSize": {"value": 13}}}
       }
     }
   ]

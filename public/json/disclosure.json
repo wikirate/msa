@@ -7,6 +7,18 @@
     {"name": "barHeight", "value": 17},
     {"name": "height", "update": "(barHeight + 2) * totalAnswers"},
     {
+      "name": "colors",
+      "value": {"orange": "#FF9300", "yellow": "#FFDC00", "navy": "#000028"}
+    },
+    {
+      "name": "currentDatum",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover, @companyLabel:mouseover", "update": "datum"},
+        {"events": "rect:mouseout, @companyLabel:mouseout", "update": "{}"}
+      ]
+    },
+    {
       "name": "sort",
       "bind": {
         "input": "radio",
@@ -21,7 +33,14 @@
   "data": [
     {
       "name": "companies",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate+Answer/company_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known"
+      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate+Answer/company_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter%5Bcompany_name%5D=&filter%5Bnot_ids%5D=&filter%5Byear%5D=latest&filter[status]=known",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum.name",
+          "as": "company_name"
+        }
+      ]
     },
     {
       "name": "answers",
@@ -68,11 +87,6 @@
       },
       "type": "band",
       "padding": 0.2
-    },
-    {
-      "name": "color",
-      "type": "ordinal",
-      "range": ["#FF9300", "#FFDC00", "#FE0000"]
     }
   ],
   "axes": [
@@ -93,7 +107,19 @@
       "ticks": false,
       "domain": false,
       "labelPadding": 10,
-      "labelFontSize": 13
+      "labelFontSize": 13,
+      "encode": {
+        "labels": {
+          "name": "companyLabel",
+          "interactive": true,
+          "update": {
+            "fill": {"signal": "if(currentDatum.value == datum.value || currentDatum.company_name == datum.value, colors.orange, colors.navy)"}
+
+          },
+          "hover": {"cursor": {"value": "pointer"}}
+        }
+
+      }
     }
   ],
   "marks": [
@@ -106,8 +132,9 @@
           "x2": {"scale": "xscale", "field": "value"},
           "y": {"scale": "yscale", "field": "company_name"},
           "height": {"signal": "barHeight"},
-          "fill": {"scale": "color", "field": "color"}
-        }
+          "fill": {"signal": "if(currentDatum.value == datum.company_name || currentDatum.company_name == datum.company_name, colors.navy, colors.orange)"}
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     }
   ]

@@ -3,7 +3,25 @@
   "width": 220,
   "height": 180,
   "padding": 10,
-  "signals": [],
+  "signals": [    {
+    "name": "hoverValue",
+    "value": null,
+    "on": [
+      {
+        "events": "arc:mouseover, @legendLabel:mouseover, @legendSymbol:mouseover",
+        "update": "datum.value"
+      },
+      {
+        "events": "arc:mouseout, @legendLabel:mouseout, @legendSymbol:mouseout",
+        "update": "null"
+      }
+    ]
+  },
+    {
+      "name": "hoverOpacity",
+      "update": "if(hoverValue, 0.5, 1)",
+      "value": 1
+    }],
   "data": [
     {
       "name": "answers",

@@ -4,17 +4,32 @@
   "width": 700,
   "height": 200,
   "signals": [
-    {"name": "barHeight", "value": "15"},
+    {
+      "name": "barHeight",
+      "value": "15"
+    },
     {
       "name": "colors",
-      "value": {"orange": "#FF9300", "red": "#FE0000", "blue": "#0037F1", "navy": "#000028"}
+      "value": {
+        "orange": "#FF9300",
+        "red": "#FE0000",
+        "blue": "#0037F1",
+        "navy": "#000028",
+        "yellow": "#FFDC00"
+      }
     },
     {
       "name": "barTitle",
       "value": null,
       "on": [
-        {"events": "rect:mouseover, text:mouseover", "update": "datum.title"},
-        {"events": "rect:mouseout, text:mouseout", "update": "{}"}
+        {
+          "events": "rect:mouseover, text:mouseover",
+          "update": "datum.title"
+        },
+        {
+          "events": "rect:mouseout, text:mouseout",
+          "update": "null"
+        }
       ]
     }
   ],
@@ -23,80 +38,173 @@
       "name": "signed",
       "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_statement_signed_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
-        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "aggregate",
+          "groupby": [
+            "value"
+          ]
+        },
         {
           "type": "impute",
           "key": "value",
-          "keyvals": ["Yes"],
+          "keyvals": [
+            "Yes"
+          ],
           "field": "count",
           "value": 0
         },
-        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
-        {"type": "filter", "expr": "datum.value == 'Yes'"}
+        {
+          "type": "joinaggregate",
+          "fields": [
+            "count"
+          ],
+          "ops": [
+            "sum"
+          ]
+        },
+        {
+          "type": "filter",
+          "expr": "datum.value == 'Yes'"
+        }
       ]
     },
     {
       "name": "approved",
       "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_Statement_Approval+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
-        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "aggregate",
+          "groupby": [
+            "value"
+          ]
+        },
         {
           "type": "impute",
           "key": "value",
-          "keyvals": ["Approved by Board"],
+          "keyvals": [
+            "Approved by Board"
+          ],
           "field": "count",
           "value": 0
         },
-        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
-        {"type": "filter", "expr": "datum.value == 'Approved by Board'"}
+        {
+          "type": "joinaggregate",
+          "fields": [
+            "count"
+          ],
+          "ops": [
+            "sum"
+          ]
+        },
+        {
+          "type": "filter",
+          "expr": "datum.value == 'Approved by Board'"
+        }
       ]
     },
     {
       "name": "homepage",
       "url": "https://wikirate.org/Business_Human_Rights_Resource_Centre+MSA_statement_homepage_link+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
-        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "aggregate",
+          "groupby": [
+            "value"
+          ]
+        },
         {
           "type": "impute",
           "key": "value",
-          "keyvals": ["Yes"],
+          "keyvals": [
+            "Yes"
+          ],
           "field": "count",
           "value": 0
         },
-        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
-        {"type": "filter", "expr": "datum.value == 'Yes'"}
+        {
+          "type": "joinaggregate",
+          "fields": [
+            "count"
+          ],
+          "ops": [
+            "sum"
+          ]
+        },
+        {
+          "type": "filter",
+          "expr": "datum.value == 'Yes'"
+        }
       ]
     },
     {
       "name": "all",
       "url": "https://wikirate.org/Walk_Free_Foundation+Meets_Minimum_UK_MSA_Requirements+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
-        {"type": "aggregate", "groupby": ["value"]},
+        {
+          "type": "aggregate",
+          "groupby": [
+            "value"
+          ]
+        },
         {
           "type": "impute",
           "key": "value",
-          "keyvals": ["Yes"],
+          "keyvals": [
+            "Yes"
+          ],
           "field": "count",
           "value": 0
         },
-        {"type": "joinaggregate", "fields": ["count"], "ops": ["sum"]},
-        {"type": "filter", "expr": "datum.value == 'Yes'"}
+        {
+          "type": "joinaggregate",
+          "fields": [
+            "count"
+          ],
+          "ops": [
+            "sum"
+          ]
+        },
+        {
+          "type": "filter",
+          "expr": "datum.value == 'Yes'"
+        }
       ]
     },
     {
       "name": "labels",
       "values": [
-        {"label": "Signed by Appropriate Person"},
-        {"label": "Board Approval"},
-        {"label": "Homepage Link"},
-        {"label": "All of the Above"}
+        {
+          "label": "Signed by Appropriate Person"
+        },
+        {
+          "label": "Board Approval"
+        },
+        {
+          "label": "Homepage Link"
+        },
+        {
+          "label": "All of the Above"
+        }
       ]
     },
     {
       "name": "counts",
-      "source": ["signed", "approved", "homepage", "all"],
+      "source": [
+        "signed",
+        "approved",
+        "homepage",
+        "all"
+      ],
       "transform": [
-        {"type": "window", "ops": ["row_number"], "as": ["seq"]},
+        {
+          "type": "window",
+          "ops": [
+            "row_number"
+          ],
+          "as": [
+            "seq"
+          ]
+        },
         {
           "type": "formula",
           "expr": "data('labels')[datum.seq -1]['label']",
@@ -128,7 +236,10 @@
   "scales": [
     {
       "name": "xscale",
-      "domain": [0, 1],
+      "domain": [
+        0,
+        1
+      ],
       "nice": true,
       "zero": true,
       "type": "linear",
@@ -137,84 +248,174 @@
     {
       "name": "yscale",
       "range": "height",
-      "domain": {"data": "counts", "field": "title"},
+      "domain": {
+        "data": "counts",
+        "field": "title"
+      },
       "type": "band",
       "padding": 0.4
     },
     {
       "name": "color",
       "type": "linear",
-      "domain": [0, 2],
-      "range": { "signal": "[colors.orange, colors.blue, colors.navy]"}
+      "domain": [
+        0,
+        2
+      ],
+      "range": {
+        "signal": "[colors.orange, colors.blue, colors.navy]"
+      }
     }
   ],
   "marks": [
     {
       "type": "rect",
-      "from": {"data": "counts"},
+      "from": {
+        "data": "counts"
+      },
       "encode": {
         "update": {
-          "x": {"value": 0},
-          "x2": {"scale": "xscale", "value": 1},
-          "y": {"scale": "yscale", "field": "title"},
-          "height": {"signal": "barHeight"},
-          "fill": {"signal": "colors.navy"},
-          "tooltip": {"field": "count_label"},
-          "opacity": {"signal": "if(barTitle == datum.title, 0.5, 1)"}
+          "x": {
+            "value": 0
+          },
+          "x2": {
+            "scale": "xscale",
+            "value": 1
+          },
+          "y": {
+            "scale": "yscale",
+            "field": "title"
+          },
+          "height": {
+            "signal": "barHeight"
+          },
+          "fill": {
+            "signal": "colors.navy"
+          },
+          "tooltip": {
+            "field": "count_label"
+          },
+          "opacity": {
+            "signal": "if(barTitle == datum.title, 0.5, 1)"
+          }
         },
-        "hover": {"cursor": {"value": "pointer"}}
+        "hover": {
+          "cursor": {
+            "value": "pointer"
+          }
+        }
       }
     },
     {
       "type": "rect",
-      "from": {"data": "counts"},
+      "from": {
+        "data": "counts"
+      },
       "encode": {
         "update": {
-          "x": {"value": 0},
-          "x2": {"scale": "xscale", "field": "percentage"},
-          "y": {"scale": "yscale", "field": "title"},
-          "height": {"signal": "barHeight"},
-          "fill": {"scale": "color", "field": "color"},
-          "tooltip": {"field": "count_label"}
-        },
-        "hover": {"cursor": {"value": "pointer"}}
-      }
-    },
-    {
-      "type": "text",
-      "from": {"data": "counts"},
-      "encode": {
-        "update": {
-          "x": {"scale": "xscale", "value": 1},
-          "y": {"scale": "yscale", "field": "title", "offset": -3},
-          "baseline": {"value": "bottom"},
-          "align": {"value": "right"},
-          "text": {"field": "percent_label"},
+          "x": {
+            "value": 0
+          },
+          "x2": {
+            "scale": "xscale",
+            "field": "percentage"
+          },
+          "y": {
+            "scale": "yscale",
+            "field": "title"
+          },
+          "height": {
+            "signal": "barHeight"
+          },
           "fill": {
             "scale": "color",
-            "signal": "if(barTitle == datum.title, datum.color, 2)"
+            "field": "color"
           },
-          "fontWeight": {"value": "bold"}
+          "tooltip": {
+            "field": "count_label"
+          }
         },
-        "hover": {"cursor": {"value": "pointer"}}
+        "hover": {
+          "cursor": {
+            "value": "pointer"
+          }
+        }
       }
     },
     {
       "type": "text",
-      "from": {"data": "counts"},
+      "from": {
+        "data": "counts"
+      },
       "encode": {
         "update": {
-          "x": {"value": 0},
-          "y": {"scale": "yscale", "field": "title", "offset": -3},
-          "text": {"field": "title"},
-          "baseline": {"value": "bottom"},
-          "fontWeight": {"value": "bold"},
+          "x": {
+            "scale": "xscale",
+            "value": 1
+          },
+          "y": {
+            "scale": "yscale",
+            "field": "title",
+            "offset": -3
+          },
+          "baseline": {
+            "value": "bottom"
+          },
+          "align": {
+            "value": "right"
+          },
+          "text": {
+            "field": "percent_label"
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
           "fill": {
             "scale": "color",
             "signal": "if(barTitle == datum.title, datum.color, 2)"
           }
         },
-        "hover": {"cursor": {"value": "pointer"}}
+        "hover": {
+          "cursor": {
+            "value": "pointer"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "counts"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "value": 0
+          },
+          "y": {
+            "scale": "yscale",
+            "field": "title",
+            "offset": -3
+          },
+          "text": {
+            "field": "title"
+          },
+          "baseline": {
+            "value": "bottom"
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "scale": "color",
+            "signal": "if(barTitle == datum.title, datum.color, 2)"
+          }
+        },
+        "hover": {
+          "cursor": {
+            "value": "pointer"
+          }
+        }
       }
     }
   ]

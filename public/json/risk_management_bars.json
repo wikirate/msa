@@ -6,7 +6,25 @@
   "padding": {"right": 5},
   "signals": [
     {"name": "totalAnswers", "update": "data('answers').length"},
-    {"name": "barHeight", "value": "15"}
+    {"name": "barHeight", "value": "15"},
+    {
+      "name": "colors",
+      "value": {
+        "orange": "#FF9300",
+        "red": "#FE0000",
+        "blue": "#0037F1",
+        "navy": "#000028",
+        "yellow": "#FFDC00"
+      }
+    },
+    {
+      "name": "barOver",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover, text:mouseover", "update": "datum"},
+        {"events": "rect:mouseout, text:mouseout", "update": "{}"}
+      ]
+    }
   ],
   "data": [
     {
@@ -23,8 +41,8 @@
     {
       "name": "subgroups",
       "values": [
-        {"key": "(self- reporting)", "label": "self-reporting"},
-        {"key": "(independent)", "label": "independent"},
+        {"key": "(self- reporting)", "label": "Self reporting", "color": 0},
+        {"key": "(independent)", "label": "Independent", "color": 1},
         {"key": ""}
       ],
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
@@ -74,14 +92,24 @@
           "from": "subgroups",
           "key": "key",
           "fields": ["parens"],
-          "values": ["seq", "label"],
-          "as": ["subgroup_seq", "subgroup_label"]
+          "values": ["seq", "label", "color"],
+          "as": ["subgroup_seq", "subgroup_label", "color"]
         },
         {"type": "collect", "sort": {"field": ["group_seq", "subgroup_seq"]}},
         {
           "type": "formula",
           "expr": "datum.count + '/' + totalAnswers",
           "as": "count_label"
+        },
+        {
+          "type": "formula",
+          "expr": "format(datum.count / totalAnswers, '.0%')",
+          "as": "percent_label"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.term + ' ' + datum.parens",
+          "as": "title"
         }
       ]
     }
@@ -106,7 +134,13 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "counts", "field": "subgroup_label"},
-      "range": ["#FF9300", "#FFDC00", "#FE0000"]
+      "range": {"signal": "[colors.orange, colors.yellow]"}
+    },
+    {
+      "name": "textColor",
+      "type": "linear",
+      "domain": [0, 2],
+      "range": {"signal": "[colors.orange, colors.yellow, colors.navy]"}
     }
   ],
   "marks": [
@@ -126,7 +160,7 @@
           "name": "yscale",
           "type": "band",
           "range": "height",
-          "domain": {"data": "faceted_counts", "field": "value"},
+          "domain": {"data": "faceted_counts", "field": "title"},
           "padding": 0.1
         }
       ],
@@ -139,10 +173,13 @@
             "update": {
               "x": {"value": 0},
               "x2": {"scale": "xscale", "signal": "totalAnswers"},
-              "y": {"scale": "yscale", "field": "value"},
+              "y": {"scale": "yscale", "field": "title"},
               "height": {"signal": "barHeight"},
-              "fill": {"value": "#000028"}
-            }
+              "fill": {"signal": "colors.navy"},
+              "tooltip": {"field": "percent_label"},
+              "opacity": {"signal": "if(barOver.title == datum.title, 0.5, 1)"}
+            },
+            "hover": {"cursor": {"value": "pointer"}}
           }
         },
         {
@@ -152,10 +189,12 @@
             "update": {
               "x": {"value": 0},
               "x2": {"scale": "xscale", "field": "count"},
-              "y": {"scale": "yscale", "field": "value"},
+              "y": {"scale": "yscale", "field": "title"},
               "height": {"signal": "barHeight"},
-              "fill": {"scale": "color", "field": "subgroup_label"}
-            }
+              "fill": {"scale": "color", "field": "subgroup_label"},
+              "tooltip": {"field": "percent_label"}
+            },
+            "hover": {"cursor": {"value": "pointer"}}
           }
         },
         {
@@ -165,7 +204,7 @@
           "encode": {
             "update": {
               "x": {"value": 5},
-              "y": {"scale": "yscale", "field": "value", "offset": 2},
+              "y": {"scale": "yscale", "field": "title", "offset": 2},
               "baseline":{ "value": "top"},
               "text": {"signal": "if(datum.count == 0, 'None', '')"},
               "fill": {"value": "white"},
@@ -179,11 +218,16 @@
           "encode": {
             "update": {
               "x": {"scale": "xscale", "signal": "totalAnswers", "offset": 4},
-              "y": {"scale": "yscale", "field": "value", "offset": 2},
+              "y": {"scale": "yscale", "field": "title", "offset": 2},
               "baseline": {"value": "top"},
-              "fill": {"value": "#000028"},
               "text": {"field": "count_label"},
-              "fontWeight": {"value": "bold"}
+              "fontWeight": {"value": "bold"},
+              "fill": {
+                "scale": "textColor",
+                "signal": "if(barOver.title == datum.title, datum.color, 2)"
+              }
+            },
+            "hover": {"cursor": {"value": "pointer"}
             }
           }
         }
@@ -197,9 +241,12 @@
           "x": {"value": 0},
           "y": {"scale": "ygroupscale", "field": "term", "offset": -2},
           "text": {"field": "title"},
-          "fill": {"value": "black"},
           "baseline": {"value": "bottom"},
-          "fontWeight": {"value": "bold"}
+          "fontWeight": {"value": "bold"},
+          "fill": {
+            "scale": "textColor",
+            "signal": "if(barOver.term == datum.term && barOver.subgroup_seq, barOver.color, 2)"
+          }
         }
       }
     }
@@ -213,12 +260,11 @@
       "encode": {
         "legend": {
           "update": {
-            "x": {"signal": "width", "offset": -150},
-            "y": {"offset": -5}
+            "x": {"signal": "width", "offset": -200},
+            "y": {"offset": -10}
           }
         },
-        "labels": {"update": {"fontWeight": [{"value": 800}]}},
-        "symbols": {"update": {"fillOpacity": [{"value": 1}]}}
+        "labels": {"update": {"fontSize": {"value": 13}}}
       }
     }
   ]
