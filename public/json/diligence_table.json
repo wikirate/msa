@@ -6,6 +6,7 @@
   "signals": [
     {"name": "numCompanies", "update": "data('companies').length"},
     {"name": "barHeight", "value": 21},
+    {"name":"statementHavers", "update": "data('statementCounts')[0]['count']"},
     {"name": "height", "update": "(barHeight+ 1)  * numCompanies"},
     {"name": "lastColumn", "update": "data('metrics')[6]['heading']"},
     {"name": "firstColumn", "update": "data('metrics')[0]['heading']"},
@@ -246,6 +247,14 @@
         }
       ]
     },
+    {"name": "statementCounts",
+      "source": "statements",
+      "transform": [
+        {"type":"aggregate", "groupby":["value"]},
+        {"type":"filter", "expr": "datum.value == 'Yes'"}
+      ]
+
+    },
     {
       "name": "countRows",
       "values": [
@@ -268,10 +277,11 @@
         },
         {
           "type": "formula",
-          "expr": "format(datum.count / numCompanies, '.0%')",
+          "expr": "format(datum.count / if(datum.metric_heading == firstColumn, numCompanies, statementHavers), '.0%')",
           "as": "percent"
         },
         {"type": "fold", "fields": ["count", "percent"]},
+
         {
           "type": "lookup",
           "from": "countRows",
