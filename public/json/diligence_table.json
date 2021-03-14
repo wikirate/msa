@@ -6,7 +6,10 @@
   "signals": [
     {"name": "numCompanies", "update": "data('companies').length"},
     {"name": "barHeight", "value": 21},
-    {"name":"statementHavers", "update": "data('statementCounts')[0]['count']"},
+    {
+      "name": "statementHavers",
+      "update": "data('statementCounts')[0]['count']"
+    },
     {"name": "height", "update": "(barHeight+ 1)  * numCompanies"},
     {"name": "lastColumn", "update": "data('metrics')[6]['heading']"},
     {"name": "firstColumn", "update": "data('metrics')[0]['heading']"},
@@ -146,8 +149,8 @@
           "key": "company",
           "from": "considers",
           "fields": ["id"],
-          "values": ["value"],
-          "as": ["considers"]
+          "values": ["value", "metric", "year"],
+          "as": ["considers", "considers_metric", "considers_year"]
         },
         {
           "type": "lookup",
@@ -179,6 +182,16 @@
             "field": ["statements", "name"],
             "order": ["descending", "ascending"]
           }
+        },
+        {
+          "type": "formula",
+          "as": "wikirate_page",
+          "expr": "'~' + datum.considers_metric + '+~' + datum.id + '+' + datum.considers_year + '/details_sidebar'"
+        },
+        {
+          "type": "formula",
+          "as": "filter",
+          "expr": "{}"
         }
       ]
     },
@@ -244,16 +257,26 @@
           "key": "key",
           "fields": ["value"],
           "values": ["short"]
+        },
+        {
+          "type": "formula",
+          "as": "wikirate_page",
+          "expr": "'~' + datum.metric + '+~' + datum.company + '+' + datum.year + '/details_sidebar'"
+        },
+        {
+          "type": "formula",
+          "as": "filter",
+          "expr": "{}"
         }
       ]
     },
-    {"name": "statementCounts",
+    {
+      "name": "statementCounts",
       "source": "statements",
       "transform": [
-        {"type":"aggregate", "groupby":["value"]},
-        {"type":"filter", "expr": "datum.value == 'Yes'"}
+        {"type": "aggregate", "groupby": ["value"]},
+        {"type": "filter", "expr": "datum.value == 'Yes'"}
       ]
-
     },
     {
       "name": "countRows",
@@ -281,7 +304,6 @@
           "as": "percent"
         },
         {"type": "fold", "fields": ["count", "percent"]},
-
         {
           "type": "lookup",
           "from": "countRows",
@@ -344,12 +366,11 @@
           "interactive": true,
           "update": {
             "fill": {
-              "signal": "if(datum.value == activeHeading, '#0037F1', '#000028')"
-            },
-            "cursor": {"value": "default"}
+              "signal": "if(datum.value == activeHeading, colors.blue, colors.navy)"
+            }
           },
           "hover": {
-            "fill": {"value": "#0037F1"},
+            "fill": {"signal": "colors.blue"},
             "cursor": {"value": "pointer"}
           }
         }
@@ -364,12 +385,15 @@
       "encode": {
         "update": {
           "x": {"value": -6},
-          "x2": {"value": -300},
+          "x2": {"value": -360},
           "y": {"scale": "yscale", "field": "id", "offset": -15},
           "fill": {"signal": "colors.faintNavy"},
           "height": {"signal": "barHeight"},
-          "align": {"value": "center"}
-        }
+          "align": {"value": "center"},
+          "stroke": {"value": "#fff"},
+          "strokeWidth": {"signal": "if(currentAnswer.id == datum.id, 3, 0)"}
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -384,10 +408,12 @@
           "text": {"field": "name"},
           "height": {"signal": "barHeight"},
           "align": {"value": "right"},
+          "fontSize": { "value": 13 },
           "fill": {
             "signal": "if(currentAnswer.company == datum.id || currentAnswer.id == datum.id, colors.blue, colors.navy)"
           }
-        }
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -397,7 +423,7 @@
       "encode": {
         "update": {
           "x": {"value": -6},
-          "x2": {"value": -300},
+          "x2": {"value": -360},
           "y": {"field": "y"},
           "fill": {"value": "#FF9300"},
           "opacity": {"value": 0.3},
@@ -498,7 +524,8 @@
           },
           "stroke": {"value": "#fff"},
           "strokeWidth": {"signal": "if(currentAnswer.id == datum.id, 3, 0)"}
-        }
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -521,7 +548,8 @@
           },
           "text": {"field": "short"},
           "align": {"value": "center"}
-        }
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     }
   ]
