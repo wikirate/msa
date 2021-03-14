@@ -93,7 +93,7 @@
     },
     {
       "name": "none",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -137,7 +137,7 @@
         {
           "seq": 5,
           "title": "None of the above",
-          "wikirate_page": "Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific",
+          "wikirate_page": "Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific",
           "color": 1
         }
       ]
@@ -177,7 +177,7 @@
     {
       "name": "xscale",
       "domain": [0, 1],
-            "zero": true,
+      "zero": true,
       "type": "linear",
       "range": "width"
     },
