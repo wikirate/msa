@@ -158,7 +158,6 @@
     {
       "name": "xscale",
       "domain": [0, 1],
-      "nice": true,
       "zero": true,
       "type": "linear",
       "range": "width"

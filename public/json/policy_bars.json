@@ -242,8 +242,7 @@
     {
       "name": "xscale",
       "domain": {"data": "counts", "field": "denominator"},
-      "nice": true,
-      "zero": true,
+            "zero": true,
       "type": "linear",
       "range": "width"
     },

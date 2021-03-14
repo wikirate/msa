@@ -78,7 +78,7 @@ header {
   background: #000028;
   position: fixed;
   width: 100%;
-  z-index: 10;
+  z-index: 10000;
 }
 
 header img {
@@ -305,6 +305,11 @@ a.anchor {
   color: #000028 !important;
 }
 
+.vega-embed.has-actions {
+  padding-right: 0 !important;
+  padding-top: 2.5em;
+}
+
 #disclosure-sorting {
   background: blue;
   padding: 0.5em 1em;
@@ -339,7 +344,9 @@ footer {
 footer .row {
   align-items: center;
 }
-
+footer h2 {
+  margin-bottom: 1em;
+}
 footer .col-4 {
   padding: 0 5%;
   text-align: center;
@@ -348,7 +355,6 @@ footer .col-4 {
 footer .center-col {
   border: 2px solid #888888;
   border-width: 0 2px;
-  margin-top: 2em;
 }
 
 footer img {

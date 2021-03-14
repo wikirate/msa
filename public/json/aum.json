@@ -245,8 +245,7 @@
       "name": "yscale",
       "type": "linear",
       "domain": [0, 1],
-      "range": "height",
-      "nice": true
+      "range": "height"
     },
     {
       "name": "xGroupScale",

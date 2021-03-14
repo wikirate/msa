@@ -127,7 +127,6 @@
         0,
         11
       ],
-      "nice": true,
       "zero": true,
       "type": "linear",
       "range": "width"

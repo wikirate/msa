@@ -140,8 +140,7 @@
     {
       "name": "xscale",
       "domain": [0, {"signal": "totalAnswers"}],
-      "nice": true,
-      "zero": true,
+            "zero": true,
       "type": "linear",
       "range": "width"
     },
