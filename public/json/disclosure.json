@@ -3,27 +3,52 @@
   "description": "Disclosure rates by asset manager",
   "width": 400,
   "signals": [
-    {"name": "totalAnswers", "update": "data('answers').length"},
-    {"name": "barHeight", "value": 17},
-    {"name": "height", "update": "(barHeight + 2) * totalAnswers"},
+    {
+      "name": "totalAnswers",
+      "update": "data('answers').length"
+    },
+    {
+      "name": "barHeight",
+      "value": 17
+    },
+    {
+      "name": "height",
+      "update": "(barHeight + 2) * totalAnswers"
+    },
     {
       "name": "colors",
-      "value": {"orange": "#FF9300", "yellow": "#FFDC00", "navy": "#000028"}
+      "value": {
+        "orange": "#FF9300",
+        "yellow": "#FFDC00",
+        "navy": "#000028"
+      }
     },
     {
       "name": "currentDatum",
       "value": {},
       "on": [
-        {"events": "rect:mouseover, @companyLabel:mouseover", "update": "datum"},
-        {"events": "rect:mouseout, @companyLabel:mouseout", "update": "{}"}
+        {
+          "events": "rect:mouseover, text:mouseover",
+          "update": "datum"
+        },
+        {
+          "events": "rect:mouseout, text:mouseout",
+          "update": "{}"
+        }
       ]
     },
     {
       "name": "sort",
       "bind": {
         "input": "radio",
-        "options": ["company_name", "value"],
-        "labels": ["name", "number"],
+        "options": [
+          "company_name",
+          "value"
+        ],
+        "labels": [
+          "name",
+          "number"
+        ],
         "element": "#disclosure-sorting",
         "name": "sort:"
       },
@@ -50,16 +75,47 @@
           "type": "lookup",
           "from": "companies",
           "key": "id",
-          "fields": ["company"],
-          "values": ["name"],
-          "as": ["company_name"]
+          "fields": [
+            "company"
+          ],
+          "values": [
+            "name"
+          ],
+          "as": [
+            "company_name"
+          ]
         },
         {
           "type": "window",
-          "sort": {"field": {"signal": "sort"}},
-          "ops": ["row_number"],
-          "fields": [null],
-          "as": ["rank"]
+          "sort": {
+            "field": {
+              "signal": "sort"
+            }
+          },
+          "ops": [
+            "row_number"
+          ],
+          "fields": [
+            null
+          ],
+          "as": [
+            "rank"
+          ]
+        },
+        {
+          "type": "formula",
+          "as": "wikirate_page",
+          "expr": "'Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate' + '+~' + datum.company + '+' + datum.year + '/details_sidebar'"
+        },
+        {
+          "type": "formula",
+          "as": "filter",
+          "expr": "{}"
+        },
+        {
+          "type": "formula",
+          "as": "tooltip",
+          "expr": "'meeting ' + datum.value + ' metrics'"
         }
       ]
     }
@@ -67,7 +123,10 @@
   "scales": [
     {
       "name": "xscale",
-      "domain": [0, 11],
+      "domain": [
+        0,
+        11
+      ],
       "nice": true,
       "zero": true,
       "type": "linear",
@@ -81,8 +140,10 @@
         "field": "company_name",
         "sort": {
           "field": "rank",
-          "op":"min",
-          "order": {"signal": "if(sort == 'value', 'descending', 'ascending')"}
+          "op": "min",
+          "order": {
+            "signal": "if(sort == 'value', 'descending', 'ascending')"
+          }
         }
       },
       "type": "band",
@@ -99,42 +160,85 @@
       "zindex": 5,
       "gridColor": "#888",
       "gridWidth": 1
-    },
-    {
-      "scale": "yscale",
-      "orient": "left",
-      "labelLimit": 0,
-      "ticks": false,
-      "domain": false,
-      "labelPadding": 10,
-      "labelFontSize": 13,
-      "encode": {
-        "labels": {
-          "name": "companyLabel",
-          "interactive": true,
-          "update": {
-            "fill": {"signal": "if(currentDatum.value == datum.value || currentDatum.company_name == datum.value, colors.orange, colors.navy)"}
-
-          },
-          "hover": {"cursor": {"value": "pointer"}}
-        }
-
-      }
     }
   ],
   "marks": [
     {
       "type": "rect",
-      "from": {"data": "answers"},
+      "from": {
+        "data": "answers"
+      },
       "encode": {
         "update": {
-          "x": {"scale": "xscale", "value": 0},
-          "x2": {"scale": "xscale", "field": "value"},
-          "y": {"scale": "yscale", "field": "company_name"},
-          "height": {"signal": "barHeight"},
-          "fill": {"signal": "if(currentDatum.value == datum.company_name || currentDatum.company_name == datum.company_name, colors.navy, colors.orange)"}
+          "x": {
+            "scale": "xscale",
+            "value": 0
+          },
+          "x2": {
+            "scale": "xscale",
+            "field": "value"
+          },
+          "y": {
+            "scale": "yscale",
+            "field": "company_name"
+          },
+          "height": {
+            "signal": "barHeight"
+          },
+          "fill": {
+            "signal": "if(currentDatum.id == datum.id, colors.navy, colors.orange)"
+          },
+          "tooltip": {
+            "signal": "datum.tooltip"
+          }
         },
-        "hover": {"cursor": {"value": "pointer"}}
+        "hover": {
+          "cursor": {
+            "value": "pointer"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "answers"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "value": -5
+          },
+          "width": {
+            "scale": "xscale",
+            "field": "value"
+          },
+          "y": {
+            "scale": "yscale",
+            "field": "company_name",
+            "offset": 14
+          },
+          "height": {
+            "signal": "barHeight"
+          },
+          "align": {
+            "value": "right"
+          },
+          "text": {
+            "field": "company_name"
+          },
+          "fontSize": {
+            "value": 13
+          },
+          "fill": {
+            "signal": "if(currentDatum.id == datum.id, colors.orange, colors.navy)"
+          }
+        },
+        "hover": {
+          "cursor": {
+            "value": "pointer"
+          }
+        }
       }
     }
   ]

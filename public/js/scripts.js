@@ -11,9 +11,9 @@ loadViz = function (viz) {
     dataType: "json",
     visId: id,
     type: "GET",
-    success: function (data) {
+    success: (function (data) {
       initChart(data, this.visId);
-    }
+    })
   });
 };
 
