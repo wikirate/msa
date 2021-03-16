@@ -191,7 +191,7 @@ section.top a h3::after {
 /* ----- Banner ----- */
 
 section.banner {
-  background-image: url(../images/gettyimage.jpg);
+  background-image: url(../images/banner.jpg);
   height: 600px;
   background-repeat: repeat-x;
   background-size: cover;
