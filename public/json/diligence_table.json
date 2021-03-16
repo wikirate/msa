@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Investment portfolio due diligence",
   "width": 400,
-  "padding": {"top": 20},
+  "padding": {"top": 23},
   "signals": [
     {"name": "numCompanies", "update": "data('companies').length"},
     {"name": "barHeight", "value": 21},
@@ -86,9 +86,9 @@
     {
       "name": "values",
       "values": [
-        {"key": "Yes", "short": "Yes"},
-        {"key": "No", "short": "No"},
-        {"key": "Unknown", "short": "–"}
+        {"key": "Yes", "short": "Yes", "seq": 1},
+        {"key": "No", "short": "No", "seq": 2},
+        {"key": "Unknown", "short": "–", "seq": 3}
       ],
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
     },
@@ -188,11 +188,7 @@
           "as": "wikirate_page",
           "expr": "'~' + datum.considers_metric + '+~' + datum.id + '+' + datum.considers_year + '/details_sidebar'"
         },
-        {
-          "type": "formula",
-          "as": "filter",
-          "expr": "{}"
-        }
+        {"type": "formula", "as": "filter", "expr": "{}"}
       ]
     },
     {
@@ -263,11 +259,7 @@
           "as": "wikirate_page",
           "expr": "'~' + datum.metric + '+~' + datum.company + '+' + datum.year + '/details_sidebar'"
         },
-        {
-          "type": "formula",
-          "as": "filter",
-          "expr": "{}"
-        }
+        {"type": "formula", "as": "filter", "expr": "{}"}
       ]
     },
     {
@@ -303,6 +295,14 @@
           "expr": "format(datum.count / if(datum.metric_heading == firstColumn, numCompanies, statementHavers), '.0%')",
           "as": "percent"
         },
+        {
+          "type": "lookup",
+          "from": "metrics",
+          "key": "heading",
+          "fields": ["metric_heading"],
+          "values": ["id"],
+          "as": ["metric_id"]
+        },
         {"type": "fold", "fields": ["count", "percent"]},
         {
           "type": "lookup",
@@ -311,7 +311,17 @@
           "fields": ["key"],
           "values": ["y"]
         },
-        {"type": "window", "ops": ["row_number"], "as": ["id"]}
+        {"type": "window", "ops": ["row_number"], "as": ["id"]},
+        {
+          "type": "formula",
+          "expr": "'~' + datum.metric_id",
+          "as": "wikirate_page"
+        },
+        {
+          "type": "formula",
+          "expr": "if(datum.key == 'count', { value: ['Yes'] }, {})",
+          "as": "filter"
+        }
       ]
     }
   ],
@@ -408,7 +418,7 @@
           "text": {"field": "name"},
           "height": {"signal": "barHeight"},
           "align": {"value": "right"},
-          "fontSize": { "value": 13 },
+          "fontSize": {"value": 13},
           "fill": {
             "signal": "if(currentAnswer.company == datum.id || currentAnswer.id == datum.id, colors.blue, colors.navy)"
           }
@@ -474,7 +484,8 @@
           },
           "stroke": {"value": "#fff"},
           "strokeWidth": {"signal": "if(currentAnswer.id == datum.id, 3, 0)"}
-        }
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -499,7 +510,8 @@
           "fontStyle": {"value": "italic"},
           "text": {"field": "value"},
           "align": {"value": "center"}
-        }
+        },
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -520,7 +532,7 @@
           "height": {"signal": "barHeight"},
           "align": {"value": "center"},
           "opacity": {
-            "signal": "if(datum.metric_heading == activeHeading, 0.75, 1)"
+            "signal": "if(datum.metric_heading == activeHeading, 1, 0.75)"
           },
           "stroke": {"value": "#fff"},
           "strokeWidth": {"signal": "if(currentAnswer.id == datum.id, 3, 0)"}
