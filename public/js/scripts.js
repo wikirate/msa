@@ -81,7 +81,7 @@ initVega = function (spec, el) {
     renderer: "svg",
     actions: {
       source: false,
-      editor: true
+      editor: false
     }
   }
   vegaEmbed(el[0], spec, opts).then(function(result) {
