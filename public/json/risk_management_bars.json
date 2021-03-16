@@ -41,18 +41,27 @@
     {
       "name": "subgroups",
       "values": [
-        {"key": "(self- reporting)", "label": "Self reporting", "color": 0},
-        {"key": "(independent)", "label": "Independent", "color": 1},
-        {"key": ""}
+        {
+          "key": "(self- reporting)",
+          "label": "Self reporting",
+          "color": 0,
+          "seq": 1
+        },
+        {"key": "(independent)", "label": "Independent", "color": 1, "seq": 2},
+        {"key": "", "seq": 3}
       ],
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
     },
     {
       "name": "groups",
       "values": [
-        {"title": "Audits of suppliers", "term": "Audits of suppliers"},
-        {"title": "On-site visits", "term": "On-site visits"},
-        {"title": "Neither", "term": "Neither"}
+        {
+          "title": "Audits of suppliers",
+          "term": "Audits of suppliers",
+          "seq": 1
+        },
+        {"title": "On-site visits", "term": "On-site visits", "seq": 2},
+        {"title": "Neither", "term": "Neither", "seq": 3}
       ],
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
     },
@@ -119,7 +128,7 @@
     {
       "name": "xscale",
       "domain": [0, {"signal": "totalAnswers"}],
-            "zero": true,
+      "zero": true,
       "type": "linear",
       "range": "width"
     },
@@ -205,10 +214,10 @@
             "update": {
               "x": {"value": 5},
               "y": {"scale": "yscale", "field": "title", "offset": 2},
-              "baseline":{ "value": "top"},
+              "baseline": {"value": "top"},
               "text": {"signal": "if(datum.count == 0, 'None', '')"},
               "fill": {"value": "white"},
-              "fontStyle": {"value": "italic" }
+              "fontStyle": {"value": "italic"}
             }
           }
         },
@@ -227,8 +236,7 @@
                 "signal": "if(barOver.title == datum.title, datum.color, 2)"
               }
             },
-            "hover": {"cursor": {"value": "pointer"}
-            }
+            "hover": {"cursor": {"value": "pointer"}}
           }
         }
       ]
@@ -243,10 +251,7 @@
           "text": {"field": "title"},
           "baseline": {"value": "bottom"},
           "fontWeight": {"value": "bold"},
-          "fill": {
-            "scale": "textColor",
-            "signal": "if(barOver.term == datum.term && barOver.subgroup_seq, barOver.color, 2)"
-          }
+          "fill": { "signal" : "colors.navy"} 
         }
       }
     }
@@ -257,14 +262,19 @@
       "type": "symbol",
       "orient": "none",
       "direction": "horizontal",
+      "columnPadding": 20,
       "encode": {
         "legend": {
           "update": {
-            "x": {"signal": "width", "offset": -200},
+            "x": {"value": 0},
             "y": {"offset": -10}
           }
         },
-        "labels": {"update": {"fontSize": {"value": 13}}}
+        "labels": {
+          "update": {
+            "fontSize": {"value": 9}
+          }
+        }
       }
     }
   ]

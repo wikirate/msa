@@ -62,6 +62,10 @@ a:focus, a:hover {
   color: #0037F1;
 }
 
+p {
+  font-size: 1.1em;
+}
+
 h3 {
   font-family: MediaSans;
   text-transform: uppercase;
@@ -273,7 +277,7 @@ a.anchor {
 
 .charts .subtitle {
   font-style: italic;
-  font-size: 1.2em;
+  font-size: 1.1em;
 }
 
 .charts .chart-wrapper svg {
@@ -314,14 +318,21 @@ a.anchor {
   background: blue;
   padding: 0.5em 1em;
   color: white;
+  text-transform: uppercase;
+  vertical-align: top;
+  max-width: 30%;
+  font-size: 0.8em;
+  text-align: center;
 }
-
+#disclosure-sorting .vega-bind-radio {
+  display: inline-block;
+  text-align: left;
+}
 #disclosure-sorting input {
   margin: 0 5px 0 15px;
 }
 
 .nocounts text,
-.viz .role-legend text,
 #aum svg text,
 #disclosure svg text,
 #diligence_table svg text {

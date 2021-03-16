@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Risk assessment tool and risks identified",
-  "width": 220,
+  "width": 250,
   "height": 180,
-  "padding": 10,
+
   "signals": [
     {
       "name": "colors",
@@ -77,7 +77,7 @@
       "encode": {
         "enter": {
           "fill": {"scale": "color", "field": "value"},
-          "x": {"value": 100},
+          "x": {"value": 125},
           "y": {"value": 100},
           "tooltip": {"field": "count_label"}
         },
@@ -92,14 +92,7 @@
             "signal": "if(hoverValue == datum.value, 1, hoverOpacity)"
           }
         },
-        "hover": {
-          "opacity": {
-            "value": 1
-          },
-          "cursor": {
-            "value": "pointer"
-          }
-        }
+        "hover": {"opacity": {"value": 1}, "cursor": {"value": "pointer"}}
       }
     },
     {
@@ -107,9 +100,9 @@
       "from": {"data": "counts"},
       "encode": {
         "enter": {
-          "x": {"value": 100},
+          "x": {"value": 125},
           "y": {"value": 100},
-          "radius": {"value": 65},
+          "radius": {"value": 50},
           "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
           "fill": {"value": "white"},
           "fontWeight": {"value": "bold"},
@@ -126,29 +119,20 @@
       "fill": "color",
       "type": "symbol",
       "orient": "top",
-      "offset": {"value": 20},
-
       "encode": {
         "labels": {
           "name": "legendLabel",
           "interactive": true,
           "update": {
             "limit": {"value": 0},
+            "fontSize": { "value": 8},
             "fontWeight": [
-              {
-                "test": "hoverValue == datum.label",
-                "value": "bold"
-              },
-              {
-                "value": 400
-              }
+              {"test": "hoverValue == datum.label", "value": "bold"},
+              {"value": 400}
             ]
           }
         },
-        "symbols": {
-          "name": "legendSymbol",
-          "interactive": true
-        }
+        "symbols": {"name": "legendSymbol", "interactive": true}
       }
     }
   ],
@@ -156,7 +140,9 @@
     {
       "name": "color",
       "type": "ordinal",
-      "range": {"signal": "[colors.orange, colors.red, colors.yellow, colors.navy]"},
+      "range": {
+        "signal": "[colors.orange, colors.red, colors.yellow, colors.navy]"
+      },
       "domain": {"data": "counts", "field": "value"}
     }
   ]

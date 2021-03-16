@@ -99,7 +99,7 @@
         "enter": {
           "x": {"value": 100},
           "y": {"value": 100},
-          "radius": {"value": 65},
+          "radius": {"value": 50},
           "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
           "fill": {"value": "white"},
           "align": {"value": "center"},
@@ -121,7 +121,7 @@
           "interactive": true,
           "update": {
             "fontSize": {
-              "value": 13
+              "value": 9
             },
             "fontWeight": [
               {

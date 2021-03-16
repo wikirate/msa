@@ -165,7 +165,7 @@
             "value": 100
           },
           "radius": {
-            "value": 65
+            "value": 50
           },
           "fontWeight": {
             "value": "bold"
@@ -202,7 +202,7 @@
           "interactive": true,
           "update": {
             "fontSize": {
-              "value": 13
+              "value": 9
             },
             "fontWeight": [
               {

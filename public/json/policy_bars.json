@@ -365,10 +365,7 @@
           "text": {"field": "title"},
           "baseline": {"value": "bottom"},
           "fontWeight": {"value": "bold"},
-          "fill": {
-            "scale": "textColor",
-            "signal": "if(barOver.term == datum.term && barOver.subgroup_seq, barOver.color, 2)"
-          }
+          "fill": { "signal" : "colors.navy" }
         }
       }
     }
@@ -382,11 +379,11 @@
       "encode": {
         "legend": {
           "update": {
-            "x": {"signal": "width", "offset": -170},
+            "x": {"signal": "width", "offset": -125},
             "y": {"offset": -5}
           }
         },
-        "labels": {"update": {"fontSize": {"value": 13}}}
+        "labels": {"update": {"fontSize": {"value": 9}}}
       }
     }
   ]
