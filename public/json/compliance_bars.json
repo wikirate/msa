@@ -94,27 +94,31 @@
       "values": [
         {
           "seq": 1,
-          "metric": "Business_Human_Rights_Resource_Centre+MSA_statement_signed_binary",
+          "metric": "Business_Human_Rights_Resource_Centre+MSA_statement_signed",
           "label": "Signed by Appropriate Person",
-          "color": 0
+          "color": 0,
+          "filter_value": ["Signed by CEO", "Signed by Director", "Signed by Managing Director", "Signed by Chairman"]
         },
         {
           "seq": 2,
           "metric": "Business_Human_Rights_Resource_Centre+MSA_Statement_Approval",
           "label": "Board Approval",
-          "color": 0
+          "color": 0,
+          "filter_value": ["Approved by Board"]
         },
         {
           "seq": 3,
           "metric": "Walk_Free_Foundation+MSA_statement_homepage_link",
           "label": "Homepage Link",
-          "color": 0
+          "color": 0,
+          "filter_value": ["Yes"]
         },
         {
           "seq": 4,
           "metric": "Walk_Free_Foundation+Meets_Minimum_UK_MSA_Requirements",
           "label": "All of the Above",
-          "color": 1
+          "color": 1,
+          "filter_value": ["Yes"]
         }
       ]
     },
@@ -128,8 +132,8 @@
           "from": "metrics",
           "key": "seq",
           "fields": ["seq"],
-          "values": ["label", "metric", "color"],
-          "as": ["title", "wikirate_page", "color"]
+          "values": ["label", "metric", "color", "filter_value"],
+          "as": ["title", "wikirate_page", "color", "filter_value"]
         },
         {
           "type": "formula",
@@ -148,7 +152,7 @@
         },
         {
           "type": "formula",
-          "expr": "{ value: [datum.value] }",
+          "expr": "{ value: datum.filter_value }",
           "as": "filter"
         }
       ]

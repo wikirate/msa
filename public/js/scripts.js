@@ -77,7 +77,14 @@ restrictToGroup = function(data, group) {
 
 initVega = function (spec, el) {
   runtime = vega.parse(spec);
-  vegaEmbed(el[0], spec, { renderer: "svg" }).then(function(result) {
+  opts = {
+    renderer: "svg",
+    actions: {
+      source: false,
+      editor: true
+    }
+  }
+  vegaEmbed(el[0], spec, opts).then(function(result) {
     handleChartClicks(result.view, el)
   }).catch(console.error);
   // return new vega.View(runtime, { renderer: "svg" }).initialize(el).hover().run();

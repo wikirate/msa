@@ -19,6 +19,10 @@
       }
     },
     {
+      "name": "groupKeysExceptAny",
+      "update": "slice(pluck(data('groups'), 'key'), 0, -1)"
+    },
+    {
       "name": "barTitle",
       "value": null,
       "on": [
@@ -31,18 +35,24 @@
     {
       "name": "groups",
       "values": [
-        {"key": "Employees (all)", "title": "All Employees"},
+        {"key": "Employees (all)", "title": "All Employees", "seq": 1},
         {
           "key": "Procurement / purchasing",
-          "title": "Procurement / purchasing staff"
+          "title": "Procurement / purchasing staff",
+          "seq": 2
         },
-        {"key": "Recruitment / HR", "title": "Recruitment / HR staff"},
-        {"key": "Leadership", "title": "Leadership"},
+        {
+          "key": "Recruitment / HR",
+          "title": "Recruitment / HR staff",
+          "seq": 3
+        },
+        {"key": "Leadership", "title": "Leadership", "seq": 4},
         {
           "key": "Training provided - not specified",
-          "title": "Target audience not specified"
+          "title": "Target audience not specified",
+          "seq": 5
         },
-        {"key": "Any", "title": "Any of the Above"}
+        {"key": "Any", "title": "Any of the Above", "seq": 6}
       ],
       "transform": [{"type": "window", "ops": ["row_number"], "as": ["seq"]}]
     },
@@ -93,13 +103,7 @@
         {
           "type": "impute",
           "key": "value",
-          "keyvals": [
-            "Employees (all)",
-            "Procurement / purchasing",
-            "Recruitment / HR",
-            "Leadership",
-            "Training provided - not specified"
-          ],
+          "keyvals": { "signal": "groupKeysExceptAny"},
           "field": "count",
           "value": 0
         }
@@ -132,7 +136,8 @@
           "expr": "if(datum.value == 'Any', 1, 0)",
           "as": "color"
         },
-        {"type": "formula", "as": "filter", "expr": "{ value: [datum.value] }"}
+        {"type": "formula", "as": "filter",
+          "expr": "{ value: [if(datum.value == 'Any', groupKeysExceptAny, datum.value)] }"}
       ]
     }
   ],
@@ -140,7 +145,7 @@
     {
       "name": "xscale",
       "domain": [0, {"signal": "totalAnswers"}],
-            "zero": true,
+      "zero": true,
       "type": "linear",
       "range": "width"
     },
@@ -172,8 +177,7 @@
           "tooltip": {"field": "percent_label"},
           "opacity": {"signal": "if(barTitle == datum.title, 0.5, 1)"}
         },
-        "hover": {"cursor": {"value": "pointer"}
-        }
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -188,8 +192,7 @@
           "fill": {"scale": "color", "field": "color"},
           "tooltip": {"field": "percent_label"}
         },
-        "hover": {"cursor": {"value": "pointer"}
-        }
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -200,10 +203,10 @@
         "update": {
           "x": {"value": 5},
           "y": {"scale": "yscale", "field": "title", "offset": 2},
-          "baseline":{ "value": "top"},
+          "baseline": {"value": "top"},
           "text": {"signal": "if(datum.count == 0, 'None', '')"},
           "fill": {"value": "white"},
-          "fontStyle": {"value": "italic" }
+          "fontStyle": {"value": "italic"}
         }
       }
     },
@@ -223,11 +226,7 @@
             "signal": "if(barTitle == datum.title, datum.color, 2)"
           }
         },
-        "hover": {
-          "cursor": {
-            "value": "pointer"
-          }
-        }
+        "hover": {"cursor": {"value": "pointer"}}
       }
     },
     {
@@ -245,11 +244,7 @@
             "signal": "if(barTitle == datum.title, datum.color, 2)"
           }
         },
-        "hover": {
-          "cursor": {
-            "value": "pointer"
-          }
-        }
+        "hover": {"cursor": {"value": "pointer"}}
       }
     }
   ]
