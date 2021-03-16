@@ -108,6 +108,10 @@ header img {
   margin: 1.4em 0;
 }
 
+a.dropdown-toggle:hover {
+  background: #FFDC00;
+}
+
 a.dropdown-toggle::after {
   color: #0037F1;
 }
@@ -163,11 +167,12 @@ section.top .subtitle {
 .top-buttons h3 {
   padding: 0;
   margin: 0;
+  font-size: 1.1em;
 }
 
 section.top a {
   border: 0;
-  padding: 1em 3em 1em 1.2em;
+  padding: 1em 2.4em 1em 1.2em;
   font-family: 'MediaSans';
   text-transform: uppercase;
   display: inline-block;
@@ -176,9 +181,17 @@ section.top a {
   position: relative;
 }
 
-section.top a.download-button {
+a.download-button {
   background: #FF9300;
   margin-right: 1em;
+}
+
+a.download-button:hover {
+  background: #FFDC00;
+}
+
+a.contribute-button:hover h3 {
+  color: #0037f1;
 }
 
 section.top a h3::after {
@@ -186,9 +199,8 @@ section.top a h3::after {
   content: "\f054";
   font-family: FontAwesome;
   display: inline-block;
-  font-size: 25px;
   position: absolute;
-  top: calc(50% - 12px);
+  top: calc(50% - 10px);
   right: 0.75em;
 }
 
@@ -226,6 +238,10 @@ h2 {
   padding: 1em;
   border: 0;
   border-radius: 0 !important;
+}
+
+.accordion-button:hover {
+  background-color: #FFDC00;
 }
 
 .accordion-button:focus {
@@ -349,26 +365,33 @@ a.anchor {
 footer {
   background: #F6F5EA;
   margin-top: 5em;
-  padding: 3em;
+  padding: 3em 20%;
 }
 
 footer .row {
   align-items: center;
 }
+
 footer h2 {
   margin-bottom: 1em;
+  font-size: 1.2em;
 }
-footer .col-4 {
-  padding: 0 5%;
+
+footer .logo {
+  padding: 0 8%;
   text-align: center;
 }
 
-footer .center-col {
+footer .logo-right {
+  padding-right: 0;
+}
+
+footer .logo-center {
   border: 2px solid #888888;
   border-width: 0 2px;
 }
 
 footer img {
   max-width: 100%;
-  max-height: 150px;
+  max-height: 125px;
 }

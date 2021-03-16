@@ -103,7 +103,7 @@
         {
           "type": "impute",
           "key": "value",
-          "keyvals": { "signal": "groupKeysExceptAny"},
+          "keyvals": {"signal": "groupKeysExceptAny"},
           "field": "count",
           "value": 0
         }
@@ -136,8 +136,11 @@
           "expr": "if(datum.value == 'Any', 1, 0)",
           "as": "color"
         },
-        {"type": "formula", "as": "filter",
-          "expr": "{ value: [if(datum.value == 'Any', groupKeysExceptAny, datum.value)] }"}
+        {
+          "type": "formula",
+          "as": "filter",
+          "expr": "{ value: if(datum.value == 'Any', groupKeysExceptAny, [datum.value]) }"
+        }
       ]
     }
   ],
