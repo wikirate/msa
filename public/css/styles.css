@@ -129,10 +129,16 @@ a.dropdown-toggle::after {
 
 .filter-dropdown a.dropdown-item {
   padding: 15px;
+  display: flex;
+  justify-content: space-between;
 }
 
 a.dropdown-item label {
   font-weight: bold;
+}
+
+a.dropdown-item .count {
+  padding-left: 1em;
 }
 
 .filter-dropdown .reset-item-li {

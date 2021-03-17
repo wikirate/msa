@@ -109,7 +109,7 @@ addCountToGroupItem = function (groupItem) {
   $.ajax(
     { url: countGroupUrl(groupItem.data("group"))}
   ).done(function (count) {
-    groupItem.append(" (" + count + ")")
+    groupItem.append('<span class="count"> (' + count + ')</span>');
   });
 }
 
