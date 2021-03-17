@@ -37,6 +37,18 @@
       "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Risk_assessment_categories+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest"
     },
     {
+      "name": "groups",
+      "values": [
+        { "name": "Performs assessment and identifies risks" },
+        { "name": "Performs assessment but does not identify risks" },
+        { "name": "Does not perform assessment but identifies risks" },
+        { "name": "Does not perform assessment or identify risks" }
+      ],
+      "transform": [
+        {"type": "window", "ops": ["row_number"], "as": ["seq"]}
+      ]
+    },
+    {
       "name": "counts",
       "source": "answers",
       "transform": [
@@ -46,6 +58,17 @@
           "ops": ["count"],
           "fields": ["count"],
           "as": ["count"]
+        },
+        {
+          "type": "lookup",
+          "from": "groups",
+          "key": "name",
+          "fields": ["value"],
+          "values": ["seq"]
+        },
+        {
+          "type": "collect",
+          "sort": { "field": "seq" }
         },
         {"type": "pie", "field": "count", "sort": false},
         {"type": "formula", "as": "filter", "expr": "{ value: [datum.value] }"},
@@ -60,7 +83,6 @@
           "as": "percentage",
           "expr": "format(datum.count / datum.sum_count, '.0%')"
         },
-        {"type": "collect", "sort": {"field": "value"}},
         {
           "type": "formula",
           "expr": "datum.count + ' out of ' + datum.sum_count + ' companies'",
@@ -143,12 +165,7 @@
       "range": {
         "signal": "[colors.blue, colors.orange, colors.navy, colors.red]"
       },
-      "domain": [
-        "Performs assessment and identifies risks",
-        "Performs assessment but does not identify risks",
-        "Does not perform assessment but identifies risks",
-        "Does not perform assessment or identify risks"
-      ]
+      "domain": { "signal": "pluck(data('groups'), 'name')"}
     }
   ]
 }
