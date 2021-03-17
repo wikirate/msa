@@ -141,13 +141,13 @@
       "name": "color",
       "type": "ordinal",
       "range": {
-        "signal": "[colors.blue, colors.orange, colors.yellow, colors.red]"
+        "signal": "[colors.blue, colors.orange, colors.navy, colors.red]"
       },
       "domain": [
         "Performs assessment and identifies risks",
-        "Performs assessment but does not identify risk",
-        "Does not perform assessment but identifies risk",
-        "Does not perform assessment or identify risk"
+        "Performs assessment but does not identify risks",
+        "Does not perform assessment but identifies risks",
+        "Does not perform assessment or identify risks"
       ]
     }
   ]
