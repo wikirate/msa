@@ -105,6 +105,19 @@ loadAllViz = function () {
   });
 }
 
+addCountToGroupItem = function (groupItem) {
+  $.ajax(
+    { url: countGroupUrl(groupItem.data("group"))}
+  ).done(function (count) {
+    groupItem.append(" (" + count + ")")
+  });
+}
+
+countGroupUrl = function (group) {
+  base = wikiRateOrg + "MSA_Asset_Managers+company+company_search/filtered_count.json?";
+  return (base + $.param({ filter: { company_group: group } }));
+}
+
 updateFilter = function (item) {
   if (item.hasClass("reset-item")) {
     item.parent().hide();
@@ -118,6 +131,10 @@ updateFilter = function (item) {
 
 $(document).ready( function () {
   loadAllViz();
+
+  $.each($("a.dropdown-item:not(.reset-item)"), function(i, groupItem) {
+    addCountToGroupItem($(groupItem));
+  });
 
   $(".filter-dropdown .dropdown-item").on("click", function (event) {
     item = $(this);

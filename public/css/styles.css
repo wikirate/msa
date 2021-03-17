@@ -131,6 +131,10 @@ a.dropdown-toggle::after {
   padding: 15px;
 }
 
+a.dropdown-item label {
+  font-weight: bold;
+}
+
 .filter-dropdown .reset-item-li {
   display: none;
 }
