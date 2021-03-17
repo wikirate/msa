@@ -143,7 +143,12 @@
       "range": {
         "signal": "[colors.orange, colors.red, colors.yellow, colors.navy]"
       },
-      "domain": {"data": "counts", "field": "value"}
+      "domain": [
+        "Performs assessment and identifies risks",
+        "Performs assessment but does not identify risk",
+        "Does not perform assessment but identifies risk",
+        "Does not perform assessment or identify risk"
+      ]
     }
   ]
 }

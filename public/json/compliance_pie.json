@@ -230,10 +230,7 @@
         "#000028",
         "#FF9300"
       ],
-      "domain": {
-        "data": "counts",
-        "field": "value"
-      }
+      "domain": ["Not Met", "Met"]
     }
   ]
 }
