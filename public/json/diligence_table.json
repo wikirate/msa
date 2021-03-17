@@ -319,7 +319,7 @@
         },
         {
           "type": "formula",
-          "expr": "if(datum.key == 'count', { value: ['Yes'] }, {})",
+          "expr": "{ value: ['Yes'] }",
           "as": "filter"
         }
       ]

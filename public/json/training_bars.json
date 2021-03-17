@@ -242,10 +242,7 @@
           "text": {"field": "title"},
           "baseline": {"value": "bottom"},
           "fontWeight": {"value": "bold"},
-          "fill": {
-            "scale": "color",
-            "signal": "if(barTitle == datum.title, datum.color, 2)"
-          }
+          "fill": { "signal": "colors.navy" }
         },
         "hover": {"cursor": {"value": "pointer"}}
       }

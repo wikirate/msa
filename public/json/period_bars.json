@@ -204,10 +204,7 @@
           "x": {"value": 0},
           "y": {"scale": "yscale", "field": "title", "offset": -3},
           "text": {"field": "title"},
-          "fill": {
-            "scale": "color",
-            "signal": "if(barTitle == datum.title, datum.color, 2)"
-          },
+          "fill": { "signal": "colors.navy" },
           "baseline": {"value": "bottom"},
           "fontWeight": {"value": "bold"}
         },
