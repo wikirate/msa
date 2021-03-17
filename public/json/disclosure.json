@@ -2,6 +2,16 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Disclosure rates by asset manager",
   "width": 400,
+  "config": {
+    "axis": {
+      "domain": false,
+      "ticks": false,
+      "grid": true,
+      "zindex": 5,
+      "gridColor": "#888",
+      "gridWidth": 1
+    }
+  },
   "signals": [
     {
       "name": "totalAnswers",
@@ -152,13 +162,12 @@
   "axes": [
     {
       "scale": "xscale",
-      "orient": "top",
-      "domain": false,
-      "ticks": false,
-      "grid": true,
-      "zindex": 5,
-      "gridColor": "#888",
-      "gridWidth": 1
+      "orient": "top"
+    },
+    {
+      "scale": "xscale",
+      "orient": "bottom",
+      "grid": false
     }
   ],
   "marks": [

@@ -83,10 +83,23 @@
         },
         {
           "type": "impute",
+          "key": "term",
+          "keyvals": {"signal": "pluck(data('groups'),'term')"},
+          "field": "parens",
+          "value": "(independent)"
+        },
+        {
+          "type": "impute",
           "groupby": ["term"],
           "key": "parens",
+          "keyvals": {"signal": "slice(pluck(data('subgroups'),'key'), 0, -1)"},
           "field": "count",
           "value": 0
+        },
+        {
+          "type": "formula",
+          "expr": "if(datum.count, datum.count, 0)",
+          "as": "count"
         },
         {
           "type": "lookup",
@@ -251,7 +264,7 @@
           "text": {"field": "title"},
           "baseline": {"value": "bottom"},
           "fontWeight": {"value": "bold"},
-          "fill": { "signal" : "colors.navy"} 
+          "fill": { "signal" : "colors.navy"}
         }
       }
     }
