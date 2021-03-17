@@ -30,8 +30,9 @@ handleChartClicks = function (v, el) {
 wikiRateChartLink = function (datum, el) {
   wrPage = datum.wikirate_page || wikiRatePage(el);
   filter = datum.filter;
-  if (filter && wrPage) {
-    openWikiRate(wrPage, filterParams(filter));
+  if (wrPage && (datum.filter || datum.simpleParams)) {
+    query = (datum.filter ? filterParams(filter) :  datum.simpleParams)
+    openWikiRate(wrPage, query);
   }
 }
 

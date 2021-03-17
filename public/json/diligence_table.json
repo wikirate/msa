@@ -186,9 +186,13 @@
         {
           "type": "formula",
           "as": "wikirate_page",
-          "expr": "'~' + datum.considers_metric + '+~' + datum.id + '+' + datum.considers_year + '/details_sidebar'"
+          "expr": "'~' + datum.considers_metric + '+~' + datum.id + '+' + datum.considers_year + '/full_details'"
         },
-        {"type": "formula", "as": "filter", "expr": "{}"}
+        {
+          "type": "formula",
+          "as": "simpleParams",
+          "expr": "'layout=wikirate_layout'"
+        }
       ]
     },
     {
@@ -257,9 +261,13 @@
         {
           "type": "formula",
           "as": "wikirate_page",
-          "expr": "'~' + datum.metric + '+~' + datum.company + '+' + datum.year + '/details_sidebar'"
+          "expr": "'~' + datum.metric + '+~' + datum.company + '+' + datum.year + '/full_details'"
         },
-        {"type": "formula", "as": "filter", "expr": "{}"}
+        {
+          "type": "formula",
+          "as": "simpleParams",
+          "expr": "'layout=wikirate_layout'"
+        }
       ]
     },
     {

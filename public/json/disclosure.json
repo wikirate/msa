@@ -115,12 +115,12 @@
         {
           "type": "formula",
           "as": "wikirate_page",
-          "expr": "'Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate' + '+~' + datum.company + '+' + datum.year + '/details_sidebar'"
+          "expr": "'Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate' + '+~' + datum.company + '+' + datum.year + '/full_details'"
         },
         {
           "type": "formula",
-          "as": "filter",
-          "expr": "{}"
+          "as": "simpleParams",
+          "expr": "'layout=wikirate_layout'"
         },
         {
           "type": "formula",
