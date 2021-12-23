@@ -29,7 +29,7 @@
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_whistleblowing_mechanism_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+MSA_whistleblowing_mechanism_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest",
       "transform": [
         {
           "type": "formula",

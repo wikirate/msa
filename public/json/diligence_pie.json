@@ -24,7 +24,7 @@
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest"
     },
     {
       "name": "counts",

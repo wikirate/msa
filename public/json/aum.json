@@ -7,7 +7,7 @@
   "data": [
     {
       "name": "high_supply",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=High_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+MSA_Beyond_Compliance_Disclosure_Rate+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=High_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "formula", "expr": "datum.value > 0", "as": "value"},
         {
@@ -29,7 +29,7 @@
     },
     {
       "name": "high_invest",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=High_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=High_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -50,7 +50,7 @@
     },
     {
       "name": "medium_supply",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Medium_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+MSA_Beyond_Compliance_Disclosure_Rate+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Medium_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "formula", "expr": "datum.value > 0", "as": "value"},
         {
@@ -72,7 +72,7 @@
     },
     {
       "name": "medium_invest",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Medium_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Medium_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -93,7 +93,7 @@
     },
     {
       "name": "low_supply",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Low_AUM_MSA&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+MSA_Beyond_Compliance_Disclosure_Rate+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Low_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "formula", "expr": "datum.value > 0", "as": "value"},
         {
@@ -115,7 +115,7 @@
     },
     {
       "name": "low_invest",
-      "url": " https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Low_AUM_MSA&filter[year]=latest",
+      "url": " https://wikirate.org/Walk_Free+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[company_group][]=Low_AUM_MSA&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -136,7 +136,7 @@
     },
     {
       "name": "all_supply",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+MSA_Beyond_Compliance_Disclosure_Rate+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "formula", "expr": "datum.value > 0", "as": "value"},
         {
@@ -158,7 +158,7 @@
     },
     {
       "name": "all_invest",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {

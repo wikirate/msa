@@ -61,27 +61,27 @@
     },
     {
       "name": "initiatives",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Industry_initiatives_and_collaborations_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free+Industry_initiatives_and_collaborations_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
     },
     {
       "name": "investments",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Human_Rights_investment_policy_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free+Human_Rights_investment_policy_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
     },
     {
       "name": "reporting",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Cascading_reporting_obligations_under_MSA_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free+Cascading_reporting_obligations_under_MSA_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
     },
     {
       "name": "assesses",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Assesses_MS_risks_of_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free+Assesses_MS_risks_of_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
     },
     {
       "name": "engagement",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Engagement_on_MS_with_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free+Engagement_on_MS_with_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
     },
     {
       "name": "considers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
+      "url": "https://wikirate.org/Walk_Free+Considers_MS_Risks_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest"
     },
     {
       "name": "values",

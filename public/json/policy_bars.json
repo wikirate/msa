@@ -23,7 +23,7 @@
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_policy_revised+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+MSA_policy_revised+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest",
       "transform": [
         {
           "type": "formula",
@@ -34,7 +34,7 @@
     },
     {
       "name": "directs",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_policy_applicable_to_tier_1_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+MSA_policy_applicable_to_tier_1_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -55,14 +55,14 @@
         {"type": "formula", "expr": "'(direct / tier 1)'", "as": "parens"},
         {
           "type": "formula",
-          "expr": "'Walk_Free_Foundation+MSA_policy_applicable_to_tier_1_binary'",
+          "expr": "'Walk_Free+MSA_policy_applicable_to_tier_1_binary'",
           "as": "wikirate_page"
         }
       ]
     },
     {
       "name": "beyonds",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_policy_applicable_beyond_tier_1_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+MSA_policy_applicable_beyond_tier_1_binary+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -84,7 +84,7 @@
         {"type": "formula", "expr": "null", "as": "value"},
         {
           "type": "formula",
-          "expr": "'Walk_Free_Foundation+MSA_policy_applicable_beyond_tier_1_binary'",
+          "expr": "'Walk_Free+MSA_policy_applicable_beyond_tier_1_binary'",
           "as": "wikirate_page"
         }
       ]

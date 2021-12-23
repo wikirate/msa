@@ -29,7 +29,7 @@
   "data": [
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_incidents_remediation_revised+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[status]=known"
+      "url": "https://wikirate.org/Walk_Free+MSA_incidents_remediation_revised+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[status]=known"
     },
     {
       "name": "yes_answers",
@@ -46,7 +46,7 @@
     },
     {
       "name": "no_answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_incidents_remediation_binary+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[status]=known",
+      "url": "https://wikirate.org/Walk_Free+MSA_incidents_remediation_binary+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[status]=known",
       "transform": [{"type": "filter", "expr": "datum.value == 'No'"}]
     },
     {
@@ -72,7 +72,7 @@
           "key": "No",
           "title": "None of the above",
           "color": 1,
-          "wikirate_page": "Walk_Free_Foundation+MSA_incidents_remediation_binary'"
+          "wikirate_page": "Walk_Free+MSA_incidents_remediation_binary'"
         }
       ]
     },

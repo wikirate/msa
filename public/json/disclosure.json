@@ -68,7 +68,7 @@
   "data": [
     {
       "name": "companies",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate+Answer/company_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[status]=known",
+      "url": "https://wikirate.org/Walk_Free+MSA_Beyond_Compliance_Disclosure_Rate+Answer/company_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[status]=known",
       "transform": [
         {
           "type": "formula",
@@ -79,7 +79,7 @@
     },
     {
       "name": "answers",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[status]=known",
+      "url": "https://wikirate.org/Walk_Free+MSA_Beyond_Compliance_Disclosure_Rate+Answer/answer_list.json?limit=0&filter[company_group][]=MSA+Asset+Managers&filter[year]=latest&filter[status]=known",
       "transform": [
         {
           "type": "lookup",
@@ -115,7 +115,7 @@
         {
           "type": "formula",
           "as": "wikirate_page",
-          "expr": "'Walk_Free_Foundation+MSA_Beyond_Compliance_Disclosure_Rate' + '+~' + datum.company + '+' + datum.year + '/full_details'"
+          "expr": "'Walk_Free+MSA_Beyond_Compliance_Disclosure_Rate' + '+~' + datum.company + '+' + datum.year + '/full_details'"
         },
         {
           "type": "formula",

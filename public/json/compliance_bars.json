@@ -59,7 +59,7 @@
     },
     {
       "name": "homepage",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MSA_statement_homepage_link+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+MSA_statement_homepage_link+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -75,7 +75,7 @@
     },
     {
       "name": "all",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Meets_Minimum_UK_MSA_Requirements+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+Meets_Minimum_UK_MSA_Requirements+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -108,14 +108,14 @@
         },
         {
           "seq": 3,
-          "metric": "Walk_Free_Foundation+MSA_statement_homepage_link",
+          "metric": "Walk_Free+MSA_statement_homepage_link",
           "label": "Homepage Link",
           "color": 0,
           "filter_value": ["Yes"]
         },
         {
           "seq": 4,
-          "metric": "Walk_Free_Foundation+Meets_Minimum_UK_MSA_Requirements",
+          "metric": "Walk_Free+Meets_Minimum_UK_MSA_Requirements",
           "label": "All of the Above",
           "color": 1,
           "filter_value": ["Yes"]

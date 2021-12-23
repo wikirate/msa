@@ -29,7 +29,7 @@
   "data": [
     {
       "name": "portfolio",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Human_Rights_investment_policy_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+Human_Rights_investment_policy_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -45,7 +45,7 @@
     },
     {
       "name": "assesses",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Assesses_MS_risks_of_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+Assesses_MS_risks_of_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -61,7 +61,7 @@
     },
     {
       "name": "engagement",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Engagement_on_MS_with_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+Engagement_on_MS_with_investee_companies_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -77,7 +77,7 @@
     },
     {
       "name": "reporting",
-      "url": "https://wikirate.org/Walk_Free_Foundation+Cascading_reporting_obligations_under_MSA_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+Cascading_reporting_obligations_under_MSA_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -93,7 +93,7 @@
     },
     {
       "name": "none",
-      "url": "https://wikirate.org/Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
+      "url": "https://wikirate.org/Walk_Free+MS_Due_Diligence_Processes_in_Investments_sector_specific+answer/answer_list.json?limit=0&filter[status]=known&filter[company_group][]=MSA_Asset_Managers&filter[year]=latest",
       "transform": [
         {"type": "aggregate", "groupby": ["value"]},
         {
@@ -113,31 +113,31 @@
         {
           "seq": 1,
           "title": "Have human rights policy",
-          "wikirate_page": "Walk_Free_Foundation+Human_Rights_investment_policy_sector_specific",
+          "wikirate_page": "Walk_Free+Human_Rights_investment_policy_sector_specific",
           "color": 0
         },
         {
           "seq": 2,
           "title": "Assess modern slavery risk",
-          "wikirate_page": "Walk_Free_Foundation+Assesses_MS_risks_of_investee_companies_sector_specific",
+          "wikirate_page": "Walk_Free+Assesses_MS_risks_of_investee_companies_sector_specific",
           "color": 0
         },
         {
           "seq": 3,
           "title": "Engage on modern slavery",
-          "wikirate_page": "Walk_Free_Foundation+Engagement_on_MS_with_investee_companies_sector_specific",
+          "wikirate_page": "Walk_Free+Engagement_on_MS_with_investee_companies_sector_specific",
           "color": 0
         },
         {
           "seq": 4,
           "title": "Require MSA report",
-          "wikirate_page": "Walk_Free_Foundation+Cascading_reporting_obligations_under_MSA_sector_specific",
+          "wikirate_page": "Walk_Free+Cascading_reporting_obligations_under_MSA_sector_specific",
           "color": 0
         },
         {
           "seq": 5,
           "title": "None of the above",
-          "wikirate_page": "Walk_Free_Foundation+MS_Due_Diligence_Processes_in_Investments_sector_specific",
+          "wikirate_page": "Walk_Free+MS_Due_Diligence_Processes_in_Investments_sector_specific",
           "color": 1
         }
       ]
